@@ -8,8 +8,16 @@ const CACHE = 'calm-pups-__VERSION__';
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE)
-      .then((cache) => cache.addAll(
-        self.PRECACHE_LIST.map((p) => new URL(p, self.registration.scope).href)
+      .then((cache) => Promise.all(
+        self.PRECACHE_LIST.map((p) => {
+          const url = new URL(p, self.registration.scope).href;
+          // cache: 'reload' bypasses the HTTP cache so a new version can
+          // never be stitched together from stale files, and per-file
+          // tolerance means one missing file can't abort the whole update.
+          return fetch(new Request(url, { cache: 'reload' }))
+            .then((r) => (r.ok ? cache.put(url, r) : null))
+            .catch(() => null);
+        })
       ))
       .then(() => self.skipWaiting())
   );
