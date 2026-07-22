@@ -31,16 +31,19 @@ const Hub = (() => {
     }
   }
 
-  /* Downscale a chosen photo to a square-ish thumb so localStorage stays small. */
+  /* Downscale a chosen photo (keeping its shape — cards and portraits stay
+   * whole) so localStorage stays small. The hub badge circle center-crops
+   * visually via object-fit; the welcome screen shows the full image. */
   function processPhoto(file, cb) {
     const url = URL.createObjectURL(file);
     const im = new Image();
     im.onload = () => {
-      const side = Math.min(im.width, im.height);
+      const MAX = 1024;
+      const scale = Math.min(1, MAX / Math.max(im.width, im.height));
       const c = document.createElement('canvas');
-      c.width = c.height = 512;
-      c.getContext('2d').drawImage(
-        im, (im.width - side) / 2, (im.height - side) / 2, side, side, 0, 0, 512, 512);
+      c.width = Math.max(1, Math.round(im.width * scale));
+      c.height = Math.max(1, Math.round(im.height * scale));
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
       URL.revokeObjectURL(url);
       cb(c.toDataURL('image/jpeg', 0.82));
     };
