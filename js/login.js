@@ -2,16 +2,18 @@
  * No permission prompts live here — the mic and motion are requested only
  * by the features that need them.
  *
+ * The login runs on EVERY launch (no auto-skip), and returning from the
+ * background after RELOCK_MIN minutes reloads back to it.
+ *
  * Parent access gate: double-tap anywhere OUTSIDE the shield to toggle the
  * login open/locked (persisted). The tiny dot top-right shows the state —
  * green = she can get in, red = access denied. While locked, a completed
- * scan is refused and quick-return won't skip; the triple-tap top-left
- * parent skip still works as the override. */
+ * scan is refused; the triple-tap top-left parent skip still works as the
+ * override. */
 const Login = (() => {
   const HOLD_SECONDS = 8;        // parent-tunable; partial credit is kept on lift
-  const QUICK_RETURN_MIN = 30;   // relaunch within this many minutes skips login
+  const RELOCK_MIN = 10;         // backgrounded longer than this -> back to login
   const RING_LEN = 603.2;        // circumference of the scan ring circle
-  const LS_KEY = 'calmpups-last-login';
   const GATE_KEY = 'calmpups-gate';
 
   let progress = 0;              // 0..1, accumulates only while held
@@ -33,17 +35,6 @@ const Login = (() => {
   }
   function renderGate() {
     document.getElementById('gate-dot').classList.toggle('locked', !gateOpen());
-  }
-
-  function quickReturnValid() {
-    try {
-      const t = parseInt(localStorage.getItem(LS_KEY), 10);
-      return t && Date.now() - t < QUICK_RETURN_MIN * 60 * 1000;
-    } catch (err) { return false; }
-  }
-
-  function rememberLogin() {
-    try { localStorage.setItem(LS_KEY, String(Date.now())); } catch (err) {}
   }
 
   function tick(now) {
@@ -125,8 +116,20 @@ const Login = (() => {
     App.register('login', {});
     renderGate();
 
-    if (new URLSearchParams(location.search).has('skiplogin') ||
-        (gateOpen() && quickReturnValid())) {
+    // iOS keeps installed web apps alive in memory, so "reopening" often
+    // resumes the page instead of reloading it. If the app was in the
+    // background long enough, reload back to a fresh login. (Short
+    // interruptions — a call, a text — don't kick her out mid-activity.)
+    let hiddenAt = null;
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        hiddenAt = Date.now();
+      } else if (hiddenAt && Date.now() - hiddenAt > RELOCK_MIN * 60 * 1000) {
+        location.reload();
+      }
+    });
+
+    if (new URLSearchParams(location.search).has('skiplogin')) {
       enterApp();
       return;
     }
@@ -152,10 +155,7 @@ const Login = (() => {
     wrap.addEventListener('pointerup', release);
     wrap.addEventListener('pointercancel', release);
 
-    document.getElementById('welcome-go').addEventListener('click', () => {
-      rememberLogin();
-      enterApp();
-    });
+    document.getElementById('welcome-go').addEventListener('click', enterApp);
 
     // Parent gate toggle: double-tap the login background (not the shield).
     let gateTapAt = 0;
@@ -177,7 +177,7 @@ const Login = (() => {
       const now = Date.now();
       taps = taps.filter((t) => now - t < 1200);
       taps.push(now);
-      if (taps.length >= 3) { rememberLogin(); enterApp(); }
+      if (taps.length >= 3) enterApp();
     });
 
     lastT = performance.now();

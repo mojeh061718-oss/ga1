@@ -71,15 +71,16 @@ the balloon's mic button, and motion by the glitter jar's first touch.
 Double-tap anywhere **outside the shield** on the login screen to open or
 close HQ. The tiny dot in the top-right corner tells you (not her) the
 state: **green = she can get in, red = access denied**. While red, a
-completed scan just shakes the shield and resets — and the quick-return
-skip is blocked too. The gate is remembered across launches.
+completed scan just shakes the shield and resets. The gate is remembered
+across launches.
 
 Parent shortcuts:
 
 - **Skip login instantly (works even when locked):** triple-tap the very
   top-left corner of the login screen.
-- **Quick return:** after a login, relaunching within 30 minutes skips the
-  login automatically (only while the gate is green).
+- **Login every time:** the login runs on every launch, and coming back
+  after 10+ minutes in the background returns to it too (short
+  interruptions don't). Tune with `RELOCK_MIN` in `js/login.js`.
 - **Change the hold time:** edit `HOLD_SECONDS` at the top of
   `js/login.js`.
 
