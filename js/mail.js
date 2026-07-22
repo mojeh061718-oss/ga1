@@ -58,8 +58,53 @@ const Mail = (() => {
         `<span class="mail-date">${fmtDate(l.at)}</span>` +
         (l.replies && l.replies.length
           ? `<span class="mail-replied">&#10003;</span>` : '');
-      row.addEventListener('click', () => open(l));
+      hookRow(row, l);
       list.appendChild(row);
+    });
+  }
+
+  /* Tap opens a letter; a ~1s still hold asks to delete it instead. */
+  let deleteTarget = null;
+  function confirmDelete(letter) {
+    deleteTarget = letter;
+    document.getElementById('mail-delete-date').textContent =
+      'Letter from ' + fmtDate(letter.at);
+    document.getElementById('mail-delete-confirm').classList.remove('hidden');
+  }
+
+  function hookRow(row, letter) {
+    let pressTimer = null;
+    let startXY = null;
+    let suppressOpen = false;
+    const cancelPress = () => {
+      if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+    };
+    row.addEventListener('pointerdown', (e) => {
+      startXY = [e.clientX, e.clientY];
+      suppressOpen = false;
+      cancelPress();
+      pressTimer = setTimeout(() => {
+        pressTimer = null;
+        suppressOpen = true;
+        confirmDelete(letter);
+      }, 900);
+    });
+    row.addEventListener('pointermove', (e) => {
+      if (pressTimer && startXY &&
+          Math.hypot(e.clientX - startXY[0], e.clientY - startXY[1]) > 12) {
+        cancelPress(); // it's a scroll, not a hold
+      }
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) =>
+      row.addEventListener(ev, cancelPress));
+    // some iOS versions surface a long-press as contextmenu — same intent
+    row.addEventListener('contextmenu', () => {
+      suppressOpen = true;
+      confirmDelete(letter);
+    });
+    row.addEventListener('click', () => {
+      if (suppressOpen) { suppressOpen = false; return; }
+      open(letter);
     });
   }
 
@@ -345,6 +390,18 @@ const Mail = (() => {
       document.getElementById('mail-compose').classList.add('hidden');
       await refresh();
       Sfx.play('mail'); // new mail!
+    });
+
+    document.getElementById('mail-delete-cancel').addEventListener('click', () => {
+      deleteTarget = null;
+      document.getElementById('mail-delete-confirm').classList.add('hidden');
+    });
+    document.getElementById('mail-delete-yes').addEventListener('click', async () => {
+      if (deleteTarget) await Store.deleteLetter(deleteTarget.id);
+      deleteTarget = null;
+      document.getElementById('mail-delete-confirm').classList.add('hidden');
+      await refresh();
+      Sounds.inviteChime();
     });
 
     document.getElementById('mail-reply-btn').addEventListener('click', toggleReply);

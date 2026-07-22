@@ -388,6 +388,19 @@
     <div id="mail-sent-flash" class="hidden">REPLY SENT TO HQ &#10003;</div>
   </section>
 
+  <!-- Delete-letter confirmation (long-press a letter in the inbox) -->
+  <div id="mail-delete-confirm" class="hidden">
+    <div id="mail-delete-card">
+      <p class="voice-title" style="color:#dce6f4">Delete this letter?</p>
+      <p class="mail-delete-sub" id="mail-delete-date"></p>
+      <p class="mail-delete-sub">Any voice replies saved on it will be deleted too.</p>
+      <div class="mail-delete-actions">
+        <button id="mail-delete-cancel">Cancel</button>
+        <button id="mail-delete-yes">Delete</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Parent voice settings (tap the hub's top-right corner 5 times) -->
   <div id="voice-settings" class="hidden">
     <div id="voice-settings-card">
