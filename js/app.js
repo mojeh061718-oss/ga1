@@ -68,7 +68,24 @@ const App = (() => {
     });
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
+      // updateViaCache none: never serve a stale sw.js/precache list from
+      // the HTTP cache. Re-check for updates whenever the app resumes.
+      navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+        .then((reg) => {
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') reg.update().catch(() => {});
+          });
+        })
+        .catch(() => {});
+      // When a new version takes control, refresh once so ONE relaunch is
+      // enough to be current (never mid-PUP CHECK-IN; recordings are safe).
+      const hadController = !!navigator.serviceWorker.controller;
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!hadController || reloaded) return;
+        reloaded = true;
+        if (current !== 'diary') location.reload();
+      });
     }
   });
 

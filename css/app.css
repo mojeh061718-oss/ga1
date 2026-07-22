@@ -1512,3 +1512,15 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   color: var(--hub-text);
   outline: none;
 }
+
+#version-tag {
+  position: absolute;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  opacity: 0.35;
+  pointer-events: none;
+}
