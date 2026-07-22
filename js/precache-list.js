@@ -25,7 +25,6 @@ self.PRECACHE_LIST = [
   './assets/pups/pup1.svg',
   './assets/pups/pup2.svg',
   './assets/pups/pup3.svg',
-  './assets/audio/welcome.mp3',
   './assets/audio/mail.mp3',
   './assets/audio/open.mp3',
   './assets/audio/sent.mp3',

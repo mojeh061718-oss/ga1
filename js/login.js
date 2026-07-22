@@ -108,7 +108,7 @@ const Login = (() => {
         (name[0] || 'M').toUpperCase();
     }
     document.getElementById('login-welcome').classList.add('active');
-    Sfx.play('welcome');
+    Sounds.praise();
   }
 
   function enterApp() {

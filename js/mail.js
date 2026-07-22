@@ -67,7 +67,7 @@ const Mail = (() => {
     try {
       if (localStorage.getItem(SEED_KEY) === '2') return;
       const existing = (await Store.allLetters()) || [];
-      const name = Hub.name === 'RESCUE PUP' ? 'Rescue Pup' : Hub.name;
+      const name = Hub.name;
       const prior = existing.find((l) => l.id === 'welcome-ryder');
       if (!prior) {
         await Store.saveLetter({
@@ -231,7 +231,7 @@ const Mail = (() => {
     try {
       const name = Hub.name;
       const phonetic = Hub.speak;
-      if (name && phonetic && name !== 'RESCUE PUP') {
+      if (name && phonetic) {
         const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         text = text.replace(new RegExp(esc, 'gi'), phonetic);
       }

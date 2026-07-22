@@ -4,13 +4,19 @@
 const Hub = (() => {
   const LS_KEY = 'calmpups-member';
 
-  let member = { name: 'RESCUE PUP', photo: null, speak: '' };
+  const DEFAULT_NAME = 'Maelie';
+  const DEFAULT_SPEAK = 'Maylee';
+
+  let member = { name: DEFAULT_NAME, photo: null, speak: DEFAULT_SPEAK };
 
   function load() {
     try {
       const m = JSON.parse(localStorage.getItem(LS_KEY));
       if (m && m.name) member = m;
     } catch (err) {}
+    // her name is the default — an old/blank record never shows RESCUE PUP
+    if (!member.name || member.name === 'RESCUE PUP') member.name = DEFAULT_NAME;
+    if (!member.speak) member.speak = DEFAULT_SPEAK;
   }
 
   function save() {
@@ -93,7 +99,7 @@ const Hub = (() => {
 
     const speakInput = document.getElementById('setup-speak');
     document.getElementById('badge-edit').addEventListener('click', () => {
-      nameInput.value = member.name === 'RESCUE PUP' ? '' : member.name;
+      nameInput.value = member.name;
       speakInput.value = member.speak || '';
       pendingPhoto = null;
       preview.classList.toggle('hidden', !member.photo);
