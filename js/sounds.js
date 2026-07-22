@@ -74,6 +74,20 @@ const Sounds = (() => {
     tone({ freq: 262, dur: 0.55, gain: 0.055, when: 0.3 });
   }
 
+  // Long ACCESS DENIED alarm: three flat buzzer pulses (~1.5s).
+  function deniedAlert() {
+    for (let i = 0; i < 3; i++) {
+      tone({ freq: 196, freqEnd: 185, dur: 0.34, gain: 0.09, type: 'square', when: i * 0.46, attack: 0.01 });
+      tone({ freq: 98, freqEnd: 93, dur: 0.34, gain: 0.07, type: 'square', when: i * 0.46, attack: 0.01 });
+    }
+  }
+
+  // Access granted: three quick ascending beeps.
+  function successBeeps() {
+    [660, 830, 1046].forEach((f, i) =>
+      tone({ freq: f, dur: 0.14, gain: 0.08, type: 'triangle', when: i * 0.18, attack: 0.005 }));
+  }
+
   // Rope-bridge creak when it's dragged too fast.
   function creak() {
     tone({ freq: 150, freqEnd: 110, dur: 0.35, gain: 0.05, type: 'triangle' });
@@ -118,6 +132,7 @@ const Sounds = (() => {
 
   return {
     ensure, unlock, chime, inviteChime, praise, settleChime, uhoh, creak,
+    deniedAlert, successBeeps,
     breathIn, breathOut, humStart, humProgress, humStop,
     get ctx() { return ctx; },
   };

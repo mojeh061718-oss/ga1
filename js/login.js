@@ -56,7 +56,7 @@ const Login = (() => {
     if (!gateOpen()) { deny(); return; }
     done = true;
     screen().classList.remove('scanning', 'inviting');
-    Sfx.play('scanok');
+    Sounds.successBeeps();
     sparkleBurst(document.getElementById('scan-sparkles'), 6);
     setTimeout(showWelcome, 700);
   }
@@ -68,7 +68,7 @@ const Login = (() => {
     ring().style.strokeDashoffset = RING_LEN;
     ring().classList.add('denied');
     screen().classList.add('shake');
-    Sfx.play('denied');
+    Sounds.deniedAlert();
     const popup = document.getElementById('denied-popup');
     popup.classList.remove('hidden');
     setTimeout(() => {

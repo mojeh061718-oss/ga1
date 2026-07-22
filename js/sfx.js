@@ -4,8 +4,6 @@
  * loaded or decoded yet, the old tone plays instead of silence. */
 const Sfx = (() => {
   const FILES = {
-    denied: 'assets/audio/denied.mp3',
-    scanok: 'assets/audio/scanok.mp3',
     welcome: 'assets/audio/welcome.mp3',
     mail: 'assets/audio/mail.mp3',
     open: 'assets/audio/open.mp3',
@@ -14,11 +12,9 @@ const Sfx = (() => {
     star: 'assets/audio/star.mp3',
     toppup: 'assets/audio/toppup.mp3',
   };
-  const GAIN = { denied: 0.9, welcome: 0.7, toppup: 0.7, strike: 0.7 }; // default 0.6
+  const GAIN = { welcome: 0.7, toppup: 0.7, strike: 0.7 }; // default 0.6
 
   const FALLBACK = {
-    denied: () => Sounds.uhoh(),
-    scanok: () => Sounds.chime(),
     welcome: () => Sounds.praise(),
     mail: () => Sounds.inviteChime(),
     open: () => Sounds.chime(),
