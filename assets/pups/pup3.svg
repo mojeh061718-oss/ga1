@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220">
+  <!-- Original character: "Pebble" the glitter pup (cocoa with patch, teal collar) -->
+  <!-- body -->
+  <ellipse cx="100" cy="176" rx="52" ry="38" fill="#b98d6f"/>
+  <ellipse cx="100" cy="186" rx="34" ry="24" fill="#ecd9c8"/>
+  <!-- front paws -->
+  <ellipse cx="74" cy="206" rx="15" ry="10" fill="#b98d6f"/>
+  <ellipse cx="126" cy="206" rx="15" ry="10" fill="#b98d6f"/>
+  <!-- head -->
+  <circle cx="100" cy="92" r="62" fill="#b98d6f"/>
+  <!-- eye patch -->
+  <circle cx="124" cy="84" r="20" fill="#8f6a50"/>
+  <!-- one floppy one perky ear -->
+  <path d="M46 58 C 26 66, 22 102, 36 122 C 50 118, 58 96, 56 72 Z" fill="#8f6a50"/>
+  <path d="M148 52 C 160 30, 138 22, 128 40 C 124 50, 130 62, 140 66 Z" fill="#8f6a50"/>
+  <!-- muzzle -->
+  <ellipse cx="100" cy="116" rx="30" ry="22" fill="#ecd9c8"/>
+  <!-- eyes -->
+  <circle cx="76" cy="86" r="9" fill="#3f3128"/>
+  <circle cx="124" cy="86" r="9" fill="#3f3128"/>
+  <circle cx="79" cy="83" r="3" fill="#ffffff"/>
+  <circle cx="127" cy="83" r="3" fill="#ffffff"/>
+  <!-- nose + tongue smile -->
+  <ellipse cx="100" cy="108" rx="9" ry="7" fill="#3f3128"/>
+  <path d="M100 115 q 0 8 -9 9 M100 115 q 0 8 9 9" fill="none" stroke="#3f3128" stroke-width="3" stroke-linecap="round"/>
+  <path d="M94 126 q 6 10 12 0 q -2 8 -6 8 q -4 0 -6 -8 Z" fill="#e8a3ae"/>
+  <!-- collar with star tag -->
+  <path d="M52 146 q 48 22 96 0 l 0 14 q -48 22 -96 0 Z" fill="#8fc7bd"/>
+  <path d="M100 162 l4 8 8.6 1.2 -6.2 6.1 1.5 8.6 -7.9 -4.1 -7.9 4.1 1.5 -8.6 -6.2 -6.1 8.6 -1.2 Z" fill="#f9e6a8" stroke="#eccf7f" stroke-width="1.5"/>
+</svg>

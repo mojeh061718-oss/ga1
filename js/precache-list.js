@@ -1,0 +1,24 @@
+/* Every file the app needs offline. If you add a new pup image, add its
+ * path here too — otherwise it won't be available without internet.
+ * (A typo here fails loudly at install time, which is on purpose.) */
+self.PRECACHE_LIST = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './css/app.css',
+  './js/precache-list.js',
+  './js/app.js',
+  './js/sounds.js',
+  './js/mic.js',
+  './js/pups.js',
+  './js/login.js',
+  './js/balloon.js',
+  './js/breathing.js',
+  './js/glitter.js',
+  './assets/pups/pup1.svg',
+  './assets/pups/pup2.svg',
+  './assets/pups/pup3.svg',
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png',
+  './assets/icons/apple-touch-icon.png',
+];
