@@ -4,9 +4,9 @@
  * js/precache-list.js so it works offline. Any square-ish PNG/JPG/SVG works.
  */
 const PUPS = {
-  balloon:   'assets/pups/pup1.svg',
+  beacon:    'assets/pups/pup1.svg',
   breathing: 'assets/pups/pup2.svg',
-  glitter:   'assets/pups/pup3.svg',
+  bridge:    'assets/pups/pup3.svg',
   board:     'assets/pups/pup1.svg',
 };
 

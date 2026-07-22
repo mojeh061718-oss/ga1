@@ -19,6 +19,28 @@
     return 'rest';
   }
 
+  /* Every full breath lights one paw-light; five breaths fully recharges
+   * the pup — quiet celebration, then a fresh row. */
+  function lights() {
+    return Array.from(document.querySelectorAll('.breath-light'));
+  }
+
+  function lightUp() {
+    const row = lights();
+    const lit = row.filter((l) => l.classList.contains('lit')).length;
+    if (lit < row.length) {
+      row[lit].classList.add('lit');
+      Sounds.inviteChime();
+    }
+    if (lit + 1 >= row.length) {
+      Sounds.praise();
+      const pup = document.getElementById('breath-pup');
+      pup.classList.add('blink');
+      setTimeout(() => pup.classList.remove('blink'), 1700);
+      setTimeout(() => row.forEach((l) => l.classList.remove('lit')), 2600);
+    }
+  }
+
   function start() {
     const orb = document.getElementById('breath-orb');
     const halo = document.getElementById('breath-halo');
@@ -55,11 +77,7 @@
         if (phase === 'out') Sounds.breathOut(OUT_MS / 1000);
         if (phase === 'rest') {
           cycles++;
-          if (cycles % 3 === 0) {
-            const pup = document.getElementById('breath-pup');
-            pup.classList.add('blink'); // quiet encouragement, nothing exciting
-            setTimeout(() => pup.classList.remove('blink'), 1700);
-          }
+          lightUp();
         }
         lastPhase = phase;
       }
@@ -69,7 +87,10 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     App.register('breathing', {
-      enter() { start(); },
+      enter() {
+        lights().forEach((l) => l.classList.remove('lit'));
+        start();
+      },
       exit() {
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;

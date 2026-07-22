@@ -73,7 +73,7 @@ button { border: none; background: none; cursor: pointer; }
 
 /* iOS: Safari treats drags/holds on `manipulation` surfaces as pan
  * gestures and cancels the pointer — these stages need full ownership. */
-#glitter-canvas, #balloon-stage, #shield-wrap, #breath-stage,
+#bridge-canvas, #beacon-stage, #shield-wrap, #breath-stage,
 .hub-box, .card, #welcome-go {
   touch-action: none;
 }
@@ -190,7 +190,7 @@ button { border: none; background: none; cursor: pointer; }
   to { transform: translateY(150px); }
 }
 
-#scan-sparkles, #balloon-sparkles {
+#scan-sparkles, #beacon-sparkles {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -277,6 +277,17 @@ button { border: none; background: none; cursor: pointer; }
   50% { transform: scale(1.08); }
 }
 
+/* night mission screens (beacon / breathing / bridge) */
+.screen.night {
+  background:
+    radial-gradient(2px 2px at 18% 16%, rgba(255,255,255,0.5) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 72% 9%, rgba(255,255,255,0.4) 50%, transparent 51%),
+    radial-gradient(2px 2px at 88% 28%, rgba(255,255,255,0.35) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 34% 6%, rgba(255,255,255,0.35) 50%, transparent 51%),
+    radial-gradient(2px 2px at 55% 20%, rgba(255,255,255,0.3) 50%, transparent 51%),
+    radial-gradient(120% 90% at 50% 0%, #1c2740 0%, #131a2c 55%, #0d1322 100%);
+}
+
 /* ============ calm den (dark HQ styling) ============ */
 .home-cards {
   display: flex;
@@ -299,9 +310,9 @@ button { border: none; background: none; cursor: pointer; }
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   animation: card-bob 5s ease-in-out infinite;
 }
-#card-balloon { box-shadow: 0 0 26px rgba(242, 167, 198, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35); }
+#card-beacon { box-shadow: 0 0 26px rgba(242, 167, 198, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35); }
 #card-breathing { animation-delay: 1.6s; box-shadow: 0 0 26px rgba(195, 182, 221, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35); }
-#card-glitter { animation-delay: 3.2s; box-shadow: 0 0 26px rgba(143, 212, 199, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35); }
+#card-bridge { animation-delay: 3.2s; box-shadow: 0 0 26px rgba(143, 212, 199, 0.12), 0 8px 24px rgba(0, 0, 0, 0.35); }
 @keyframes card-bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -309,27 +320,27 @@ button { border: none; background: none; cursor: pointer; }
 .card-pup { width: min(28vw, 140px); max-height: 78%; }
 .card-icon { width: min(19vw, 92px); max-height: 72%; }
 
-/* ============ balloon ============ */
-#balloon-mic-btn {
+/* ============ light the beacon ============ */
+#beacon-mic-btn {
   position: absolute;
   top: calc(env(safe-area-inset-top, 0px) + 24px);
   right: calc(env(safe-area-inset-right, 0px) + 20px);
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.55);
-  color: #b3c5d4;
+  background: rgba(28, 39, 64, 0.7);
+  color: #5d7292;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
 }
-#balloon-mic-btn svg { width: 26px; height: 26px; }
-#balloon-mic-btn .mic-slash { opacity: 0; }
-#balloon-mic-btn.on { color: var(--sage); background: rgba(255, 255, 255, 0.85); }
-#balloon-mic-btn.denied .mic-slash { opacity: 1; }
+#beacon-mic-btn svg { width: 26px; height: 26px; }
+#beacon-mic-btn .mic-slash { opacity: 0; }
+#beacon-mic-btn.on { color: var(--sage); background: rgba(28, 39, 64, 0.95); }
+#beacon-mic-btn.denied .mic-slash { opacity: 1; }
 
-#balloon-stage {
+#beacon-stage {
   position: relative;
   width: 100%;
   height: 100%;
@@ -338,36 +349,42 @@ button { border: none; background: none; cursor: pointer; }
   align-items: center;
   justify-content: flex-end;
 }
-#balloon-holder {
+#beacon-svg {
   position: absolute;
   left: 50%;
-  bottom: 30%;
+  bottom: 26%;
   transform: translateX(-50%);
-}
-#balloon-svg {
-  width: min(60vw, 300px);
-  display: block;
+  width: min(56vw, 270px);
   overflow: visible;
 }
-#balloon-g {
-  transform-origin: 60px 118px;
-  will-change: transform;
+#beacon-glow {
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  width: min(120vw, 560px);
+  height: min(120vw, 560px);
+  transform: translate(-50%, -50%) scale(0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity 0.2s;
 }
-#balloon-holder.released {
-  transition: transform 4s ease-in;
-  transform: translateX(-50%) translateY(-130vh);
-  animation: balloon-sway 4s ease-in-out;
+#beacon-beam {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 30%;
+  width: min(34vw, 160px);
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
 }
-@keyframes balloon-sway {
-  0%, 100% { margin-left: 0; }
-  33% { margin-left: -26px; }
-  66% { margin-left: 22px; }
-}
-#balloon-pup {
+#beacon-beam.on { opacity: 1; }
+#beacon-pup {
   width: min(38vw, 190px);
   margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 26px);
 }
-#balloon-pup.happy { animation: pup-bounce 0.9s ease-in-out 3; }
+#beacon-pup.happy { animation: pup-bounce 0.9s ease-in-out 3; }
 @keyframes pup-bounce {
   0%, 100% { transform: translateY(0); }
   40% { transform: translateY(-22px); }
@@ -403,6 +420,28 @@ button { border: none; background: none; cursor: pointer; }
   will-change: transform;
 }
 #breath-pup { width: 62%; }
+#breath-lights {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 30px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 5;
+}
+.breath-light {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(143, 168, 204, 0.18);
+  border: 1.5px solid rgba(143, 168, 204, 0.35);
+  transition: background 0.6s, box-shadow 0.6s;
+}
+.breath-light.lit {
+  background: #f9e6a8;
+  border-color: #f9e6a8;
+  box-shadow: 0 0 12px rgba(249, 230, 168, 0.8);
+}
 #breath-pup.blink { animation: pup-blink 1.6s ease-in-out; }
 @keyframes pup-blink {
   0%, 100% { transform: rotate(0deg); }
@@ -410,25 +449,26 @@ button { border: none; background: none; cursor: pointer; }
   70% { transform: rotate(4deg); }
 }
 
-/* ============ glitter ============ */
-#glitter-canvas {
+/* ============ cross the bridge ============ */
+#bridge-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
-#glitter-pup {
+#bridge-pup {
   position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 8px);
-  right: 6vw;
-  width: min(26vw, 130px);
+  right: 4vw;
+  top: 30%;
+  width: min(24vw, 120px);
   z-index: 5;
 }
-#glitter-pup.nod { animation: pup-nod 2.4s ease-in-out; }
-@keyframes pup-nod {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(6deg); }
-  60% { transform: rotate(-3deg); }
+#bridge-pup.happy { animation: pup-bounce 0.9s ease-in-out 3; }
+#bridge-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
 }
 
 /* ============ HQ hub (dark theme) ============ */

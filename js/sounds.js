@@ -68,6 +68,11 @@ const Sounds = (() => {
     tone({ freq: 262, dur: 0.55, gain: 0.055, when: 0.3 });
   }
 
+  // Rope-bridge creak when it's dragged too fast.
+  function creak() {
+    tone({ freq: 150, freqEnd: 110, dur: 0.35, gain: 0.05, type: 'triangle' });
+  }
+
   // Breathing cues, scheduled precisely on the audio clock.
   function breathIn(dur) {
     tone({ freq: 220, freqEnd: 330, dur, gain: 0.04, attack: 0.3 });
@@ -106,7 +111,7 @@ const Sounds = (() => {
   }
 
   return {
-    ensure, unlock, chime, inviteChime, praise, settleChime, uhoh,
+    ensure, unlock, chime, inviteChime, praise, settleChime, uhoh, creak,
     breathIn, breathOut, humStart, humProgress, humStop,
     get ctx() { return ctx; },
   };

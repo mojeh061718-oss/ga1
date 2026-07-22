@@ -30,22 +30,25 @@ bedtime diary.
   CHECK-IN" reminder that opens it in one tap.
 - **Log** — parent calendar of every recorded day (below).
 
-## The Calm Den
+## The Calm Den — rescue missions
 
-Three friendly rescue pups guide three activities:
+Three night missions where she helps a pup — each one is secretly a
+calming exercise:
 
-- **Balloon** — blow into the microphone (or press and hold the screen) to
-  inflate a balloon until it floats away. Long slow exhales are the whole
-  point: they're the fastest way a body calms itself down.
-- **Breathing buddy** — a pup inside a glowing orb that grows (breathe in,
-  4s), holds (2s), and shrinks (breathe out, 6s). She just breathes along
-  with it. No instructions needed.
-- **Glitter jar** — swirl the glitter with a finger (or shake the phone),
-  then watch it slowly settle for about 45 seconds. The watching is the
-  activity.
+- **Light the beacon** — press and hold the screen (or blow into the mic
+  via the little mic button) steadily until the rescue beacon blazes to
+  life. Long slow exhales / steady holds are the point: they're the
+  fastest way a body calms itself down. Every lighting earns a new color.
+- **Charge the pup** — breathe along with the glowing orb (in 4s, hold
+  2s, out 6s). Each full breath lights one of five paw-lights; five
+  breaths fully recharges the pup.
+- **Cross the bridge** — drag the supply cart across the rope bridge to
+  the waiting pup. Only slow, steady dragging works: rushing makes the
+  bridge creak and wobble and the cart won't budge until it settles.
+  Forced slow movement is the regulation exercise.
 
-Everything in the Den is wordless, slow, and soft on purpose. There are
-no scores, no fail states, and nothing to unlock.
+Everything is wordless, there are no fail states, and every mission
+loops gently forever.
 
 ## The PUP CHECK-IN (bedtime ritual)
 
