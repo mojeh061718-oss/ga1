@@ -131,7 +131,7 @@ const Mail = (() => {
     current = letter;
     renderRead();
     App.show('mailread');
-    speakLetter(); // inside the tap gesture — auto-reads on open
+    // no auto-read: the letter speaks only when the speaker button is tapped
     if (!letter.opened) {
       letter.opened = true;
       Store.saveLetter(letter).then(renderPanel);

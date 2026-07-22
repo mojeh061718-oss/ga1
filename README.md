@@ -19,10 +19,11 @@ bedtime diary.
   for 5 seconds** to secretly write one; the compose box also has an
   optional **"from" photo** (add a picture of whoever "sent" it and it
   appears at the top of the letter). Letters land in her inbox as glowing
-  sealed envelopes with an unread badge. Opening one **reads it aloud**
-  with the phone's voice (speaker button replays/stops — install a
-  premium voice under Settings → Accessibility → Spoken Content → Voices
-  for a much nicer reader), and the big mic button records her **voice
+  sealed envelopes with an unread badge. The **speaker button on the
+  letter reads it aloud** with the phone's voice (silent until tapped;
+  pick which voice in the compose panel's Reader voice dropdown —
+  premium voices from Settings → Accessibility → Spoken Content sound
+  best), and the big mic button records her **voice
   reply**, which stamps "REPLY SENT TO HQ ✓". Nothing is actually sent
   anywhere — letters and replies live only on the phone.
 - **Calm Den** — the three calming activities.
