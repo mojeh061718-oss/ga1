@@ -18,7 +18,7 @@
   <!-- ============ RESCUE LOGIN ============ -->
   <section id="screen-login" class="screen active">
     <div id="login-corner-skip" aria-hidden="true"></div>
-    <div id="login-corner-voice" aria-hidden="true"></div>
+    <div id="gate-dot" aria-hidden="true"></div>
 
     <div id="login-scan" class="login-step active">
       <div id="shield-wrap">
@@ -59,57 +59,28 @@
       </div>
     </div>
 
-    <div id="login-name" class="login-step">
-      <img id="login-pup" class="pup" alt="pup">
-      <div id="name-mic" aria-hidden="true">
-        <svg viewBox="0 0 60 60">
-          <circle class="name-mic-pulse" cx="30" cy="30" r="26" fill="none" stroke="#a8bfd4" stroke-width="2"/>
-          <rect x="23" y="12" width="14" height="24" rx="7" fill="#7d97b0"/>
-          <path d="M18 32 a12 12 0 0 0 24 0" fill="none" stroke="#7d97b0" stroke-width="3" stroke-linecap="round"/>
-          <line x1="30" y1="44" x2="30" y2="50" stroke="#7d97b0" stroke-width="3" stroke-linecap="round"/>
+    <div id="login-welcome" class="login-step">
+      <div id="welcome-photo-wrap">
+        <img id="welcome-photo" class="hidden" alt="">
+        <svg id="welcome-shield" viewBox="0 0 200 220">
+          <path d="M100 22 C 128 34, 152 38, 168 38 C 168 108, 158 160, 100 196
+                   C 42 160, 32 108, 32 38 C 48 38, 72 34, 100 22 Z"
+                fill="#f2a7c6" stroke="#e386ad" stroke-width="4"/>
+          <path d="M100 34 C 124 44, 144 48, 156 48 C 156 106, 148 150, 100 182
+                   C 52 150, 44 106, 44 48 C 56 48, 76 44, 100 34 Z"
+                fill="#f7c2d8"/>
+          <text id="welcome-initial" x="100" y="105" text-anchor="middle"
+                dominant-baseline="central" fill="#ffffff"
+                font-size="96" font-weight="800" font-family="-apple-system, sans-serif">M</text>
         </svg>
       </div>
+      <div id="welcome-text">WELCOME</div>
+      <div id="welcome-name">MAELIE</div>
+      <button id="welcome-go" aria-label="enter hub">
+        <svg viewBox="0 0 40 40"><path d="M14 8 L28 20 L14 32" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
-
-    <button id="login-paw-btn" class="hidden" aria-label="enter">
-      <svg viewBox="0 0 100 100">
-        <g fill="#ffffff">
-          <ellipse cx="50" cy="62" rx="22" ry="18"/>
-          <ellipse cx="26" cy="40" rx="8.5" ry="11" transform="rotate(-20 26 40)"/>
-          <ellipse cx="42" cy="31" rx="8.5" ry="11" transform="rotate(-7 42 31)"/>
-          <ellipse cx="60" cy="31" rx="8.5" ry="11" transform="rotate(7 60 31)"/>
-          <ellipse cx="75" cy="40" rx="8.5" ry="11" transform="rotate(20 75 40)"/>
-        </g>
-      </svg>
-    </button>
   </section>
-
-  <!-- Parent-only voice panel (triple-tap top-right corner of login) -->
-  <div id="voice-panel" class="hidden">
-    <div id="voice-card">
-      <p class="voice-title">Record your voice for the pups</p>
-      <div class="voice-row" data-key="hold">
-        <span>&ldquo;Put your finger on the badge!&rdquo;</span>
-        <button class="v-rec" aria-label="record">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
-        </button>
-        <button class="v-play" aria-label="play">
-          <svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill="currentColor"/></svg>
-        </button>
-      </div>
-      <div class="voice-row" data-key="name">
-        <span>&ldquo;Say your name for me!&rdquo;</span>
-        <button class="v-rec" aria-label="record">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
-        </button>
-        <button class="v-play" aria-label="play">
-          <svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill="currentColor"/></svg>
-        </button>
-      </div>
-      <p class="voice-hint">Tap &#9679; to record (5s max), tap again to stop. &#9654; plays it back.</p>
-      <button id="voice-close">Done</button>
-    </div>
-  </div>
 
   <!-- ============ HQ HUB ============ -->
   <section id="screen-hub" class="screen dark">
@@ -203,9 +174,9 @@
   </div>
 
   <!-- ============ CALM DEN ============ -->
-  <section id="screen-home" class="screen">
-    <button class="home-btn" data-target="hub" aria-label="back to hub">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#7d97b0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <section id="screen-home" class="screen dark">
+    <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="home-cards">
       <button class="card" id="card-balloon" data-screen="balloon" aria-label="balloon game">
@@ -355,7 +326,6 @@
   <script src="js/pups.js" defer></script>
   <script src="js/sounds.js" defer></script>
   <script src="js/mic.js" defer></script>
-  <script src="js/voice.js" defer></script>
   <script src="js/store.js" defer></script>
   <script src="js/app.js" defer></script>
   <script src="js/login.js" defer></script>

@@ -1,12 +1,18 @@
-/* Rescue login: shield finger-scan hold -> permission chain -> "say your name".
- * This ritual is the app's ONLY permission surface. It can never block entry:
- * every failure path lands on the big paw button. */
+/* Rescue login: shield finger-scan hold -> "WELCOME <NAME>" -> hub.
+ * No permission prompts live here — the mic and motion are requested only
+ * by the features that need them.
+ *
+ * Parent access gate: double-tap anywhere OUTSIDE the shield to toggle the
+ * login open/locked (persisted). The tiny dot top-right shows the state —
+ * green = she can get in, red = access denied. While locked, a completed
+ * scan is refused and quick-return won't skip; the triple-tap top-left
+ * parent skip still works as the override. */
 const Login = (() => {
   const HOLD_SECONDS = 8;        // parent-tunable; partial credit is kept on lift
   const QUICK_RETURN_MIN = 30;   // relaunch within this many minutes skips login
-  const NAME_LISTEN_MS = 8000;
   const RING_LEN = 603.2;        // circumference of the scan ring circle
   const LS_KEY = 'calmpups-last-login';
+  const GATE_KEY = 'calmpups-gate';
 
   let progress = 0;              // 0..1, accumulates only while held
   let holding = false;
@@ -16,6 +22,18 @@ const Login = (() => {
 
   const screen = () => document.getElementById('screen-login');
   const ring = () => document.getElementById('scan-ring');
+
+  // ---- access gate ----
+  function gateOpen() {
+    try { return localStorage.getItem(GATE_KEY) !== 'locked'; } catch (err) { return true; }
+  }
+  function setGate(open) {
+    try { localStorage.setItem(GATE_KEY, open ? 'open' : 'locked'); } catch (err) {}
+    renderGate();
+  }
+  function renderGate() {
+    document.getElementById('gate-dot').classList.toggle('locked', !gateOpen());
+  }
 
   function quickReturnValid() {
     try {
@@ -40,14 +58,28 @@ const Login = (() => {
   }
 
   function scanComplete() {
-    done = true;
     holding = false;
-    screen().classList.remove('scanning', 'inviting');
     Sounds.humStop();
+    if (!gateOpen()) { deny(); return; }
+    done = true;
+    screen().classList.remove('scanning', 'inviting');
     Sounds.chime();
     sparkleBurst(document.getElementById('scan-sparkles'), 6);
-    // The permission chain runs from the next pointerup (finger lift) so the
-    // iOS DeviceMotion prompt happens inside a genuine user gesture.
+    setTimeout(showWelcome, 700);
+  }
+
+  /* Access denied: shake + red flash, scan resets — HQ is closed. */
+  function deny() {
+    progress = 0;
+    screen().classList.remove('scanning');
+    ring().style.strokeDashoffset = RING_LEN;
+    ring().classList.add('denied');
+    screen().classList.add('shake');
+    Sounds.uhoh();
+    setTimeout(() => {
+      ring().classList.remove('denied');
+      screen().classList.remove('shake');
+    }, 900);
   }
 
   function sparkleBurst(host, n) {
@@ -62,40 +94,25 @@ const Login = (() => {
     }
   }
 
-  async function requestMotion() {
-    if (typeof DeviceMotionEvent !== 'undefined' &&
-        typeof DeviceMotionEvent.requestPermission === 'function') {
-      try {
-        App.motionGranted = (await DeviceMotionEvent.requestPermission()) === 'granted';
-      } catch (err) { App.motionGranted = false; }
-    } else {
-      App.motionGranted = true; // no permission gate on this platform
-    }
-  }
-
-  async function nameStep() {
+  function showWelcome() {
     document.getElementById('login-scan').classList.remove('active');
-    document.getElementById('login-name').classList.add('active');
-    Sounds.inviteChime();
-    // Parent-recorded clip if one exists, else speech synthesis. Either way
-    // the pulsing mic visual carries the meaning on its own.
-    Voice.play('name');
-
-    const micOk = await Mic.enable();
-    if (micOk) {
-      const heard = await Mic.waitForSound(NAME_LISTEN_MS);
-      Mic.disable(); // no lingering orange recording indicator
-      if (heard) { succeed(); return; }
+    const name = Hub.name;
+    document.getElementById('welcome-name').textContent = name.toUpperCase();
+    const photo = Hub.photo;
+    const img = document.getElementById('welcome-photo');
+    const shield = document.getElementById('welcome-shield');
+    if (photo) {
+      img.src = photo;
+      img.classList.remove('hidden');
+      shield.classList.add('hidden');
+    } else {
+      img.classList.add('hidden');
+      shield.classList.remove('hidden');
+      document.getElementById('welcome-initial').textContent =
+        (name[0] || 'M').toUpperCase();
     }
-    // Denied / silent / failed: the paw always lets her in.
-    document.getElementById('login-paw-btn').classList.remove('hidden');
-  }
-
-  function succeed() {
-    rememberLogin();
+    document.getElementById('login-welcome').classList.add('active');
     Sounds.praise();
-    screen().classList.add('opening');
-    setTimeout(() => enterApp(), 1200);
   }
 
   function enterApp() {
@@ -106,20 +123,15 @@ const Login = (() => {
 
   document.addEventListener('DOMContentLoaded', () => {
     App.register('login', {});
+    renderGate();
 
-    if (new URLSearchParams(location.search).has('skiplogin') || quickReturnValid()) {
+    if (new URLSearchParams(location.search).has('skiplogin') ||
+        (gateOpen() && quickReturnValid())) {
       enterApp();
       return;
     }
 
     screen().classList.add('inviting');
-
-    // iOS blocks all audio until the first touch, so the "put your finger
-    // on the badge" prompt plays the moment she first touches anywhere.
-    screen().addEventListener('pointerdown', () => {
-      if (Voice.hasClip('hold')) Voice.play('hold');
-    }, { once: true });
-
     const wrap = document.getElementById('shield-wrap');
 
     wrap.addEventListener('pointerdown', (e) => {
@@ -130,26 +142,36 @@ const Login = (() => {
       Sounds.humStart();
     });
 
-    const release = async () => {
+    const release = () => {
       if (holding) {
         holding = false;
         screen().classList.remove('scanning');
         Sounds.humStop(); // progress is kept — lifting early just pauses
       }
-      if (done && document.getElementById('login-scan').classList.contains('active')) {
-        await requestMotion(); // inside the pointerup gesture
-        nameStep();
-      }
     };
     wrap.addEventListener('pointerup', release);
     wrap.addEventListener('pointercancel', release);
 
-    document.getElementById('login-paw-btn').addEventListener('click', () => {
+    document.getElementById('welcome-go').addEventListener('click', () => {
       rememberLogin();
       enterApp();
     });
 
-    // Hidden parent skip: triple-tap the top-left corner (README-only).
+    // Parent gate toggle: double-tap the login background (not the shield).
+    let gateTapAt = 0;
+    screen().addEventListener('pointerdown', (e) => {
+      if (e.target.closest('#shield-wrap') || done) return;
+      const now = Date.now();
+      if (now - gateTapAt < 400) {
+        gateTapAt = 0;
+        setGate(!gateOpen());
+      } else {
+        gateTapAt = now;
+      }
+    });
+
+    // Hidden parent skip (override, works even while locked):
+    // triple-tap the top-left corner.
     let taps = [];
     document.getElementById('login-corner-skip').addEventListener('pointerdown', () => {
       const now = Date.now();
@@ -161,4 +183,6 @@ const Login = (() => {
     lastT = performance.now();
     rafId = requestAnimationFrame(tick);
   });
+
+  return {};
 })();

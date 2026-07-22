@@ -261,6 +261,26 @@
     ctx.restore();
   }
 
+  /* iOS gates DeviceMotion behind a permission that must be requested from
+   * a user gesture — her first touch of the jar is that gesture. */
+  let motionAsked = false;
+  async function ensureMotion() {
+    if (motionAsked) return;
+    motionAsked = true;
+    if (typeof DeviceMotionEvent !== 'undefined' &&
+        typeof DeviceMotionEvent.requestPermission === 'function') {
+      try {
+        App.motionGranted = (await DeviceMotionEvent.requestPermission()) === 'granted';
+      } catch (err) { App.motionGranted = false; }
+    } else {
+      App.motionGranted = true;
+    }
+    if (App.motionGranted && !motionHooked) {
+      window.addEventListener('devicemotion', onMotion);
+      motionHooked = true;
+    }
+  }
+
   let lastPointer = null;
   function onPointerMove(e) {
     const rect = canvas.getBoundingClientRect();
@@ -289,6 +309,7 @@
         settledChimed = false;
         shakeEnergy = 0;
         canvas.addEventListener('pointerdown', onPointerMove);
+        canvas.addEventListener('pointerdown', ensureMotion);
         canvas.addEventListener('pointermove', onPointerMove);
         window.addEventListener('pointerup', onPointerEnd);
         if (App.motionGranted && !motionHooked) {

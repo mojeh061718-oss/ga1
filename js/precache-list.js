@@ -10,7 +10,6 @@ self.PRECACHE_LIST = [
   './js/app.js',
   './js/sounds.js',
   './js/mic.js',
-  './js/voice.js',
   './js/store.js',
   './js/hub.js',
   './js/diary.js',

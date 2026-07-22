@@ -102,5 +102,6 @@ const Hub = (() => {
 
   return {
     get name() { return member.name; },
+    get photo() { return member.photo; },
   };
 })();

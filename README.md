@@ -60,38 +60,26 @@ roughly 5–15 MB, so storage grows over months of use.
 ## The Rescue Login
 
 On launch, a pink badge asks for her finger. Holding it for **8 seconds**
-"scans" her in (lifting early just pauses — progress is kept). Then a pup
-asks her to **say her name** — any sound counts, there's no recognition.
-Then the badge swings open and she's on the team.
+"scans" her in (lifting early just pauses — progress is kept). Then a big
+**WELCOME <NAME>** screen appears with her badge photo (or her first
+initial on the shield until you set a photo), and the arrow takes her into
+HQ. No permission prompts happen at login — the mic is only requested by
+the balloon's mic button, and motion by the glitter jar's first touch.
 
-The login is also where the app asks iOS for microphone and motion
-permissions, so prompts never appear during an activity. **You may need to
-tap "Allow" for her the first time.** If a permission is denied or she stays
-quiet, a big paw button appears — one tap goes straight in. Nothing ever
-blocks entry.
+### Parent access gate
 
-### Record the prompts in your own voice
-
-Triple-tap the **top-right corner** of the login screen to open the voice
-panel. Record two short clips — "Put your finger on the badge!" and "Say
-your name for me!" (5 seconds max each, tap ● to start, tap again to
-stop, ▶ to preview). They save on the phone and play at the right
-moments: the finger prompt on her first touch of the screen (iOS doesn't
-allow sound before a touch), the name prompt right after the scan.
-
-Until you record them, the name prompt falls back to the iPhone's
-built-in synthetic voice and the finger prompt stays silent (the pulsing
-badge carries it). Your voice is much better — a familiar voice is
-exactly what a wound-up kid responds to.
+Double-tap anywhere **outside the shield** on the login screen to open or
+close HQ. The tiny dot in the top-right corner tells you (not her) the
+state: **green = she can get in, red = access denied**. While red, a
+completed scan just shakes the shield and resets — and the quick-return
+skip is blocked too. The gate is remembered across launches.
 
 Parent shortcuts:
 
-- **Skip login instantly:** triple-tap the very top-left corner of the
-  login screen.
-- **Voice panel:** triple-tap the top-right corner of the login screen.
-- **Quick return:** after a successful login, relaunching within 30 minutes
-  skips the login automatically (mid-meltdown you shouldn't have to coach
-  her through a scan).
+- **Skip login instantly (works even when locked):** triple-tap the very
+  top-left corner of the login screen.
+- **Quick return:** after a login, relaunching within 30 minutes skips the
+  login automatically (only while the gate is green).
 - **Change the hold time:** edit `HOLD_SECONDS` at the top of
   `js/login.js`.
 
@@ -144,9 +132,9 @@ exactly as it would in production.
 - **Ring/silent switch:** when the phone is on silent, iOS mutes web-app
   audio entirely. The app is fully usable without sound — every cue is
   visual first.
-- **Mic permission:** iOS may re-ask on each launch. The ask always happens
-  inside the login ritual, never mid-activity.
+- **Mic permission:** iOS may re-ask on each launch. The ask only happens
+  when the balloon's mic button is tapped — never at login.
 - **Screen sleep:** the app requests a wake lock (iOS 16.4+) so the screen
   stays on while glitter settles; on older iOS, bump Auto-Lock in Settings.
-- **Orange mic dot:** appears only during the name step and the balloon
-  activity, and goes away when they end — the mic is never left running.
+- **Orange mic dot:** appears only while the balloon's mic is on or a diary
+  answer is recording — the mic is never left running.
