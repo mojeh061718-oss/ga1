@@ -178,7 +178,9 @@
       <input id="setup-name" type="text" maxlength="20" placeholder="Her name">
       <label class="setup-label">Photo</label>
       <button id="setup-photo-btn">Choose / take photo</button>
-      <input id="setup-photo" type="file" accept="image/*" capture="user" class="hidden">
+      <!-- no `capture` attr: with it, iOS jumps straight to the camera and
+           never offers the photo library -->
+      <input id="setup-photo" type="file" accept="image/*" class="hidden">
       <img id="setup-preview" class="hidden" alt="">
       <button id="setup-save">Save</button>
     </div>
