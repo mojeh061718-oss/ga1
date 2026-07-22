@@ -44,10 +44,25 @@ tap "Allow" for her the first time.** If a permission is denied or she stays
 quiet, a big paw button appears — one tap goes straight in. Nothing ever
 blocks entry.
 
+### Record the prompts in your own voice
+
+Triple-tap the **top-right corner** of the login screen to open the voice
+panel. Record two short clips — "Put your finger on the badge!" and "Say
+your name for me!" (5 seconds max each, tap ● to start, tap again to
+stop, ▶ to preview). They save on the phone and play at the right
+moments: the finger prompt on her first touch of the screen (iOS doesn't
+allow sound before a touch), the name prompt right after the scan.
+
+Until you record them, the name prompt falls back to the iPhone's
+built-in synthetic voice and the finger prompt stays silent (the pulsing
+badge carries it). Your voice is much better — a familiar voice is
+exactly what a wound-up kid responds to.
+
 Parent shortcuts:
 
 - **Skip login instantly:** triple-tap the very top-left corner of the
   login screen.
+- **Voice panel:** triple-tap the top-right corner of the login screen.
 - **Quick return:** after a successful login, relaunching within 30 minutes
   skips the login automatically (mid-meltdown you shouldn't have to coach
   her through a scan).

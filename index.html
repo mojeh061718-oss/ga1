@@ -18,6 +18,7 @@
   <!-- ============ RESCUE LOGIN ============ -->
   <section id="screen-login" class="screen active">
     <div id="login-corner-skip" aria-hidden="true"></div>
+    <div id="login-corner-voice" aria-hidden="true"></div>
 
     <div id="login-scan" class="login-step active">
       <div id="shield-wrap">
@@ -82,6 +83,33 @@
       </svg>
     </button>
   </section>
+
+  <!-- Parent-only voice panel (triple-tap top-right corner of login) -->
+  <div id="voice-panel" class="hidden">
+    <div id="voice-card">
+      <p class="voice-title">Record your voice for the pups</p>
+      <div class="voice-row" data-key="hold">
+        <span>&ldquo;Put your finger on the badge!&rdquo;</span>
+        <button class="v-rec" aria-label="record">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
+        </button>
+        <button class="v-play" aria-label="play">
+          <svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <div class="voice-row" data-key="name">
+        <span>&ldquo;Say your name for me!&rdquo;</span>
+        <button class="v-rec" aria-label="record">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>
+        </button>
+        <button class="v-play" aria-label="play">
+          <svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill="currentColor"/></svg>
+        </button>
+      </div>
+      <p class="voice-hint">Tap &#9679; to record (5s max), tap again to stop. &#9654; plays it back.</p>
+      <button id="voice-close">Done</button>
+    </div>
+  </div>
 
   <!-- ============ HOME ============ -->
   <section id="screen-home" class="screen">
@@ -208,6 +236,7 @@
   <script src="js/pups.js" defer></script>
   <script src="js/sounds.js" defer></script>
   <script src="js/mic.js" defer></script>
+  <script src="js/voice.js" defer></script>
   <script src="js/app.js" defer></script>
   <script src="js/login.js" defer></script>
   <script src="js/balloon.js" defer></script>

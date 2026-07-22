@@ -77,12 +77,9 @@ const Login = (() => {
     document.getElementById('login-scan').classList.remove('active');
     document.getElementById('login-name').classList.add('active');
     Sounds.inviteChime();
-    try {
-      // Bonus, not a dependency — the pulsing mic visual carries the meaning.
-      const u = new SpeechSynthesisUtterance('Say your name!');
-      u.rate = 0.9;
-      speechSynthesis.speak(u);
-    } catch (err) {}
+    // Parent-recorded clip if one exists, else speech synthesis. Either way
+    // the pulsing mic visual carries the meaning on its own.
+    Voice.play('name');
 
     const micOk = await Mic.enable();
     if (micOk) {
@@ -116,6 +113,13 @@ const Login = (() => {
     }
 
     screen().classList.add('inviting');
+
+    // iOS blocks all audio until the first touch, so the "put your finger
+    // on the badge" prompt plays the moment she first touches anywhere.
+    screen().addEventListener('pointerdown', () => {
+      if (Voice.hasClip('hold')) Voice.play('hold');
+    }, { once: true });
+
     const wrap = document.getElementById('shield-wrap');
 
     wrap.addEventListener('pointerdown', (e) => {
