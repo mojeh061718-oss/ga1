@@ -149,7 +149,7 @@ const Mail = (() => {
     if (!letter.opened) {
       letter.opened = true;
       Store.saveLetter(letter).then(renderPanel);
-      Sounds.chime();
+      Sfx.play('open');
     } else {
       renderPanel();
     }
@@ -223,7 +223,7 @@ const Mail = (() => {
       renderReplies();
       renderPanel();
       // make it feel like it flew off to HQ
-      Sounds.praise();
+      Sfx.play('sent');
       const flash = document.getElementById('mail-sent-flash');
       flash.classList.remove('hidden');
       setTimeout(() => flash.classList.add('hidden'), 2200);
@@ -304,7 +304,7 @@ const Mail = (() => {
       });
       document.getElementById('mail-compose').classList.add('hidden');
       await refresh();
-      Sounds.inviteChime(); // new mail!
+      Sfx.play('mail'); // new mail!
     });
 
     document.getElementById('mail-reply-btn').addEventListener('click', toggleReply);

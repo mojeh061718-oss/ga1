@@ -73,7 +73,7 @@
 
   function deliver() {
     celebrating = true;
-    Sounds.praise();
+    Sfx.play('toppup');
     const pup = document.getElementById('bridge-pup');
     pup.classList.add('happy');
     const sparkles = document.getElementById('bridge-sparkles');

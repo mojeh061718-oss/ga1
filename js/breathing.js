@@ -33,7 +33,7 @@
       Sounds.inviteChime();
     }
     if (lit + 1 >= row.length) {
-      Sounds.praise();
+      Sfx.play('toppup');
       const pup = document.getElementById('breath-pup');
       pup.classList.add('blink');
       setTimeout(() => pup.classList.remove('blink'), 1700);

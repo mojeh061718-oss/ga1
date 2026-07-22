@@ -61,7 +61,7 @@
     paint(performance.now());
     beam().style.background = `linear-gradient(180deg, ${color}00 0%, ${color}66 45%, ${color}00 100%)`;
     beam().classList.add('on');
-    Sounds.praise();
+    Sfx.play('toppup');
     const pup = document.getElementById('beacon-pup');
     pup.classList.add('happy');
     const sparkles = document.getElementById('beacon-sparkles');

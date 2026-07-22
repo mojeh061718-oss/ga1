@@ -56,7 +56,7 @@ const Login = (() => {
     if (!gateOpen()) { deny(); return; }
     done = true;
     screen().classList.remove('scanning', 'inviting');
-    Sounds.chime();
+    Sfx.play('scanok');
     sparkleBurst(document.getElementById('scan-sparkles'), 6);
     setTimeout(showWelcome, 700);
   }
@@ -68,7 +68,7 @@ const Login = (() => {
     ring().style.strokeDashoffset = RING_LEN;
     ring().classList.add('denied');
     screen().classList.add('shake');
-    Sounds.uhoh();
+    Sfx.play('denied');
     const popup = document.getElementById('denied-popup');
     popup.classList.remove('hidden');
     setTimeout(() => {
@@ -108,7 +108,7 @@ const Login = (() => {
         (name[0] || 'M').toUpperCase();
     }
     document.getElementById('login-welcome').classList.add('active');
-    Sounds.praise();
+    Sfx.play('welcome');
   }
 
   function enterApp() {

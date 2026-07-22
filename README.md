@@ -127,6 +127,10 @@ any picture she loves:
 Note: only put images here you have the right to publish — this repo
 deploys to a public URL.
 
+## Credits
+
+Sound effects from [Kenney](https://kenney.nl) (CC0 / public domain).
+
 ## Developing locally
 
 ```bash

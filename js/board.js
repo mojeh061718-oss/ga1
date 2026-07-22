@@ -82,7 +82,7 @@ const Board = (() => {
       banner.innerHTML = `<span class="banner-icon">&#9733;</span> TOP PUP! ${name} EARNED A GOLD STAR DAY`;
       if (!rewarded) {
         rewarded = true;
-        Sounds.praise();
+        Sfx.play('toppup');
         const hub = document.getElementById('screen-hub');
         for (let s = 0; s < 8; s++) {
           const el = document.createElement('div');
@@ -105,8 +105,8 @@ const Board = (() => {
     state.marks[i] = kind;
     save();
     render();
-    if (kind === 'x') Sounds.uhoh();
-    else Sounds.chime();
+    if (kind === 'x') Sfx.play('strike');
+    else Sfx.play('star');
   }
 
   function clearMark(i) {
