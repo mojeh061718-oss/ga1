@@ -74,7 +74,7 @@ roughly 5–15 MB, so storage grows over months of use.
 
 ## The Rescue Login
 
-On launch, a pink badge asks for her finger. Holding it for **8 seconds**
+On launch, a pink badge asks for her finger. Holding it for **3 seconds**
 "scans" her in (lifting early just pauses — progress is kept). Then a big
 **WELCOME <NAME>** screen appears with her badge photo (or her first
 initial on the shield until you set a photo), and the arrow takes her into

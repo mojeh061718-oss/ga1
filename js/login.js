@@ -13,7 +13,7 @@
  * scan is refused; the triple-tap top-left parent skip still works as the
  * override. */
 const Login = (() => {
-  const HOLD_SECONDS = 8;        // parent-tunable; partial credit is kept on lift
+  const HOLD_SECONDS = 3;        // parent-tunable; partial credit is kept on lift
   const RELOCK_MIN = 2;          // backgrounded longer than this -> back to login
   const RING_LEN = 603.2;        // circumference of the scan ring circle
   const GATE_KEY = 'calmpups-gate';
