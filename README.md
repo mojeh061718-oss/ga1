@@ -91,10 +91,10 @@ Parent shortcuts:
 
 - **Skip login instantly (works even when locked):** triple-tap the very
   top-left corner of the login screen.
-- **Login every time:** the login runs on every open — fresh launches
-  AND any return from the background go straight back to the scan. The
-  one exception is an active PUP CHECK-IN session, so a mid-diary phone
-  call can't wipe the night's recordings.
+- **Login rhythm:** fresh launches always start at the scan. Quick hops
+  away (under 2 minutes) resume in place; longer than that returns to
+  the login. An active PUP CHECK-IN session is never interrupted. Tune
+  with `RELOCK_MIN` in `js/login.js`.
 - **Change the hold time:** edit `HOLD_SECONDS` at the top of
   `js/login.js`.
 
