@@ -4,7 +4,7 @@
 const Hub = (() => {
   const LS_KEY = 'calmpups-member';
 
-  let member = { name: 'RESCUE PUP', photo: null };
+  let member = { name: 'RESCUE PUP', photo: null, speak: '' };
 
   function load() {
     try {
@@ -91,8 +91,10 @@ const Hub = (() => {
     const preview = document.getElementById('setup-preview');
     let pendingPhoto = null;
 
+    const speakInput = document.getElementById('setup-speak');
     document.getElementById('badge-edit').addEventListener('click', () => {
       nameInput.value = member.name === 'RESCUE PUP' ? '' : member.name;
+      speakInput.value = member.speak || '';
       pendingPhoto = null;
       preview.classList.toggle('hidden', !member.photo);
       if (member.photo) preview.src = member.photo;
@@ -115,6 +117,7 @@ const Hub = (() => {
     document.getElementById('setup-save').addEventListener('click', () => {
       const name = nameInput.value.trim();
       if (name) member.name = name;
+      member.speak = speakInput.value.trim();
       if (pendingPhoto) member.photo = pendingPhoto;
       save();
       renderBadge();
@@ -126,5 +129,6 @@ const Hub = (() => {
   return {
     get name() { return member.name; },
     get photo() { return member.photo; },
+    get speak() { return member.speak || ''; },
   };
 })();

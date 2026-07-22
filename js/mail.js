@@ -117,7 +117,23 @@ const Mail = (() => {
 
   /* Read the letter aloud. iOS only speaks reliably from a tap, so this is
    * called synchronously from the open/replay taps. */
+  /* The written name stays as spelled, but the voice says the phonetic
+   * version from the badge's "say it like" field (TTS engines have no
+   * phoneme control on iOS — respelling is the reliable fix). */
+  function forSpeech(text) {
+    try {
+      const name = Hub.name;
+      const phonetic = Hub.speak;
+      if (name && phonetic && name !== 'RESCUE PUP') {
+        const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        text = text.replace(new RegExp(esc, 'gi'), phonetic);
+      }
+    } catch (err) {}
+    return text;
+  }
+
   function speak(text, toggle, btn) {
+    text = forSpeech(text);
     try {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
@@ -355,10 +371,10 @@ const Mail = (() => {
       rateEl.value = 1.05;
       pitchEl.value = 1.6;
       syncLabels();
-      speak('Hi Maelie! We are so proud of you!', false, null);
+      speak('Hi ' + Hub.name + '! We are so proud of you!', false, null);
     });
     document.getElementById('vs-test').addEventListener('click', () => {
-      speak('Hello Maelie! This is how your letters will sound.', false, null);
+      speak('Hello ' + Hub.name + '! This is how your letters will sound.', false, null);
     });
     document.getElementById('vs-done').addEventListener('click', () => {
       try { speechSynthesis.cancel(); } catch (err) {}
