@@ -31,6 +31,58 @@ const Mail = (() => {
     return new Date(at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
+  /* One-time built-in first letter from Ryder, personalized with the
+   * badge name when it's created (nothing personal lives in the code). */
+  const SEED_KEY = 'calmpups-welcome-seeded';
+
+  function welcomeText(name) {
+    return [
+      'WELCOME!!!!!',
+      '',
+      'Dear ' + name + ',',
+      '',
+      'This is Ryder, leader of the PAW Patrol! Your badge scan worked, your ID card is ready, and you are now an official ACTIVE RESCUE MEMBER of our team. The whole team is cheering for you. Chase, Skye, Marshall, Rubble, Rocky and Zuma all say WELCOME!',
+      '',
+      'Being on the team is so much fun. You have your very own Rescue HQ! In your Calm Den there are real missions waiting: hold your finger nice and steady on the beacon until it lights up the whole night sky. Breathe slowly with the grey pup and light all five paw-lights to charge her back up. And pull the supply cart across the wobbly rope bridge — remember, rescue pups go SLOW and STEADY, or the bridge wobbles!',
+      '',
+      'Every night before bed you get to do your PUP CHECK-IN and tell HQ all about your day. We listen to every single one. And when you get letters like this, you can press the big red microphone and talk back to us — we love hearing your voice at HQ!',
+      '',
+      'Now ' + name + ', every rescue pup has special missions to work on, and here are yours:',
+      '',
+      'Mission one: sleep in your OWN bed, all night long. Brave pups rest in their own cozy beds so they are strong for the next day.',
+      '',
+      'Mission two: be kind and gentle with people. Rescue pups use nice words, gentle hands, and big hearts. That is what makes a pup a hero.',
+      '',
+      'Mission three: use your listening ears. When your mom or dad talks to you, a good pup stops, looks, and listens the FIRST time. That is one of the most important rescue skills of all.',
+      '',
+      'Every day you work on your missions you can earn green happy faces on your Daily Monitor. Three happy faces makes you TOP PUP of the day! We believe in you, ' + name + '.',
+      '',
+      'No job is too big, no pup is too small!',
+      '',
+      'Your friend,',
+      'Ryder',
+      'PAW Patrol Rescue HQ',
+    ].join('\n');
+  }
+
+  async function seedWelcome() {
+    try {
+      if (localStorage.getItem(SEED_KEY)) return;
+      const existing = (await Store.allLetters()) || [];
+      if (!existing.some((l) => l.id === 'welcome-ryder')) {
+        const name = Hub.name === 'RESCUE PUP' ? 'Rescue Pup' : Hub.name;
+        await Store.saveLetter({
+          id: 'welcome-ryder',
+          text: welcomeText(name),
+          at: Date.now(),
+          opened: false,
+          replies: [],
+        });
+      }
+      localStorage.setItem(SEED_KEY, '1');
+    } catch (err) {}
+  }
+
   async function refresh() {
     letters = ((await Store.allLetters()) || []).sort((a, b) => b.at - a.at);
     renderPanel();
@@ -344,7 +396,7 @@ const Mail = (() => {
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    refresh();
+    seedWelcome().then(refresh);
 
     // Parent compose: hold the PAW MAIL header for 2s. The header owns its
     // touches (touch-action: none) so iOS can't cancel the hold, and only a
