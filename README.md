@@ -14,6 +14,13 @@ bedtime diary.
   "WARNING: <NAME> IS AT RISK OF SUSPENSION" banner; three stars triggers
   a gold "TOP PUP!" celebration. The monitor resets every morning, and
   each day's marks are saved into the Log.
+- **PAW MAIL** — letters "from HQ". **Press and hold the PAW MAIL title
+  for 5 seconds** to secretly write one; it lands in her inbox as a
+  glowing sealed envelope with an unread badge. She taps to open it (you
+  read it aloud), and the big mic button records her **voice reply**,
+  which stamps "REPLY SENT TO HQ ✓". Nothing is actually sent anywhere —
+  letters and replies live only on the phone, and you can play her
+  replies back inside each letter.
 - **Calm Den** — the three calming activities.
 - **Diary** — the bedtime ritual (below).
 - **Log** — parent calendar of every recorded day (below).

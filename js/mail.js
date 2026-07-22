@@ -1,0 +1,198 @@
+/* PAW MAIL: letters "from HQ" that the parent secretly writes and she
+ * opens, reads (with help), and answers with voice replies. Nothing is
+ * ever actually sent anywhere — letters and reply recordings live only in
+ * the on-phone database — but it should FEEL real: sealed envelopes,
+ * an unread badge, a wax-seal letter, and a SENT TO HQ stamp on replies.
+ *
+ * Parent: press and hold the PAW MAIL title for 5 seconds to write a
+ * letter. */
+const Mail = (() => {
+  const COMPOSE_HOLD_MS = 5000;
+  const MAX_REPLY_MS = 60000;
+
+  const ENV_CLOSED = `<svg viewBox="0 0 60 44">
+    <rect x="3" y="4" width="54" height="36" rx="6" fill="#26324f" stroke="#f2a7c6" stroke-width="2.5"/>
+    <path d="M5 8 L30 26 L55 8" fill="none" stroke="#f2a7c6" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="30" cy="20" r="5" fill="#f2a7c6"/>
+  </svg>`;
+  const ENV_OPEN = `<svg viewBox="0 0 60 44">
+    <rect x="3" y="12" width="54" height="28" rx="6" fill="#1d2740" stroke="#5d7292" stroke-width="2.5"/>
+    <path d="M5 14 L30 2 L55 14" fill="none" stroke="#5d7292" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="12" y="16" width="36" height="20" rx="3" fill="#f7ecd7"/>
+  </svg>`;
+
+  let letters = [];
+  let current = null;
+  let recorder = null;
+  let recTimer = null;
+  let urls = [];
+
+  function fmtDate(at) {
+    return new Date(at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  }
+
+  async function refresh() {
+    letters = ((await Store.allLetters()) || []).sort((a, b) => b.at - a.at);
+    renderPanel();
+  }
+
+  function renderPanel() {
+    const list = document.getElementById('mail-list');
+    list.innerHTML = '';
+    const unread = letters.filter((l) => !l.opened).length;
+    const badge = document.getElementById('mail-badge');
+    badge.textContent = unread;
+    badge.classList.toggle('hidden', !unread);
+    if (!letters.length) {
+      const empty = document.createElement('div');
+      empty.id = 'mail-empty';
+      empty.innerHTML = ENV_OPEN;
+      list.appendChild(empty);
+      return;
+    }
+    letters.forEach((l) => {
+      const row = document.createElement('button');
+      row.className = 'mail-row' + (l.opened ? ' opened' : ' unread');
+      row.innerHTML =
+        `<span class="mail-env">${l.opened ? ENV_OPEN : ENV_CLOSED}</span>` +
+        `<span class="mail-date">${fmtDate(l.at)}</span>` +
+        (l.replies && l.replies.length
+          ? `<span class="mail-replied">&#10003;</span>` : '');
+      row.addEventListener('click', () => open(l));
+      list.appendChild(row);
+    });
+  }
+
+  async function open(letter) {
+    current = letter;
+    if (!letter.opened) {
+      letter.opened = true;
+      await Store.saveLetter(letter);
+      Sounds.chime();
+    }
+    renderRead();
+    App.show('mailread');
+    renderPanel();
+  }
+
+  function renderRead() {
+    document.getElementById('mail-letter-date').textContent = fmtDate(current.at);
+    document.getElementById('mail-letter-text').textContent = current.text;
+    const card = document.getElementById('mail-letter');
+    card.classList.remove('letter-in');
+    void card.offsetWidth;
+    card.classList.add('letter-in');
+    renderReplies();
+  }
+
+  function renderReplies() {
+    urls.forEach((u) => URL.revokeObjectURL(u));
+    urls = [];
+    const host = document.getElementById('mail-replies');
+    host.innerHTML = '';
+    (current.replies || []).forEach((r, i) => {
+      const row = document.createElement('div');
+      row.className = 'mail-reply';
+      const label = document.createElement('span');
+      label.textContent = `Reply ${i + 1} · ${fmtDate(r.at)}`;
+      row.appendChild(label);
+      const btn = document.createElement('button');
+      btn.className = 'day-play';
+      btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5 L19 12 L8 19 Z" fill="currentColor"/></svg>';
+      const u = URL.createObjectURL(r.audio);
+      urls.push(u);
+      let audio = null;
+      btn.addEventListener('click', () => {
+        if (audio && !audio.paused) { audio.pause(); return; }
+        audio = new Audio(u);
+        audio.play().catch(() => {});
+      });
+      row.appendChild(btn);
+      host.appendChild(row);
+    });
+  }
+
+  async function toggleReply() {
+    const btn = document.getElementById('mail-reply-btn');
+    if (recorder) { stopReply(); return; }
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) { return; }
+    const chunks = [];
+    recorder = new MediaRecorder(stream);
+    const mime = recorder.mimeType || 'audio/mp4';
+    recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+    recorder.onstop = async () => {
+      stream.getTracks().forEach((t) => t.stop());
+      recorder = null;
+      btn.classList.remove('recording');
+      current.replies = current.replies || [];
+      current.replies.push({ at: Date.now(), audio: new Blob(chunks, { type: mime }) });
+      await Store.saveLetter(current);
+      renderReplies();
+      renderPanel();
+      // make it feel like it flew off to HQ
+      Sounds.praise();
+      const flash = document.getElementById('mail-sent-flash');
+      flash.classList.remove('hidden');
+      setTimeout(() => flash.classList.add('hidden'), 2200);
+    };
+    recorder.start();
+    btn.classList.add('recording');
+    recTimer = setTimeout(stopReply, MAX_REPLY_MS);
+  }
+
+  function stopReply() {
+    if (recTimer) { clearTimeout(recTimer); recTimer = null; }
+    if (recorder && recorder.state !== 'inactive') recorder.stop();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    refresh();
+
+    // Parent compose: hold the PAW MAIL title for 5s.
+    const title = document.getElementById('mail-title');
+    let holdTimer = null;
+    title.addEventListener('pointerdown', () => {
+      holdTimer = setTimeout(() => {
+        document.getElementById('compose-text').value = '';
+        document.getElementById('mail-compose').classList.remove('hidden');
+      }, COMPOSE_HOLD_MS);
+    });
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) =>
+      title.addEventListener(ev, () => {
+        if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+      }));
+
+    document.getElementById('compose-cancel').addEventListener('click', () =>
+      document.getElementById('mail-compose').classList.add('hidden'));
+
+    document.getElementById('compose-send').addEventListener('click', async () => {
+      const text = document.getElementById('compose-text').value.trim();
+      if (!text) return;
+      await Store.saveLetter({
+        id: 'm' + Date.now(),
+        text,
+        at: Date.now(),
+        opened: false,
+        replies: [],
+      });
+      document.getElementById('mail-compose').classList.add('hidden');
+      await refresh();
+      Sounds.inviteChime(); // new mail!
+    });
+
+    document.getElementById('mail-reply-btn').addEventListener('click', toggleReply);
+
+    App.register('mailread', {
+      exit() {
+        stopReply();
+        urls.forEach((u) => URL.revokeObjectURL(u));
+        urls = [];
+      },
+    });
+  });
+
+  return { refresh };
+})();

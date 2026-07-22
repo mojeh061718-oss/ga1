@@ -140,6 +140,18 @@
       </div>
     </div>
 
+    <div id="hub-mail">
+      <div id="mail-head">
+        <svg id="mail-head-icon" viewBox="0 0 60 44" aria-hidden="true">
+          <rect x="3" y="4" width="54" height="36" rx="6" fill="none" stroke="#f2a7c6" stroke-width="3"/>
+          <path d="M5 8 L30 26 L55 8" fill="none" stroke="#f2a7c6" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+        <span id="mail-title">PAW MAIL</span>
+        <span id="mail-badge" class="hidden"></span>
+      </div>
+      <div id="mail-list"></div>
+    </div>
+
     <div id="hub-nav">
       <button class="hub-nav-btn" id="nav-den" aria-label="calm den">
         <svg viewBox="0 0 60 60">
@@ -315,6 +327,50 @@
     </div>
   </section>
 
+  <!-- ============ PAW MAIL: READ + REPLY ============ -->
+  <section id="screen-mailread" class="screen dark">
+    <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="mail-letter">
+      <svg id="mail-seal" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 8 C 63 14, 74 16, 82 16 C 82 47, 77 71, 50 88 C 23 71, 18 47, 18 16 C 26 16, 37 14, 50 8 Z"
+              fill="#f2a7c6" stroke="#e386ad" stroke-width="3"/>
+        <g fill="#ffffff">
+          <ellipse cx="50" cy="52" rx="12" ry="10"/>
+          <ellipse cx="36" cy="40" rx="4.5" ry="6" transform="rotate(-20 36 40)"/>
+          <ellipse cx="45" cy="35" rx="4.5" ry="6" transform="rotate(-7 45 35)"/>
+          <ellipse cx="55" cy="35" rx="4.5" ry="6" transform="rotate(7 55 35)"/>
+          <ellipse cx="64" cy="40" rx="4.5" ry="6" transform="rotate(20 64 40)"/>
+        </g>
+      </svg>
+      <div id="mail-from">FROM PAW PATROL HQ</div>
+      <div id="mail-letter-date"></div>
+      <div id="mail-letter-text"></div>
+    </div>
+    <div id="mail-replies"></div>
+    <button id="mail-reply-btn" aria-label="record a reply">
+      <svg viewBox="0 0 40 40">
+        <rect x="15" y="6" width="10" height="17" rx="5" fill="currentColor"/>
+        <path d="M11 20 a9 9 0 0 0 18 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="29" x2="20" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div id="mail-sent-flash" class="hidden">REPLY SENT TO HQ &#10003;</div>
+  </section>
+
+  <!-- Parent compose overlay (hold PAW MAIL title 5s) -->
+  <div id="mail-compose" class="hidden">
+    <div id="mail-compose-card">
+      <p class="voice-title" style="color:#dce6f4">Write a letter from HQ</p>
+      <textarea id="compose-text" rows="6" placeholder="Dear Maelie..."></textarea>
+      <div id="compose-actions">
+        <button id="compose-cancel">Cancel</button>
+        <button id="compose-send">Send to her inbox</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============ LOG: CALENDAR + DAY REPORT ============ -->
   <section id="screen-calendar" class="screen dark">
     <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
@@ -349,5 +405,6 @@
   <script src="js/glitter.js" defer></script>
   <script src="js/diary.js" defer></script>
   <script src="js/calendar.js" defer></script>
+  <script src="js/mail.js" defer></script>
 </body>
 </html>

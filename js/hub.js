@@ -58,6 +58,7 @@ const Hub = (() => {
     App.register('hub', { enter() {
       renderBadge();
       Board.checkDay();
+      Mail.refresh();
     } });
 
     document.getElementById('nav-den').addEventListener('click', () => App.show('home'));

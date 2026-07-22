@@ -14,6 +14,7 @@ self.PRECACHE_LIST = [
   './js/hub.js',
   './js/diary.js',
   './js/calendar.js',
+  './js/mail.js',
   './js/pups.js',
   './js/login.js',
   './js/balloon.js',
