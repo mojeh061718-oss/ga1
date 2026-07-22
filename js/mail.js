@@ -7,7 +7,7 @@
  * Parent: press and hold the PAW MAIL title for 5 seconds to write a
  * letter. */
 const Mail = (() => {
-  const COMPOSE_HOLD_MS = 5000;
+  const COMPOSE_HOLD_MS = 2000;
   const MAX_REPLY_MS = 60000;
 
   const ENV_CLOSED = `<svg viewBox="0 0 60 44">

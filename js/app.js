@@ -42,6 +42,17 @@ const App = (() => {
 
     // A toddler will long-press everything; kill the context menu.
     document.addEventListener('contextmenu', (e) => e.preventDefault());
+    // iOS standalone: block pinch/double-tap zoom gestures entirely.
+    document.addEventListener('gesturestart', (e) => e.preventDefault());
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      // second tap landing fast on a non-interactive area = zoom attempt
+      if (now - lastTouchEnd < 350 && !e.target.closest('button, input, select, textarea, .hub-box, #shield-wrap, .mail-row, .cal-day')) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
 
     // Home cards -> activities; home buttons -> home.
     document.querySelectorAll('.card').forEach((card) => {
