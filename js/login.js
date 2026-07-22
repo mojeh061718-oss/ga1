@@ -59,7 +59,7 @@ const Login = (() => {
     setTimeout(showWelcome, 700);
   }
 
-  /* Access denied: shake + red flash, scan resets — HQ is closed. */
+  /* Access denied: shake, red flash, ACCESS DENIED popup — HQ is closed. */
   function deny() {
     progress = 0;
     screen().classList.remove('scanning');
@@ -67,10 +67,13 @@ const Login = (() => {
     ring().classList.add('denied');
     screen().classList.add('shake');
     Sounds.uhoh();
+    const popup = document.getElementById('denied-popup');
+    popup.classList.remove('hidden');
     setTimeout(() => {
       ring().classList.remove('denied');
       screen().classList.remove('shake');
     }, 900);
+    setTimeout(() => popup.classList.add('hidden'), 2800);
   }
 
   function sparkleBurst(host, n) {
