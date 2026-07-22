@@ -95,6 +95,7 @@
 
   <!-- ============ HQ HUB ============ -->
   <section id="screen-hub" class="screen dark">
+    <div id="hub-corner-settings" aria-hidden="true"></div>
     <div id="hub-topbar">
       <svg viewBox="0 0 100 100" aria-hidden="true"><g fill="#f2a7c6"><ellipse cx="50" cy="62" rx="22" ry="18"/><ellipse cx="26" cy="40" rx="8.5" ry="11" transform="rotate(-20 26 40)"/><ellipse cx="42" cy="31" rx="8.5" ry="11" transform="rotate(-7 42 31)"/><ellipse cx="60" cy="31" rx="8.5" ry="11" transform="rotate(7 60 31)"/><ellipse cx="75" cy="40" rx="8.5" ry="11" transform="rotate(20 75 40)"/></g></svg>
       <span>RESCUE HQ</span>
@@ -372,6 +373,34 @@
     <div id="mail-sent-flash" class="hidden">REPLY SENT TO HQ &#10003;</div>
   </section>
 
+  <!-- Parent voice settings (tap the hub's top-right corner 5 times) -->
+  <div id="voice-settings" class="hidden">
+    <div id="voice-settings-card">
+      <p class="voice-title" style="color:#dce6f4">Reader voice</p>
+      <select id="vs-voice"></select>
+      <div class="vs-slider-row">
+        <span class="vs-label">SPEED</span>
+        <input id="vs-rate" type="range" min="0.6" max="1.5" step="0.05">
+        <span class="vs-value" id="vs-rate-val"></span>
+      </div>
+      <div class="vs-slider-row">
+        <span class="vs-label">PITCH</span>
+        <input id="vs-pitch" type="range" min="0.8" max="2" step="0.05">
+        <span class="vs-value" id="vs-pitch-val"></span>
+      </div>
+      <div id="vs-actions">
+        <button id="vs-kid">&#128054; KID VOICE</button>
+        <button id="vs-test" aria-label="test voice">
+          <svg viewBox="0 0 40 40">
+            <path d="M8 16 v8 h6 l8 7 V9 l-8 7 Z" fill="currentColor"/>
+            <path d="M26 14 a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <button id="vs-done">Done</button>
+    </div>
+  </div>
+
   <!-- Parent compose overlay (hold PAW MAIL title 5s) -->
   <div id="mail-compose" class="hidden">
     <div id="mail-compose-card">
@@ -380,15 +409,6 @@
       <button id="compose-photo-btn">From photo (optional) &mdash; who is this letter from?</button>
       <input id="compose-photo" type="file" accept="image/*" class="hidden">
       <img id="compose-photo-preview" class="hidden" alt="">
-      <div id="compose-voice-row">
-        <select id="compose-voice"></select>
-        <button id="compose-voice-test" aria-label="test voice">
-          <svg viewBox="0 0 40 40">
-            <path d="M8 16 v8 h6 l8 7 V9 l-8 7 Z" fill="currentColor"/>
-            <path d="M26 14 a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
       <div id="compose-actions">
         <button id="compose-cancel">Cancel</button>
         <button id="compose-send">Send to her inbox</button>

@@ -20,10 +20,8 @@ bedtime diary.
   optional **"from" photo** (add a picture of whoever "sent" it and it
   appears at the top of the letter). Letters land in her inbox as glowing
   sealed envelopes with an unread badge. The **speaker button on the
-  letter reads it aloud** with the phone's voice (silent until tapped;
-  pick which voice in the compose panel's Reader voice dropdown —
-  premium voices from Settings → Accessibility → Spoken Content sound
-  best), and the big mic button records her **voice
+  letter reads it aloud** with the phone's voice (silent until tapped),
+  and the big mic button records her **voice
   reply**, which stamps "REPLY SENT TO HQ ✓". Nothing is actually sent
   anywhere — letters and replies live only on the phone.
 - **Calm Den** — the three calming activities.
@@ -90,6 +88,11 @@ across launches.
 
 Parent shortcuts:
 
+- **Voice settings:** tap the **top-right corner of the hub 5 times** —
+  choose the reader voice (downloaded premium voices from Settings →
+  Accessibility → Spoken Content appear here), adjust speed and pitch,
+  or hit the KID VOICE preset (higher pitch reads kid-like; real Siri
+  child voices aren't available to web apps).
 - **Skip login instantly (works even when locked):** triple-tap the very
   top-left corner of the login screen.
 - **Login rhythm:** fresh launches always start at the scan. Quick hops

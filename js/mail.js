@@ -63,10 +63,23 @@ const Mail = (() => {
     });
   }
 
-  /* Reader voice: the parent picks one in the compose panel (persisted);
-   * otherwise the best installed English voice wins automatically —
-   * downloaded Enhanced/Premium voices match first. */
+  /* Reader voice: the parent picks voice/speed/pitch in the hidden voice
+   * settings (5 taps on the hub's top-right corner); otherwise the best
+   * installed English voice wins automatically. A raised pitch is the
+   * closest a web app can get to a kid voice — real Siri/child voices
+   * aren't exposed to web apps by iOS. */
   const VOICE_KEY = 'calmpups-mail-voice';
+  const RATE_KEY = 'calmpups-voice-rate';
+  const PITCH_KEY = 'calmpups-voice-pitch';
+
+  function getRate() {
+    const v = parseFloat(localStorage.getItem(RATE_KEY));
+    return Number.isFinite(v) ? v : 1.0;
+  }
+  function getPitch() {
+    const v = parseFloat(localStorage.getItem(PITCH_KEY));
+    return Number.isFinite(v) ? v : 1.0;
+  }
 
   function pickVoice() {
     try {
@@ -82,7 +95,7 @@ const Mail = (() => {
   }
 
   function populateVoicePicker() {
-    const sel = document.getElementById('compose-voice');
+    const sel = document.getElementById('vs-voice');
     let voices = [];
     try { voices = speechSynthesis.getVoices(); } catch (err) {}
     const saved = localStorage.getItem(VOICE_KEY);
@@ -112,7 +125,8 @@ const Mail = (() => {
         if (toggle) return; // tapped the speaker while reading = stop
       }
       const u = new SpeechSynthesisUtterance(text);
-      u.rate = 0.85;
+      u.rate = getRate();
+      u.pitch = getPitch();
       u.voice = pickVoice();
       if (btn) {
         u.onend = () => btn.classList.remove('speaking');
@@ -296,19 +310,65 @@ const Mail = (() => {
     document.getElementById('mail-reply-btn').addEventListener('click', toggleReply);
     document.getElementById('mail-speak-btn').addEventListener('click', () => speakLetter(true));
 
-    // reader-voice picker in the compose panel
+    // ---- hidden voice settings: 5 taps on the hub's top-right corner ----
     populateVoicePicker();
     try {
       speechSynthesis.addEventListener('voiceschanged', populateVoicePicker);
     } catch (err) {}
-    document.getElementById('compose-voice').addEventListener('change', (e) => {
+
+    const settings = document.getElementById('voice-settings');
+    const rateEl = document.getElementById('vs-rate');
+    const pitchEl = document.getElementById('vs-pitch');
+    const syncLabels = () => {
+      document.getElementById('vs-rate-val').textContent = getRate().toFixed(2) + 'x';
+      document.getElementById('vs-pitch-val').textContent = getPitch().toFixed(2);
+    };
+
+    let cornerTaps = [];
+    document.getElementById('hub-corner-settings').addEventListener('pointerdown', () => {
+      const now = Date.now();
+      cornerTaps = cornerTaps.filter((t) => now - t < 2000);
+      cornerTaps.push(now);
+      if (cornerTaps.length >= 5) {
+        cornerTaps = [];
+        populateVoicePicker();
+        rateEl.value = getRate();
+        pitchEl.value = getPitch();
+        syncLabels();
+        settings.classList.remove('hidden');
+      }
+    });
+
+    document.getElementById('vs-voice').addEventListener('change', (e) => {
       try {
         if (e.target.value) localStorage.setItem(VOICE_KEY, e.target.value);
         else localStorage.removeItem(VOICE_KEY);
       } catch (err) {}
     });
-    document.getElementById('compose-voice-test').addEventListener('click', () => {
+    rateEl.addEventListener('input', () => {
+      try { localStorage.setItem(RATE_KEY, rateEl.value); } catch (err) {}
+      syncLabels();
+    });
+    pitchEl.addEventListener('input', () => {
+      try { localStorage.setItem(PITCH_KEY, pitchEl.value); } catch (err) {}
+      syncLabels();
+    });
+    document.getElementById('vs-kid').addEventListener('click', () => {
+      try {
+        localStorage.setItem(RATE_KEY, '1.05');
+        localStorage.setItem(PITCH_KEY, '1.6');
+      } catch (err) {}
+      rateEl.value = 1.05;
+      pitchEl.value = 1.6;
+      syncLabels();
+      speak('Hi Maelie! We are so proud of you!', false, null);
+    });
+    document.getElementById('vs-test').addEventListener('click', () => {
       speak('Hello Maelie! This is how your letters will sound.', false, null);
+    });
+    document.getElementById('vs-done').addEventListener('click', () => {
+      try { speechSynthesis.cancel(); } catch (err) {}
+      settings.classList.add('hidden');
     });
 
     App.register('mailread', {

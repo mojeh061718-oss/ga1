@@ -1194,37 +1194,6 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   align-self: center;
   border: 2.5px solid rgba(242, 167, 198, 0.6);
 }
-#compose-voice-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-#compose-voice {
-  flex: 1;
-  min-width: 0;
-  background: #121a2e;
-  border: 1.5px solid var(--hub-line);
-  border-radius: 12px;
-  padding: 11px 12px;
-  font-size: 13px;
-  color: var(--hub-dim);
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-}
-#compose-voice-test {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(143, 212, 199, 0.14);
-  border: 1.5px solid rgba(143, 212, 199, 0.6);
-  color: #8fd4c7;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#compose-voice-test svg { width: 22px; height: 22px; }
 #compose-actions {
   display: flex;
   gap: 12px;
@@ -1395,4 +1364,107 @@ input, textarea { -webkit-user-select: text; user-select: text; }
 @media (prefers-reduced-motion: reduce) {
   .card, #login-paw-btn, .name-mic-pulse,
   #screen-login.inviting #shield-body { animation: none; }
+}
+
+/* ============ parent voice settings (5 taps hub top-right) ============ */
+#hub-corner-settings {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 90px;
+  height: 90px;
+  z-index: 20;
+}
+#voice-settings {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 22, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+#voice-settings-card {
+  background: #1c2740;
+  border: 1.5px solid var(--hub-line);
+  border-radius: 24px;
+  padding: 24px 22px;
+  width: min(88vw, 400px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+#vs-voice {
+  background: #121a2e;
+  border: 1.5px solid var(--hub-line);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  color: var(--hub-text);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.vs-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vs-label {
+  width: 52px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--hub-dim);
+}
+.vs-slider-row input[type="range"] {
+  flex: 1;
+  accent-color: #f2a7c6;
+  touch-action: none;
+}
+.vs-value {
+  width: 46px;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--hub-text);
+  font-variant-numeric: tabular-nums;
+}
+#vs-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+#vs-kid {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
+  background: rgba(249, 230, 168, 0.14);
+  border: 1.5px solid rgba(249, 230, 168, 0.6);
+  color: #f9e6a8;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+#vs-test {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(143, 212, 199, 0.14);
+  border: 1.5px solid rgba(143, 212, 199, 0.6);
+  color: #8fd4c7;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#vs-test svg { width: 24px; height: 24px; }
+#vs-done {
+  align-self: center;
+  padding: 12px 42px;
+  border-radius: 999px;
+  background: var(--sage);
+  color: #10281f;
+  font-size: 16px;
+  font-weight: 700;
 }
