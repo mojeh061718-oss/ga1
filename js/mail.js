@@ -132,24 +132,45 @@ const Mail = (() => {
     return text;
   }
 
+  /* iOS cuts long utterances off mid-sentence, so long letters are read
+   * as a queue of sentence-sized chunks that flow seamlessly. */
+  let speakQueue = [];
+
+  function stopSpeech(btn) {
+    speakQueue = [];
+    try { speechSynthesis.cancel(); } catch (err) {}
+    if (btn) btn.classList.remove('speaking');
+  }
+
   function speak(text, toggle, btn) {
     text = forSpeech(text);
     try {
-      if (speechSynthesis.speaking) {
-        speechSynthesis.cancel();
-        if (btn) btn.classList.remove('speaking');
+      if (speechSynthesis.speaking || speakQueue.length) {
+        stopSpeech(btn);
         if (toggle) return; // tapped the speaker while reading = stop
       }
-      const u = new SpeechSynthesisUtterance(text);
-      u.rate = getRate();
-      u.pitch = getPitch();
-      u.voice = pickVoice();
-      if (btn) {
-        u.onend = () => btn.classList.remove('speaking');
-        u.onerror = () => btn.classList.remove('speaking');
-        btn.classList.add('speaking');
+      const sentences = text.match(/[^.!?\n]+[.!?]*[\s]*/g) || [text];
+      const parts = [];
+      let cur = '';
+      for (const s of sentences) {
+        if (cur && (cur + s).length > 220) { parts.push(cur); cur = s; }
+        else cur += s;
       }
-      speechSynthesis.speak(u);
+      if (cur.trim()) parts.push(cur);
+      speakQueue = parts;
+      if (btn) btn.classList.add('speaking');
+      const next = () => {
+        const part = speakQueue.shift();
+        if (!part) { if (btn) btn.classList.remove('speaking'); return; }
+        const u = new SpeechSynthesisUtterance(part);
+        u.rate = getRate();
+        u.pitch = getPitch();
+        u.voice = pickVoice();
+        u.onend = next;
+        u.onerror = () => stopSpeech(btn);
+        speechSynthesis.speak(u);
+      };
+      next();
     } catch (err) { /* no speech support — letter is still readable */ }
   }
 
@@ -391,8 +412,7 @@ const Mail = (() => {
     App.register('mailread', {
       exit() {
         stopReply();
-        try { speechSynthesis.cancel(); } catch (err) {}
-        document.getElementById('mail-speak-btn').classList.remove('speaking');
+        stopSpeech(document.getElementById('mail-speak-btn'));
         urls.forEach((u) => URL.revokeObjectURL(u));
         urls = [];
       },

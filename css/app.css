@@ -1057,8 +1057,15 @@ input, textarea { -webkit-user-select: text; user-select: text; }
 }
 
 /* ============ paw mail: letter + reply ============ */
-#screen-mailread { gap: 14px; padding-top: calc(env(safe-area-inset-top, 0px) + 20px); }
+#screen-mailread {
+  gap: 14px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 20px);
+  justify-content: flex-start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
 #mail-letter {
+  flex-shrink: 0;
   margin-top: 52px;
   width: min(88vw, 400px);
   background: #fbf3e2;
@@ -1118,13 +1125,11 @@ input, textarea { -webkit-user-select: text; user-select: text; }
 }
 #mail-letter-text {
   margin-top: 8px;
-  font-size: 20px;
-  line-height: 1.6;
+  font-size: 19px;
+  line-height: 1.65;
   color: #4a3b2f;
   white-space: pre-wrap;
-  max-height: 34vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-wrap: break-word;
   align-self: stretch;
 }
 #mail-replies {
@@ -1132,9 +1137,7 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 18vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  flex-shrink: 0;
 }
 .mail-reply {
   display: flex;
@@ -1150,6 +1153,7 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   color: var(--hub-dim);
 }
 #mail-reply-btn {
+  flex-shrink: 0;
   width: 84px;
   height: 84px;
   border-radius: 50%;
