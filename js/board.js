@@ -1,24 +1,24 @@
-/* Pup Board: a strike/reward board the parent marks — "the pups can see
- * how you're doing." Double-tap a strike box stamps a big X; triple-tap a
- * star slot pops a happy face. Long-press (~1.5s) erases a mark. The board
- * resets itself each morning — every day is a fresh start. */
-(() => {
-  const TAP_WINDOW_MS = 420;    // decide double vs triple this long after the last tap
+/* Daily Monitor: three universal boxes on the hub. Double-tap stamps an X
+ * (strike), triple-tap pops a star. Long-press (~1.5s) erases a mark.
+ * 3 X's -> suspension warning banner. 3 stars -> Top Pup celebration.
+ * Resets each morning; every day's marks are also written into the
+ * IndexedDB day log so the calendar's progress reports keep history. */
+const Board = (() => {
+  const TAP_WINDOW_MS = 420;
   const CLEAR_HOLD_MS = 1500;
   const LS_KEY = 'calmpups-board';
 
   const X_SVG = `<svg viewBox="0 0 60 60">
-    <line x1="12" y1="12" x2="48" y2="48" stroke="#d68a8a" stroke-width="9" stroke-linecap="round"/>
-    <line x1="48" y1="12" x2="12" y2="48" stroke="#d68a8a" stroke-width="9" stroke-linecap="round"/>
+    <line x1="12" y1="12" x2="48" y2="48" stroke="#ff7d7d" stroke-width="9" stroke-linecap="round"/>
+    <line x1="48" y1="12" x2="12" y2="48" stroke="#ff7d7d" stroke-width="9" stroke-linecap="round"/>
   </svg>`;
-  const FACE_SVG = `<svg viewBox="0 0 60 60">
-    <circle cx="30" cy="30" r="24" fill="#f9e6a8" stroke="#eccf7f" stroke-width="3"/>
-    <circle cx="22" cy="25" r="3.4" fill="#7a6a3f"/>
-    <circle cx="38" cy="25" r="3.4" fill="#7a6a3f"/>
-    <path d="M19 35 q 11 12 22 0" fill="none" stroke="#7a6a3f" stroke-width="3.5" stroke-linecap="round"/>
+  const STAR_SVG = `<svg viewBox="0 0 60 60">
+    <path d="M30 6 l7 14.5 16 2.3 -11.5 11.2 2.7 15.9 -14.2 -7.5 -14.2 7.5 2.7 -15.9 -11.5 -11.2 16 -2.3 Z"
+      fill="#f9e6a8" stroke="#eccf7f" stroke-width="2"/>
   </svg>`;
 
   let state = null;
+  let rewarded = false;
 
   function today() {
     const d = new Date();
@@ -26,13 +26,13 @@
   }
 
   function fresh() {
-    return { date: today(), strikes: [false, false, false], stars: [false, false, false, false, false] };
+    return { date: today(), marks: [null, null, null] };
   }
 
   function load() {
     try {
       const s = JSON.parse(localStorage.getItem(LS_KEY));
-      if (s && s.date === today() && s.strikes && s.stars) { state = s; return; }
+      if (s && s.date === today() && Array.isArray(s.marks)) { state = s; return; }
     } catch (err) {}
     state = fresh();
     save();
@@ -40,29 +40,76 @@
 
   function save() {
     try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (err) {}
+    Store.updateDay(state.date, { marks: state.marks.slice() });
   }
 
-  function boxes(kind) {
-    return Array.from(document.querySelectorAll(`.board-box.${kind}`));
+  function boxes() {
+    return Array.from(document.querySelectorAll('.hub-box'));
   }
 
   function render() {
-    boxes('strike').forEach((el, i) => setMark(el, state.strikes[i], X_SVG));
-    boxes('star').forEach((el, i) => setMark(el, state.stars[i], FACE_SVG));
-    const pup = document.getElementById('board-pup');
-    pup.classList.toggle('concerned', state.strikes.every(Boolean));
+    boxes().forEach((el, i) => {
+      const mark = state.marks[i];
+      const cur = el.querySelector('.mark');
+      const want = mark === 'x' ? X_SVG : mark === 'star' ? STAR_SVG : null;
+      if (cur && (!want || cur.dataset.kind !== mark)) cur.remove();
+      if (want && (!cur || cur.dataset.kind !== mark)) {
+        const m = document.createElement('div');
+        m.className = 'mark';
+        m.dataset.kind = mark;
+        m.innerHTML = want;
+        el.appendChild(m);
+      }
+    });
+    refreshBanner();
   }
 
-  function setMark(el, on, svg) {
-    const cur = el.querySelector('.mark');
-    if (on && !cur) {
-      const m = document.createElement('div');
-      m.className = 'mark';
-      m.innerHTML = svg;
-      el.appendChild(m);
-    } else if (!on && cur) {
-      cur.remove();
+  function refreshBanner() {
+    const banner = document.getElementById('hub-banner');
+    const name = Hub.name.toUpperCase();
+    const xs = state.marks.filter((m) => m === 'x').length;
+    const stars = state.marks.filter((m) => m === 'star').length;
+    if (xs >= 3) {
+      banner.className = 'warning';
+      banner.innerHTML = `<span class="banner-icon">&#9888;</span> WARNING: ${name} IS AT RISK OF SUSPENSION`;
+    } else if (stars >= 3) {
+      banner.className = 'reward';
+      banner.innerHTML = `<span class="banner-icon">&#9733;</span> TOP PUP! ${name} EARNED A GOLD STAR DAY`;
+      if (!rewarded) {
+        rewarded = true;
+        Sounds.praise();
+        const hub = document.getElementById('screen-hub');
+        for (let s = 0; s < 8; s++) {
+          const el = document.createElement('div');
+          el.className = 'sparkle';
+          el.style.left = 10 + Math.random() * 80 + '%';
+          el.style.top = 10 + Math.random() * 60 + '%';
+          el.style.animationDelay = (s * 0.15) + 's';
+          hub.appendChild(el);
+          setTimeout(() => el.remove(), 3200);
+        }
+      }
+    } else {
+      banner.className = 'hidden';
+      banner.innerHTML = '';
+      rewarded = false;
     }
+  }
+
+  function setMark(i, kind) {
+    state.marks[i] = kind;
+    save();
+    render();
+    if (kind === 'x') Sounds.uhoh();
+    else Sounds.chime();
+  }
+
+  function clearMark(i) {
+    if (!state.marks[i]) return;
+    state.marks[i] = null;
+    save();
+    render();
+    Sounds.inviteChime();
   }
 
   function wiggle(el) {
@@ -71,60 +118,19 @@
     el.classList.add('wiggle');
   }
 
-  function addStrike(i) {
-    if (state.strikes[i]) return;
-    state.strikes[i] = true;
-    save();
-    render();
-    Sounds.uhoh();
-  }
-
-  function addStar(i) {
-    if (state.stars[i]) return;
-    state.stars[i] = true;
-    save();
-    render();
-    const pup = document.getElementById('board-pup');
-    pup.classList.add('happy');
-    setTimeout(() => pup.classList.remove('happy'), 2800);
-    if (state.stars.every(Boolean)) {
-      Sounds.praise();
-      const host = document.getElementById('board-sparkles');
-      for (let s = 0; s < 8; s++) {
-        const el = document.createElement('div');
-        el.className = 'sparkle';
-        el.style.left = 10 + Math.random() * 80 + '%';
-        el.style.top = 10 + Math.random() * 70 + '%';
-        el.style.animationDelay = (s * 0.15) + 's';
-        host.appendChild(el);
-        setTimeout(() => el.remove(), 3200);
-      }
-    } else {
-      Sounds.chime();
-    }
-  }
-
-  function clearMark(kind, i) {
-    const arr = kind === 'strike' ? state.strikes : state.stars;
-    if (!arr[i]) return;
-    arr[i] = false;
-    save();
-    render();
-    Sounds.inviteChime();
-  }
-
-  function hookBox(el, kind, i) {
+  function hookBox(el, i) {
     let taps = [];
     let decideTimer = null;
     let holdTimer = null;
+    let downAt = 0;
 
     el.addEventListener('pointerdown', () => {
-      const marked = kind === 'strike' ? state.strikes[i] : state.stars[i];
-      if (marked) {
+      downAt = Date.now();
+      if (state.marks[i]) {
         el.classList.add('clearing');
         holdTimer = setTimeout(() => {
           el.classList.remove('clearing');
-          clearMark(kind, i);
+          clearMark(i);
         }, CLEAR_HOLD_MS);
       }
     });
@@ -138,32 +144,39 @@
 
     el.addEventListener('click', () => {
       const now = Date.now();
+      if (downAt && now - downAt > 500) return; // a long-press is not a tap
       taps = taps.filter((t) => now - t < TAP_WINDOW_MS * 2);
       taps.push(now);
       if (decideTimer) clearTimeout(decideTimer);
       decideTimer = setTimeout(() => {
         const n = taps.length;
         taps = [];
-        const marked = kind === 'strike' ? state.strikes[i] : state.stars[i];
-        if (marked) return; // long-press is the only way to change a marked box
-        if (kind === 'strike' && n === 2) addStrike(i);
-        else if (kind === 'star' && n >= 3) addStar(i);
-        else if (n >= 2) wiggle(el); // wrong gesture for this row
+        if (state.marks[i]) return; // long-press is the only way to change a mark
+        if (n === 2) setMark(i, 'x');
+        else if (n >= 3) setMark(i, 'star');
+        // single tap: no-op so she can poke around safely
       }, TAP_WINDOW_MS);
     });
+  }
+
+  /* Morning reset — called on hub enter and when the app returns to the
+   * foreground, so a new day always starts with a clean monitor. */
+  function checkDay() {
+    if (state && state.date !== today()) {
+      state = fresh();
+      save();
+    }
+    render();
   }
 
   document.addEventListener('DOMContentLoaded', () => {
     load();
     render();
-    boxes('strike').forEach((el, i) => hookBox(el, 'strike', i));
-    boxes('star').forEach((el, i) => hookBox(el, 'star', i));
-
-    App.register('board', {
-      enter() {
-        if (state.date !== today()) { state = fresh(); save(); } // morning reset
-        render();
-      },
+    boxes().forEach((el, i) => hookBox(el, i));
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') checkDay();
     });
   });
+
+  return { refreshBanner, checkDay, get marks() { return state ? state.marks.slice() : []; } };
 })();

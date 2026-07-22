@@ -43,7 +43,7 @@ const App = (() => {
       card.addEventListener('click', () => show(card.dataset.screen));
     });
     document.querySelectorAll('.home-btn').forEach((btn) => {
-      btn.addEventListener('click', () => show('home'));
+      btn.addEventListener('click', () => show(btn.dataset.target || 'home'));
     });
 
     requestWakeLock();

@@ -1,7 +1,26 @@
 # Calm Pups 🐾
 
-A calm-down app for a little kid having big feelings, made to live on an
-iPhone home screen. Three friendly rescue pups guide three activities:
+A rescue-member HQ for a little kid, made to live on an iPhone home
+screen. After the badge login she lands in a dark, sleek hub with her own
+photo ID ("ACTIVE RESCUE MEMBER"), a daily monitor, the Calm Den, and a
+bedtime diary.
+
+## The Hub
+
+- **ID badge**: tap the little pencil to set her name and photo (take one
+  or pick from the library). It persists on the phone.
+- **Daily Monitor** — three boxes: double-tap stamps an **X**, triple-tap
+  pops a **star**, long-press ~1.5s erases. Three X's shows a pulsing
+  "WARNING: <NAME> IS AT RISK OF SUSPENSION" banner; three stars triggers
+  a gold "TOP PUP!" celebration. The monitor resets every morning, and
+  each day's marks are saved into the Log.
+- **Calm Den** — the three calming activities.
+- **Diary** — the bedtime ritual (below).
+- **Log** — parent calendar of every recorded day (below).
+
+## The Calm Den
+
+Three friendly rescue pups guide three activities:
 
 - **Balloon** — blow into the microphone (or press and hold the screen) to
   inflate a balloon until it floats away. Long slow exhales are the whole
@@ -13,23 +32,30 @@ iPhone home screen. Three friendly rescue pups guide three activities:
   then watch it slowly settle for about 45 seconds. The watching is the
   activity.
 
-Everything is wordless, slow, and soft on purpose. There are no scores, no
-fail states, and nothing to unlock.
+Everything in the Den is wordless, slow, and soft on purpose. There are
+no scores, no fail states, and nothing to unlock.
 
-## The Pup Board
+## The Diary (bedtime ritual)
 
-The fourth home card opens the board — a way to show her "the pups can see
-how you're doing":
+Open Diary for the last 15 minutes of the day. It walks through ~20
+gentle questions ("What did you love most about today?", "What do you
+want to dream about tonight?"...). You read each question aloud, tap the
+big mic, she answers **in her own voice**, tap again to stop (60s max per
+answer), then the arrow moves on. Questions can be skipped by just
+tapping the arrow. The last step is a **selfie together**, then a
+goodnight moon. The whole session — every recording and the photo — is
+saved on the phone under that date.
 
-- **Top row, 3 strike boxes:** double-tap one to stamp a big X (soft low
-  "uh-oh" sound). At 3 strikes the watching pup looks concerned.
-- **Bottom row, 5 star slots:** triple-tap one to pop in a happy face
-  (bright chime). Filling all five triggers a sparkle celebration.
-- **Erase a mark:** press and hold it for about 1.5 seconds.
-- **Fresh start:** the board wipes itself automatically each morning.
+## The Log
 
-The wrong gesture on the wrong row just wiggles the box — so she can tap
-around without accidentally marking anything.
+The calendar shows a dot on every day with data. Tap a day for its
+progress report: stars/X's that day, every diary question with a play
+button for her recorded answer, and the goodnight selfie.
+
+Storage notes: recordings and photos live in the app's on-phone database
+(IndexedDB). Installed home-screen apps keep this across launches, but it
+never leaves the phone — there is no cloud backup. A nightly diary is
+roughly 5–15 MB, so storage grows over months of use.
 
 ## The Rescue Login
 

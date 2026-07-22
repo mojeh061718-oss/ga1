@@ -101,7 +101,7 @@ const Login = (() => {
   function enterApp() {
     if (rafId) cancelAnimationFrame(rafId);
     rafId = null;
-    App.show('home');
+    App.show('hub');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
