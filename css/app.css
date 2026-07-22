@@ -1407,14 +1407,6 @@ input, textarea { -webkit-user-select: text; user-select: text; }
 }
 
 /* ============ parent voice settings (5 taps hub top-right) ============ */
-#hub-corner-settings {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 90px;
-  height: 90px;
-  z-index: 20;
-}
 #voice-settings {
   position: fixed;
   inset: 0;

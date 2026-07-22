@@ -13,14 +13,20 @@ const Sounds = (() => {
       master.gain.value = 0.5;
       master.connect(ctx.destination);
     }
-    if (ctx.state === 'suspended') ctx.resume();
+    // iOS parks the context in 'suspended' OR 'interrupted' (after a call,
+    // backgrounding, etc.) — always try to resume when not running.
+    if (ctx.state !== 'running') { try { ctx.resume(); } catch (err) {} }
     return ctx;
   }
 
   // iOS unlocks audio only from a user gesture: play a near-silent tick.
+  let unlocked = false;
   function unlock() {
     ensure();
-    tone({ freq: 440, dur: 0.01, gain: 0.001 });
+    if (!unlocked) {
+      unlocked = true;
+      tone({ freq: 440, dur: 0.01, gain: 0.001 });
+    }
   }
 
   function tone({ freq, freqEnd, dur, gain = 0.08, type = 'sine', when = 0, attack = 0.02 }) {

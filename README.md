@@ -91,7 +91,7 @@ across launches.
 
 Parent shortcuts:
 
-- **Voice settings:** tap the **top-right corner of the hub 5 times** —
+- **Voice settings:** tap **anywhere on the hub 5 times quickly** —
   choose the reader voice (downloaded premium voices from Settings →
   Accessibility → Spoken Content appear here), adjust speed and pitch,
   or hit the KID VOICE preset (higher pitch reads kid-like; real Siri

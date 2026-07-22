@@ -32,8 +32,13 @@ const App = (() => {
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    // First touch anywhere unlocks the shared AudioContext (iOS requirement).
-    document.addEventListener('pointerdown', () => Sounds.unlock(), { once: true });
+    // Every touch re-arms the shared AudioContext — iOS parks it in
+    // 'suspended'/'interrupted' after backgrounding, so a single one-time
+    // unlock is not enough (this was the login going silent).
+    document.addEventListener('pointerdown', () => Sounds.unlock());
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && Sounds.ctx) Sounds.ensure();
+    });
 
     // A toddler will long-press everything; kill the context menu.
     document.addEventListener('contextmenu', (e) => e.preventDefault());

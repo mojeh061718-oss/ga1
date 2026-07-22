@@ -325,7 +325,7 @@ const Mail = (() => {
     };
 
     let cornerTaps = [];
-    document.getElementById('hub-corner-settings').addEventListener('pointerdown', () => {
+    document.getElementById('screen-hub').addEventListener('pointerdown', () => {
       const now = Date.now();
       cornerTaps = cornerTaps.filter((t) => now - t < 2000);
       cornerTaps.push(now);
