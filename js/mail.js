@@ -63,27 +63,68 @@ const Mail = (() => {
     });
   }
 
-  /* Read the letter aloud with the phone's best installed voice. iOS only
-   * speaks reliably from a tap, so this is called synchronously from the
-   * open/replay taps. */
-  function speakLetter(toggle) {
-    const btn = document.getElementById('mail-speak-btn');
+  /* Reader voice: the parent picks one in the compose panel (persisted);
+   * otherwise the best installed English voice wins automatically —
+   * downloaded Enhanced/Premium voices match first. */
+  const VOICE_KEY = 'calmpups-mail-voice';
+
+  function pickVoice() {
+    try {
+      const voices = speechSynthesis.getVoices();
+      const saved = localStorage.getItem(VOICE_KEY);
+      if (saved) {
+        const v = voices.find((v) => v.name === saved);
+        if (v) return v;
+      }
+      const en = voices.filter((v) => v.lang && v.lang.toLowerCase().startsWith('en'));
+      return en.find((v) => /premium|enhanced|natural|siri|samantha/i.test(v.name)) || en[0] || null;
+    } catch (err) { return null; }
+  }
+
+  function populateVoicePicker() {
+    const sel = document.getElementById('compose-voice');
+    let voices = [];
+    try { voices = speechSynthesis.getVoices(); } catch (err) {}
+    const saved = localStorage.getItem(VOICE_KEY);
+    sel.innerHTML = '';
+    const auto = document.createElement('option');
+    auto.value = '';
+    auto.textContent = 'Reader voice: Auto (best available)';
+    sel.appendChild(auto);
+    voices
+      .filter((v) => v.lang && v.lang.toLowerCase().startsWith('en'))
+      .forEach((v) => {
+        const o = document.createElement('option');
+        o.value = v.name;
+        o.textContent = v.name;
+        if (v.name === saved) o.selected = true;
+        sel.appendChild(o);
+      });
+  }
+
+  /* Read the letter aloud. iOS only speaks reliably from a tap, so this is
+   * called synchronously from the open/replay taps. */
+  function speak(text, toggle, btn) {
     try {
       if (speechSynthesis.speaking) {
         speechSynthesis.cancel();
-        btn.classList.remove('speaking');
+        if (btn) btn.classList.remove('speaking');
         if (toggle) return; // tapped the speaker while reading = stop
       }
-      const u = new SpeechSynthesisUtterance(current.text);
+      const u = new SpeechSynthesisUtterance(text);
       u.rate = 0.85;
-      const en = speechSynthesis.getVoices()
-        .filter((v) => v.lang && v.lang.toLowerCase().startsWith('en'));
-      u.voice = en.find((v) => /premium|enhanced|natural|siri|samantha/i.test(v.name)) || en[0] || null;
-      u.onend = () => btn.classList.remove('speaking');
-      u.onerror = () => btn.classList.remove('speaking');
+      u.voice = pickVoice();
+      if (btn) {
+        u.onend = () => btn.classList.remove('speaking');
+        u.onerror = () => btn.classList.remove('speaking');
+        btn.classList.add('speaking');
+      }
       speechSynthesis.speak(u);
-      btn.classList.add('speaking');
     } catch (err) { /* no speech support — letter is still readable */ }
+  }
+
+  function speakLetter(toggle) {
+    speak(current.text, toggle, document.getElementById('mail-speak-btn'));
   }
 
   function open(letter) {
@@ -254,6 +295,21 @@ const Mail = (() => {
 
     document.getElementById('mail-reply-btn').addEventListener('click', toggleReply);
     document.getElementById('mail-speak-btn').addEventListener('click', () => speakLetter(true));
+
+    // reader-voice picker in the compose panel
+    populateVoicePicker();
+    try {
+      speechSynthesis.addEventListener('voiceschanged', populateVoicePicker);
+    } catch (err) {}
+    document.getElementById('compose-voice').addEventListener('change', (e) => {
+      try {
+        if (e.target.value) localStorage.setItem(VOICE_KEY, e.target.value);
+        else localStorage.removeItem(VOICE_KEY);
+      } catch (err) {}
+    });
+    document.getElementById('compose-voice-test').addEventListener('click', () => {
+      speak('Hello Maelie! This is how your letters will sound.', false, null);
+    });
 
     App.register('mailread', {
       exit() {

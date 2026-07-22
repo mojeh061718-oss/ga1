@@ -1194,6 +1194,37 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   align-self: center;
   border: 2.5px solid rgba(242, 167, 198, 0.6);
 }
+#compose-voice-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+#compose-voice {
+  flex: 1;
+  min-width: 0;
+  background: #121a2e;
+  border: 1.5px solid var(--hub-line);
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 13px;
+  color: var(--hub-dim);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+#compose-voice-test {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(143, 212, 199, 0.14);
+  border: 1.5px solid rgba(143, 212, 199, 0.6);
+  color: #8fd4c7;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#compose-voice-test svg { width: 22px; height: 22px; }
 #compose-actions {
   display: flex;
   gap: 12px;
