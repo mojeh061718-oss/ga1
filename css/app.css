@@ -74,7 +74,7 @@ button { border: none; background: none; cursor: pointer; }
 /* iOS: Safari treats drags/holds on `manipulation` surfaces as pan
  * gestures and cancels the pointer — these stages need full ownership. */
 #bridge-canvas, #beacon-stage, #shield-wrap, #breath-stage,
-.hub-box, .card, #welcome-go {
+.hub-box, .card, #welcome-go, #mail-head {
   touch-action: none;
 }
 

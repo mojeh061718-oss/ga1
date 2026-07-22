@@ -280,10 +280,13 @@ const Mail = (() => {
   document.addEventListener('DOMContentLoaded', () => {
     refresh();
 
-    // Parent compose: hold the PAW MAIL title for 5s.
-    const title = document.getElementById('mail-title');
+    // Parent compose: hold the PAW MAIL header for 2s. The header owns its
+    // touches (touch-action: none) so iOS can't cancel the hold, and only a
+    // real lift cancels the timer — finger drift doesn't.
+    const mailHead = document.getElementById('mail-head');
     let holdTimer = null;
-    title.addEventListener('pointerdown', () => {
+    mailHead.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
       holdTimer = setTimeout(() => {
         document.getElementById('compose-text').value = '';
         pendingFromPhoto = null;
@@ -291,8 +294,8 @@ const Mail = (() => {
         document.getElementById('mail-compose').classList.remove('hidden');
       }, COMPOSE_HOLD_MS);
     });
-    ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) =>
-      title.addEventListener(ev, () => {
+    ['pointerup', 'pointercancel'].forEach((ev) =>
+      mailHead.addEventListener(ev, () => {
         if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
       }));
 
