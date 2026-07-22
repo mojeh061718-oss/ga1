@@ -16,6 +16,21 @@ iPhone home screen. Three friendly rescue pups guide three activities:
 Everything is wordless, slow, and soft on purpose. There are no scores, no
 fail states, and nothing to unlock.
 
+## The Pup Board
+
+The fourth home card opens the board — a way to show her "the pups can see
+how you're doing":
+
+- **Top row, 3 strike boxes:** double-tap one to stamp a big X (soft low
+  "uh-oh" sound). At 3 strikes the watching pup looks concerned.
+- **Bottom row, 5 star slots:** triple-tap one to pop in a happy face
+  (bright chime). Filling all five triggers a sparkle celebration.
+- **Erase a mark:** press and hold it for about 1.5 seconds.
+- **Fresh start:** the board wipes itself automatically each morning.
+
+The wrong gesture on the wrong row just wiggles the box — so she can tap
+around without accidentally marking anything.
+
 ## The Rescue Login
 
 On launch, a pink badge asks for her finger. Holding it for **8 seconds**
@@ -70,6 +85,14 @@ python3 -m http.server 8000   # from the repo root
 Open `http://localhost:8000/?skiplogin` (the `?skiplogin` query param
 bypasses the login while iterating). `localhost` counts as a secure
 context, so the mic works — blow into your laptop mic to test the balloon.
+
+**Tuning the blow detector:** open the app with `?micdebug` in the URL
+(works on the deployed site too, e.g. `.../ga1/?micdebug&skiplogin`) and
+go to the balloon. A small readout shows the live `rumble / mid / flat /
+floor / str` values. Blowing should push `rumble` high and `flat` above
+0.25; talking should keep `flat` low. If the balloon misbehaves on a real
+device, read those numbers off the screen while blowing and while talking —
+the thresholds are the named constants at the top of `js/mic.js`.
 
 To simulate the GitHub Pages subpath, serve the *parent* directory and open
 `http://localhost:8000/<repo-dir>/` — any absolute-path bug shows up there

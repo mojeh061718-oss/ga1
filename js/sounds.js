@@ -62,6 +62,12 @@ const Sounds = (() => {
     tone({ freq: 440, freqEnd: 392, dur: 1.4, gain: 0.045 });
   }
 
+  // Soft low "uh-oh" for a strike — serious, never scary.
+  function uhoh() {
+    tone({ freq: 330, dur: 0.35, gain: 0.055 });
+    tone({ freq: 262, dur: 0.55, gain: 0.055, when: 0.3 });
+  }
+
   // Breathing cues, scheduled precisely on the audio clock.
   function breathIn(dur) {
     tone({ freq: 220, freqEnd: 330, dur, gain: 0.04, attack: 0.3 });
@@ -100,7 +106,7 @@ const Sounds = (() => {
   }
 
   return {
-    ensure, unlock, chime, inviteChime, praise, settleChime,
+    ensure, unlock, chime, inviteChime, praise, settleChime, uhoh,
     breathIn, breathOut, humStart, humProgress, humStop,
     get ctx() { return ctx; },
   };

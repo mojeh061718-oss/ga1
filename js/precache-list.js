@@ -15,6 +15,7 @@ self.PRECACHE_LIST = [
   './js/balloon.js',
   './js/breathing.js',
   './js/glitter.js',
+  './js/board.js',
   './assets/pups/pup1.svg',
   './assets/pups/pup2.svg',
   './assets/pups/pup3.svg',

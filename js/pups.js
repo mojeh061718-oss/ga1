@@ -7,6 +7,7 @@ const PUPS = {
   balloon:   'assets/pups/pup1.svg',
   breathing: 'assets/pups/pup2.svg',
   glitter:   'assets/pups/pup3.svg',
+  board:     'assets/pups/pup1.svg',
 };
 
 document.addEventListener('DOMContentLoaded', () => {

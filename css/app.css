@@ -46,9 +46,10 @@ button { border: none; background: none; cursor: pointer; }
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
   opacity: 0;
   visibility: hidden;
+  pointer-events: none; /* a fading-out screen must never eat taps */
   transition: opacity 0.6s ease-in-out, visibility 0.6s;
 }
-.screen.active { opacity: 1; visibility: visible; }
+.screen.active { opacity: 1; visibility: visible; pointer-events: auto; }
 
 .hidden { display: none !important; }
 
@@ -320,6 +321,89 @@ button { border: none; background: none; cursor: pointer; }
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(6deg); }
   60% { transform: rotate(-3deg); }
+}
+
+/* ============ pup board ============ */
+#board-pup {
+  width: min(34vw, 170px);
+  margin-top: calc(env(safe-area-inset-top, 0px) + 10px);
+  transition: transform 1.2s ease-in-out;
+}
+#board-pup.concerned { transform: rotate(-8deg) translateY(6px); }
+#board-pup.happy { animation: pup-bounce 0.9s ease-in-out 3; }
+
+#board-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8vh;
+  margin-top: 5vh;
+  align-items: center;
+}
+.board-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+.board-box {
+  position: relative;
+  background: var(--card);
+  border: 3px dashed #b3ccd6;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.board-box.strike { width: min(24vw, 110px); height: min(24vw, 110px); }
+.board-box.star {
+  width: min(15vw, 66px);
+  height: min(15vw, 66px);
+  border-radius: 50%;
+}
+.board-box .mark {
+  width: 78%;
+  height: 78%;
+  animation: mark-pop 0.5s cubic-bezier(0.34, 1.5, 0.64, 1);
+  transform-origin: center;
+}
+.board-box .mark svg { width: 100%; height: 100%; display: block; }
+.board-box.clearing .mark {
+  transition: transform 1.5s ease-in, opacity 1.5s ease-in;
+  transform: scale(0.1);
+  opacity: 0;
+}
+@keyframes mark-pop {
+  0% { transform: scale(0.1); }
+  70% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.board-box.wiggle { animation: box-wiggle 0.5s ease-in-out; }
+@keyframes box-wiggle {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+}
+#board-sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ============ mic debug overlay ============ */
+#mic-debug {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(40, 55, 70, 0.85);
+  color: #d8f3e8;
+  font: 12px/1.5 ui-monospace, Menlo, monospace;
+  padding: 6px 12px;
+  border-radius: 10px;
+  white-space: nowrap;
+  z-index: 99;
+  pointer-events: none;
 }
 
 /* ============ reduced motion ============ */
