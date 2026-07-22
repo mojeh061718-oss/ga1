@@ -63,9 +63,9 @@ const Mail = (() => {
     });
   }
 
-  /* Reader voice: the parent picks voice/speed/pitch in the hidden voice
-   * settings (5 taps on the hub's top-right corner); otherwise the best
-   * installed English voice wins automatically. A raised pitch is the
+  /* Reader voice: the parent picks voice/speed/pitch via the compose
+   * panel's "Reader voice & speed" button; the choice persists until
+   * changed. Otherwise the best installed English voice wins automatically. A raised pitch is the
    * closest a web app can get to a kid voice — real Siri/child voices
    * aren't exposed to web apps by iOS. */
   const VOICE_KEY = 'calmpups-mail-voice';
@@ -310,7 +310,7 @@ const Mail = (() => {
     document.getElementById('mail-reply-btn').addEventListener('click', toggleReply);
     document.getElementById('mail-speak-btn').addEventListener('click', () => speakLetter(true));
 
-    // ---- hidden voice settings: 5 taps on the hub's top-right corner ----
+    // ---- voice settings (opened from the compose panel) ----
     populateVoicePicker();
     try {
       speechSynthesis.addEventListener('voiceschanged', populateVoicePicker);
@@ -324,20 +324,14 @@ const Mail = (() => {
       document.getElementById('vs-pitch-val').textContent = getPitch().toFixed(2);
     };
 
-    let cornerTaps = [];
-    document.getElementById('screen-hub').addEventListener('pointerdown', () => {
-      const now = Date.now();
-      cornerTaps = cornerTaps.filter((t) => now - t < 2000);
-      cornerTaps.push(now);
-      if (cornerTaps.length >= 5) {
-        cornerTaps = [];
-        populateVoicePicker();
-        rateEl.value = getRate();
-        pitchEl.value = getPitch();
-        syncLabels();
-        settings.classList.remove('hidden');
-      }
-    });
+    const openVoiceSettings = () => {
+      populateVoicePicker();
+      rateEl.value = getRate();
+      pitchEl.value = getPitch();
+      syncLabels();
+      settings.classList.remove('hidden');
+    };
+    document.getElementById('compose-voice-btn').addEventListener('click', openVoiceSettings);
 
     document.getElementById('vs-voice').addEventListener('change', (e) => {
       try {

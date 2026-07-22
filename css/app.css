@@ -1218,7 +1218,7 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   resize: none;
   font-family: inherit;
 }
-#compose-photo-btn {
+#compose-voice-btn, #compose-photo-btn {
   background: #121a2e;
   border: 1.5px dashed rgba(143, 168, 204, 0.5);
   border-radius: 12px;

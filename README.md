@@ -91,7 +91,7 @@ across launches.
 
 Parent shortcuts:
 
-- **Voice settings:** tap **anywhere on the hub 5 times quickly** —
+- **Voice settings:** hold PAW MAIL 5s to open compose, then tap **Reader voice & speed** —
   choose the reader voice (downloaded premium voices from Settings →
   Accessibility → Spoken Content appear here), adjust speed and pitch,
   or hit the KID VOICE preset (higher pitch reads kid-like; real Siri
