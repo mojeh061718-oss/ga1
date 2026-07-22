@@ -37,8 +37,6 @@ const Mail = (() => {
 
   function welcomeText(name) {
     return [
-      'WELCOME!!!!!',
-      '',
       'Dear ' + name + ',',
       '',
       'This is Ryder, leader of the PAW Patrol! Your badge scan worked, your ID card is ready, and you are now an official ACTIVE RESCUE MEMBER of our team. The whole team is cheering for you. Chase, Skye, Marshall, Rubble, Rocky and Zuma all say WELCOME!',
@@ -67,19 +65,27 @@ const Mail = (() => {
 
   async function seedWelcome() {
     try {
-      if (localStorage.getItem(SEED_KEY)) return;
+      if (localStorage.getItem(SEED_KEY) === '2') return;
       const existing = (await Store.allLetters()) || [];
-      if (!existing.some((l) => l.id === 'welcome-ryder')) {
-        const name = Hub.name === 'RESCUE PUP' ? 'Rescue Pup' : Hub.name;
+      const name = Hub.name === 'RESCUE PUP' ? 'Rescue Pup' : Hub.name;
+      const prior = existing.find((l) => l.id === 'welcome-ryder');
+      if (!prior) {
         await Store.saveLetter({
           id: 'welcome-ryder',
+          subject: 'Welcome ' + name + '!',
           text: welcomeText(name),
           at: Date.now(),
           opened: false,
           replies: [],
         });
+      } else if (!prior.subject) {
+        // patch the already-seeded copy: add the subject, drop the old
+        // WELCOME!!!!! headline — keep opened state and any replies
+        prior.subject = 'Welcome ' + name + '!';
+        prior.text = welcomeText(name);
+        await Store.saveLetter(prior);
       }
-      localStorage.setItem(SEED_KEY, '1');
+      localStorage.setItem(SEED_KEY, '2');
     } catch (err) {}
   }
 
@@ -105,11 +111,15 @@ const Mail = (() => {
     letters.forEach((l) => {
       const row = document.createElement('button');
       row.className = 'mail-row' + (l.opened ? ' opened' : ' unread');
+      const label = document.createElement('span');
+      label.className = 'mail-date';
+      label.textContent = l.subject || fmtDate(l.at);
       row.innerHTML =
-        `<span class="mail-env">${l.opened ? ENV_OPEN : ENV_CLOSED}</span>` +
-        `<span class="mail-date">${fmtDate(l.at)}</span>` +
-        (l.replies && l.replies.length
-          ? `<span class="mail-replied">&#10003;</span>` : '');
+        `<span class="mail-env">${l.opened ? ENV_OPEN : ENV_CLOSED}</span>`;
+      row.appendChild(label);
+      if (l.replies && l.replies.length) {
+        row.insertAdjacentHTML('beforeend', `<span class="mail-replied">&#10003;</span>`);
+      }
       hookRow(row, l);
       list.appendChild(row);
     });
@@ -272,7 +282,8 @@ const Mail = (() => {
   }
 
   function speakLetter(toggle) {
-    speak(current.text, toggle, document.getElementById('mail-speak-btn'));
+    const full = (current.subject ? current.subject + '.\n' : '') + current.text;
+    speak(full, toggle, document.getElementById('mail-speak-btn'));
   }
 
   function open(letter) {
@@ -290,6 +301,9 @@ const Mail = (() => {
   }
 
   function renderRead() {
+    const subj = document.getElementById('mail-subject');
+    subj.textContent = current.subject || '';
+    subj.classList.toggle('hidden', !current.subject);
     document.getElementById('mail-letter-date').textContent = fmtDate(current.at);
     document.getElementById('mail-letter-text').textContent = current.text;
     const fromPhoto = document.getElementById('mail-from-photo');
@@ -407,6 +421,7 @@ const Mail = (() => {
       e.preventDefault();
       holdTimer = setTimeout(() => {
         document.getElementById('compose-text').value = '';
+        document.getElementById('compose-subject').value = '';
         pendingFromPhoto = null;
         document.getElementById('compose-photo-preview').classList.add('hidden');
         document.getElementById('mail-compose').classList.remove('hidden');
@@ -433,6 +448,7 @@ const Mail = (() => {
       if (!text) return;
       await Store.saveLetter({
         id: 'm' + Date.now(),
+        subject: document.getElementById('compose-subject').value.trim(),
         text,
         at: Date.now(),
         opened: false,
