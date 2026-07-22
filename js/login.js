@@ -2,8 +2,9 @@
  * No permission prompts live here — the mic and motion are requested only
  * by the features that need them.
  *
- * The login runs on EVERY launch (no auto-skip), and returning from the
- * background after RELOCK_MIN minutes reloads back to it.
+ * The login runs on EVERY open: fresh launches start here, and any return
+ * from the background reloads straight back to it (except during an
+ * active PUP CHECK-IN, so bedtime recordings can't be lost to a call).
  *
  * Parent access gate: double-tap anywhere OUTSIDE the shield to toggle the
  * login open/locked (persisted). The tiny dot top-right shows the state —
@@ -12,7 +13,6 @@
  * override. */
 const Login = (() => {
   const HOLD_SECONDS = 8;        // parent-tunable; partial credit is kept on lift
-  const RELOCK_MIN = 10;         // backgrounded longer than this -> back to login
   const RING_LEN = 603.2;        // circumference of the scan ring circle
   const GATE_KEY = 'calmpups-gate';
 
@@ -120,14 +120,15 @@ const Login = (() => {
     renderGate();
 
     // iOS keeps installed web apps alive in memory, so "reopening" often
-    // resumes the page instead of reloading it. If the app was in the
-    // background long enough, reload back to a fresh login. (Short
-    // interruptions — a call, a text — don't kick her out mid-activity.)
-    let hiddenAt = null;
+    // resumes the page instead of reloading it. Any trip to the background
+    // reloads straight back to the login — EVERY open needs a scan. The
+    // one exception is an active PUP CHECK-IN session, so a mid-diary
+    // phone call can't wipe the night's recordings.
+    let wasHidden = false;
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        hiddenAt = Date.now();
-      } else if (hiddenAt && Date.now() - hiddenAt > RELOCK_MIN * 60 * 1000) {
+        wasHidden = true;
+      } else if (wasHidden && App.current !== 'diary') {
         location.reload();
       }
     });

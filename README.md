@@ -9,20 +9,26 @@ bedtime diary.
 
 - **ID badge**: tap the little pencil to set her name and photo (take one
   or pick from the library). It persists on the phone.
-- **Daily Monitor** — three boxes: double-tap stamps an **X**, triple-tap
-  pops a **star**, long-press ~1.5s erases. Three X's shows a pulsing
-  "WARNING: <NAME> IS AT RISK OF SUSPENSION" banner; three stars triggers
+- **Daily Monitor** — three boxes: double-tap stamps a **red sad face**
+  (a strike), triple-tap pops a **green happy face** (a star), long-press
+  ~1.5s erases. Three strikes shows a pulsing
+  "WARNING: <NAME> IS AT RISK OF SUSPENSION" banner; three happy faces trigger
   a gold "TOP PUP!" celebration. The monitor resets every morning, and
   each day's marks are saved into the Log.
 - **PAW MAIL** — letters "from HQ". **Press and hold the PAW MAIL title
-  for 5 seconds** to secretly write one; it lands in her inbox as a
-  glowing sealed envelope with an unread badge. She taps to open it (you
-  read it aloud), and the big mic button records her **voice reply**,
-  which stamps "REPLY SENT TO HQ ✓". Nothing is actually sent anywhere —
-  letters and replies live only on the phone, and you can play her
-  replies back inside each letter.
+  for 5 seconds** to secretly write one; the compose box also has an
+  optional **"from" photo** (add a picture of whoever "sent" it and it
+  appears at the top of the letter). Letters land in her inbox as glowing
+  sealed envelopes with an unread badge. Opening one **reads it aloud**
+  with the phone's voice (speaker button replays/stops — install a
+  premium voice under Settings → Accessibility → Spoken Content → Voices
+  for a much nicer reader), and the big mic button records her **voice
+  reply**, which stamps "REPLY SENT TO HQ ✓". Nothing is actually sent
+  anywhere — letters and replies live only on the phone.
 - **Calm Den** — the three calming activities.
-- **Diary** — the bedtime ritual (below).
+- **PUP CHECK-IN** — the bedtime ritual (below). Between **6pm and 10pm**,
+  if it hasn't been done yet, the hub shows a glowing "TIME FOR PUP
+  CHECK-IN" reminder that opens it in one tap.
 - **Log** — parent calendar of every recorded day (below).
 
 ## The Calm Den
@@ -42,9 +48,9 @@ Three friendly rescue pups guide three activities:
 Everything in the Den is wordless, slow, and soft on purpose. There are
 no scores, no fail states, and nothing to unlock.
 
-## The Diary (bedtime ritual)
+## The PUP CHECK-IN (bedtime ritual)
 
-Open Diary for the last 15 minutes of the day. It walks through ~20
+Open PUP CHECK-IN for the last 15 minutes of the day. It walks through ~20
 gentle questions ("What did you love most about today?", "What do you
 want to dream about tonight?"...). You read each question aloud, tap the
 big mic, she answers **in her own voice**, tap again to stop (60s max per
@@ -85,9 +91,10 @@ Parent shortcuts:
 
 - **Skip login instantly (works even when locked):** triple-tap the very
   top-left corner of the login screen.
-- **Login every time:** the login runs on every launch, and coming back
-  after 10+ minutes in the background returns to it too (short
-  interruptions don't). Tune with `RELOCK_MIN` in `js/login.js`.
+- **Login every time:** the login runs on every open — fresh launches
+  AND any return from the background go straight back to the scan. The
+  one exception is an active PUP CHECK-IN session, so a mid-diary phone
+  call can't wipe the night's recordings.
 - **Change the hold time:** edit `HOLD_SECONDS` at the top of
   `js/login.js`.
 

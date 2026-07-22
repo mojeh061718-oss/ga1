@@ -8,13 +8,18 @@ const Board = (() => {
   const CLEAR_HOLD_MS = 1500;
   const LS_KEY = 'calmpups-board';
 
+  // marks: red sad face (strike) / green happy face (star)
   const X_SVG = `<svg viewBox="0 0 60 60">
-    <line x1="12" y1="12" x2="48" y2="48" stroke="#ff7d7d" stroke-width="9" stroke-linecap="round"/>
-    <line x1="48" y1="12" x2="12" y2="48" stroke="#ff7d7d" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="30" cy="30" r="25" fill="#e05252" stroke="#ff8a8a" stroke-width="3"/>
+    <circle cx="21" cy="24" r="3.6" fill="#4a0f0f"/>
+    <circle cx="39" cy="24" r="3.6" fill="#4a0f0f"/>
+    <path d="M19 42 q 11 -10 22 0" fill="none" stroke="#4a0f0f" stroke-width="4" stroke-linecap="round"/>
   </svg>`;
   const STAR_SVG = `<svg viewBox="0 0 60 60">
-    <path d="M30 6 l7 14.5 16 2.3 -11.5 11.2 2.7 15.9 -14.2 -7.5 -14.2 7.5 2.7 -15.9 -11.5 -11.2 16 -2.3 Z"
-      fill="#f9e6a8" stroke="#eccf7f" stroke-width="2"/>
+    <circle cx="30" cy="30" r="25" fill="#3fbf82" stroke="#8ff0c2" stroke-width="3"/>
+    <circle cx="21" cy="24" r="3.6" fill="#0d3a25"/>
+    <circle cx="39" cy="24" r="3.6" fill="#0d3a25"/>
+    <path d="M18 35 q 12 13 24 0" fill="none" stroke="#0d3a25" stroke-width="4" stroke-linecap="round"/>
   </svg>`;
 
   let state = null;

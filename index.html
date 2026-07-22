@@ -130,6 +130,7 @@
     </div>
 
     <div id="hub-banner" class="hidden"></div>
+    <button id="hub-checkin-banner" class="hidden">&#9789; TIME FOR PUP CHECK-IN &mdash; TELL HQ ABOUT YOUR DAY</button>
 
     <div id="hub-monitor">
       <div class="monitor-title">DAILY MONITOR</div>
@@ -166,7 +167,7 @@
           <circle cx="20" cy="18" r="2" fill="#c3b6dd"/>
           <circle cx="14" cy="28" r="1.5" fill="#c3b6dd"/>
         </svg>
-        <span>DIARY</span>
+        <span>PUP CHECK-IN</span>
       </button>
       <button class="hub-nav-btn" id="nav-calendar" aria-label="calendar">
         <svg viewBox="0 0 60 60">
@@ -333,6 +334,13 @@
       <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="mail-letter">
+      <button id="mail-speak-btn" aria-label="read aloud">
+        <svg viewBox="0 0 40 40">
+          <path d="M8 16 v8 h6 l8 7 V9 l-8 7 Z" fill="currentColor"/>
+          <path d="M26 14 a8 8 0 0 1 0 12 M29 10 a13 13 0 0 1 0 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <img id="mail-from-photo" class="hidden" alt="">
       <svg id="mail-seal" viewBox="0 0 100 100" aria-hidden="true">
         <path d="M50 8 C 63 14, 74 16, 82 16 C 82 47, 77 71, 50 88 C 23 71, 18 47, 18 16 C 26 16, 37 14, 50 8 Z"
               fill="#f2a7c6" stroke="#e386ad" stroke-width="3"/>
@@ -364,6 +372,9 @@
     <div id="mail-compose-card">
       <p class="voice-title" style="color:#dce6f4">Write a letter from HQ</p>
       <textarea id="compose-text" rows="6" placeholder="Dear Maelie..."></textarea>
+      <button id="compose-photo-btn">From photo (optional) &mdash; who is this letter from?</button>
+      <input id="compose-photo" type="file" accept="image/*" class="hidden">
+      <img id="compose-photo-preview" class="hidden" alt="">
       <div id="compose-actions">
         <button id="compose-cancel">Cancel</button>
         <button id="compose-send">Send to her inbox</button>

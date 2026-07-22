@@ -63,21 +63,56 @@ const Mail = (() => {
     });
   }
 
-  async function open(letter) {
+  /* Read the letter aloud with the phone's best installed voice. iOS only
+   * speaks reliably from a tap, so this is called synchronously from the
+   * open/replay taps. */
+  function speakLetter(toggle) {
+    const btn = document.getElementById('mail-speak-btn');
+    try {
+      if (speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+        btn.classList.remove('speaking');
+        if (toggle) return; // tapped the speaker while reading = stop
+      }
+      const u = new SpeechSynthesisUtterance(current.text);
+      u.rate = 0.85;
+      const en = speechSynthesis.getVoices()
+        .filter((v) => v.lang && v.lang.toLowerCase().startsWith('en'));
+      u.voice = en.find((v) => /premium|enhanced|natural|siri|samantha/i.test(v.name)) || en[0] || null;
+      u.onend = () => btn.classList.remove('speaking');
+      u.onerror = () => btn.classList.remove('speaking');
+      speechSynthesis.speak(u);
+      btn.classList.add('speaking');
+    } catch (err) { /* no speech support — letter is still readable */ }
+  }
+
+  function open(letter) {
     current = letter;
-    if (!letter.opened) {
-      letter.opened = true;
-      await Store.saveLetter(letter);
-      Sounds.chime();
-    }
     renderRead();
     App.show('mailread');
-    renderPanel();
+    speakLetter(); // inside the tap gesture — auto-reads on open
+    if (!letter.opened) {
+      letter.opened = true;
+      Store.saveLetter(letter).then(renderPanel);
+      Sounds.chime();
+    } else {
+      renderPanel();
+    }
   }
 
   function renderRead() {
     document.getElementById('mail-letter-date').textContent = fmtDate(current.at);
     document.getElementById('mail-letter-text').textContent = current.text;
+    const fromPhoto = document.getElementById('mail-from-photo');
+    const seal = document.getElementById('mail-seal');
+    if (current.fromPhoto) {
+      fromPhoto.src = current.fromPhoto;
+      fromPhoto.classList.remove('hidden');
+      seal.classList.add('hidden');
+    } else {
+      fromPhoto.classList.add('hidden');
+      seal.classList.remove('hidden');
+    }
     const card = document.getElementById('mail-letter');
     card.classList.remove('letter-in');
     void card.offsetWidth;
@@ -148,6 +183,29 @@ const Mail = (() => {
     if (recorder && recorder.state !== 'inactive') recorder.stop();
   }
 
+  /* Downscale a "from" photo (e.g. Chase) to a small data URL for the
+   * letter record — stays on the phone like everything else. */
+  let pendingFromPhoto = null;
+  function processFromPhoto(file) {
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      const MAX = 512;
+      const scale = Math.min(1, MAX / Math.max(im.width, im.height));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(im.width * scale));
+      c.height = Math.max(1, Math.round(im.height * scale));
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      pendingFromPhoto = c.toDataURL('image/jpeg', 0.82);
+      const prev = document.getElementById('compose-photo-preview');
+      prev.src = pendingFromPhoto;
+      prev.classList.remove('hidden');
+    };
+    im.onerror = () => URL.revokeObjectURL(url);
+    im.src = url;
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     refresh();
 
@@ -157,6 +215,8 @@ const Mail = (() => {
     title.addEventListener('pointerdown', () => {
       holdTimer = setTimeout(() => {
         document.getElementById('compose-text').value = '';
+        pendingFromPhoto = null;
+        document.getElementById('compose-photo-preview').classList.add('hidden');
         document.getElementById('mail-compose').classList.remove('hidden');
       }, COMPOSE_HOLD_MS);
     });
@@ -164,6 +224,14 @@ const Mail = (() => {
       title.addEventListener(ev, () => {
         if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
       }));
+
+    const composeFile = document.getElementById('compose-photo');
+    document.getElementById('compose-photo-btn').addEventListener('click', () => composeFile.click());
+    composeFile.addEventListener('change', () => {
+      const f = composeFile.files && composeFile.files[0];
+      if (f) processFromPhoto(f);
+      composeFile.value = '';
+    });
 
     document.getElementById('compose-cancel').addEventListener('click', () =>
       document.getElementById('mail-compose').classList.add('hidden'));
@@ -177,6 +245,7 @@ const Mail = (() => {
         at: Date.now(),
         opened: false,
         replies: [],
+        fromPhoto: pendingFromPhoto,
       });
       document.getElementById('mail-compose').classList.add('hidden');
       await refresh();
@@ -184,10 +253,13 @@ const Mail = (() => {
     });
 
     document.getElementById('mail-reply-btn').addEventListener('click', toggleReply);
+    document.getElementById('mail-speak-btn').addEventListener('click', () => speakLetter(true));
 
     App.register('mailread', {
       exit() {
         stopReply();
+        try { speechSynthesis.cancel(); } catch (err) {}
+        document.getElementById('mail-speak-btn').classList.remove('speaking');
         urls.forEach((u) => URL.revokeObjectURL(u));
         urls = [];
       },

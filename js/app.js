@@ -58,6 +58,7 @@ const App = (() => {
 
   return {
     register, show,
+    get current() { return current; },
     get motionGranted() { return motionGranted; },
     set motionGranted(v) { motionGranted = v; },
   };

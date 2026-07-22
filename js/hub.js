@@ -51,15 +51,34 @@ const Hub = (() => {
     im.src = url;
   }
 
+  /* Evening nudge: between 6pm and 10pm, if today's PUP CHECK-IN hasn't
+   * been sent yet, show the reminder banner and make the nav button glow. */
+  async function updateCheckin() {
+    const d = new Date();
+    const today = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+    const h = d.getHours();
+    const day = await Store.getDay(today);
+    const due = h >= 18 && h < 22 && !(day && day.diaryAt);
+    document.getElementById('hub-checkin-banner').classList.toggle('hidden', !due);
+    document.getElementById('nav-diary').classList.toggle('due', due);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     load();
     renderBadge();
+    updateCheckin(); // also runs on load: App.show('hub') can precede registration
 
     App.register('hub', { enter() {
       renderBadge();
       Board.checkDay();
       Mail.refresh();
+      updateCheckin();
     } });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') updateCheckin();
+    });
+    document.getElementById('hub-checkin-banner')
+      .addEventListener('click', () => App.show('diary'));
 
     document.getElementById('nav-den').addEventListener('click', () => App.show('home'));
     document.getElementById('nav-diary').addEventListener('click', () => App.show('diary'));
