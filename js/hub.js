@@ -130,5 +130,11 @@ const Hub = (() => {
     get name() { return member.name; },
     get photo() { return member.photo; },
     get speak() { return member.speak || ''; },
+    setSpeak(v) {
+      member.speak = (v || '').trim();
+      save();
+      const el = document.getElementById('setup-speak');
+      if (el) el.value = member.speak; // keep badge setup in sync
+    },
   };
 })();

@@ -1500,3 +1500,15 @@ input, textarea { -webkit-user-select: text; user-select: text; }
   font-size: 16px;
   font-weight: 700;
 }
+
+#vs-speak {
+  flex: 1;
+  min-width: 0;
+  background: #121a2e;
+  border: 1.5px solid var(--hub-line);
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 14px;
+  color: var(--hub-text);
+  outline: none;
+}

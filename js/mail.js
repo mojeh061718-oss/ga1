@@ -347,9 +347,13 @@ const Mail = (() => {
       populateVoicePicker();
       rateEl.value = getRate();
       pitchEl.value = getPitch();
+      document.getElementById('vs-speak').value = Hub.speak;
       syncLabels();
       settings.classList.remove('hidden');
     };
+    document.getElementById('vs-speak').addEventListener('input', (e) => {
+      Hub.setSpeak(e.target.value);
+    });
     document.getElementById('compose-voice-btn').addEventListener('click', openVoiceSettings);
 
     document.getElementById('vs-voice').addEventListener('change', (e) => {
