@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#131a2c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Calm Pups">
+  <title>Calm Pups</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+  <!-- ============ RESCUE LOGIN ============ -->
+  <section id="screen-login" class="screen active">
+    <div id="login-corner-skip" aria-hidden="true"></div>
+    <div id="gate-dot" aria-hidden="true"></div>
+
+    <div id="login-scan" class="login-step active">
+      <div id="shield-wrap">
+        <svg id="shield" viewBox="0 0 200 220" aria-label="rescue badge">
+          <!-- progress ring -->
+          <circle id="scan-ring-track" cx="100" cy="110" r="96" fill="none"
+                  stroke="#f6d7e4" stroke-width="6" opacity="0.5"/>
+          <circle id="scan-ring" cx="100" cy="110" r="96" fill="none"
+                  stroke="#ef8bb5" stroke-width="6" stroke-linecap="round"
+                  stroke-dasharray="603.2" stroke-dashoffset="603.2"
+                  transform="rotate(-90 100 110)"/>
+          <!-- original shield: rounded badge with paw + star (not any TV show's badge) -->
+          <path id="shield-body" d="M100 22
+                   C 128 34, 152 38, 168 38
+                   C 168 108, 158 160, 100 196
+                   C 42 160, 32 108, 32 38
+                   C 48 38, 72 34, 100 22 Z"
+                fill="#f2a7c6" stroke="#e386ad" stroke-width="4"/>
+          <path d="M100 34 C 124 44, 144 48, 156 48 C 156 106, 148 150, 100 182
+                   C 52 150, 44 106, 44 48 C 56 48, 76 44, 100 34 Z"
+                fill="#f7c2d8"/>
+          <!-- paw print -->
+          <g fill="#ffffff">
+            <ellipse cx="100" cy="122" rx="24" ry="20"/>
+            <ellipse cx="72" cy="98" rx="9" ry="12" transform="rotate(-20 72 98)"/>
+            <ellipse cx="90" cy="88" rx="9" ry="12" transform="rotate(-7 90 88)"/>
+            <ellipse cx="110" cy="88" rx="9" ry="12" transform="rotate(7 110 88)"/>
+            <ellipse cx="128" cy="98" rx="9" ry="12" transform="rotate(20 128 98)"/>
+          </g>
+          <!-- star -->
+          <path d="M100 148 l4.7 9.5 10.5 1.5 -7.6 7.4 1.8 10.4 -9.4 -4.9 -9.4 4.9 1.8 -10.4 -7.6 -7.4 10.5 -1.5 Z"
+                fill="#f9e6a8" stroke="#eccf7f" stroke-width="1.5" transform="translate(0,8)"/>
+          <!-- scan line -->
+          <rect id="scan-line" x="36" y="30" width="128" height="5" rx="2.5"
+                fill="#ffffff" opacity="0"/>
+        </svg>
+        <div id="scan-sparkles" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <div id="denied-popup" class="hidden" aria-hidden="true">
+      <div id="denied-card">
+        <svg viewBox="0 0 60 60">
+          <circle cx="30" cy="30" r="26" fill="none" stroke="#ff5a5a" stroke-width="5"/>
+          <line x1="12" y1="48" x2="48" y2="12" stroke="#ff5a5a" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <div class="denied-title">ACCESS DENIED</div>
+        <div class="denied-sub">MUST BE A PAW PATROL MEMBER</div>
+      </div>
+    </div>
+
+    <div id="login-welcome" class="login-step">
+      <div id="welcome-photo-wrap">
+        <img id="welcome-photo" class="hidden" alt="">
+        <svg id="welcome-shield" viewBox="0 0 200 220">
+          <path d="M100 22 C 128 34, 152 38, 168 38 C 168 108, 158 160, 100 196
+                   C 42 160, 32 108, 32 38 C 48 38, 72 34, 100 22 Z"
+                fill="#f2a7c6" stroke="#e386ad" stroke-width="4"/>
+          <path d="M100 34 C 124 44, 144 48, 156 48 C 156 106, 148 150, 100 182
+                   C 52 150, 44 106, 44 48 C 56 48, 76 44, 100 34 Z"
+                fill="#f7c2d8"/>
+          <text id="welcome-initial" x="100" y="105" text-anchor="middle"
+                dominant-baseline="central" fill="#ffffff"
+                font-size="96" font-weight="800" font-family="-apple-system, sans-serif">M</text>
+        </svg>
+      </div>
+      <div id="welcome-text">WELCOME</div>
+      <div id="welcome-name">MAELIE</div>
+      <button id="welcome-go" aria-label="enter hub">
+        <svg viewBox="0 0 40 40"><path d="M14 8 L28 20 L14 32" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div id="version-tag" aria-hidden="true">v__VERSION__</div>
+  </section>
+
+  <!-- ============ HQ HUB ============ -->
+  <section id="screen-hub" class="screen dark">
+    <div id="hub-topbar">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><g fill="#f2a7c6"><ellipse cx="50" cy="62" rx="22" ry="18"/><ellipse cx="26" cy="40" rx="8.5" ry="11" transform="rotate(-20 26 40)"/><ellipse cx="42" cy="31" rx="8.5" ry="11" transform="rotate(-7 42 31)"/><ellipse cx="60" cy="31" rx="8.5" ry="11" transform="rotate(7 60 31)"/><ellipse cx="75" cy="40" rx="8.5" ry="11" transform="rotate(20 75 40)"/></g></svg>
+      <span>RESCUE HQ</span>
+      <svg viewBox="0 0 100 100" aria-hidden="true"><g fill="#8fd4c7"><ellipse cx="50" cy="62" rx="22" ry="18"/><ellipse cx="26" cy="40" rx="8.5" ry="11" transform="rotate(-20 26 40)"/><ellipse cx="42" cy="31" rx="8.5" ry="11" transform="rotate(-7 42 31)"/><ellipse cx="60" cy="31" rx="8.5" ry="11" transform="rotate(7 60 31)"/><ellipse cx="75" cy="40" rx="8.5" ry="11" transform="rotate(20 75 40)"/></g></svg>
+    </div>
+    <div id="hub-badge">
+      <div id="badge-photo-wrap">
+        <img id="badge-photo" class="hidden" alt="">
+        <svg id="badge-photo-placeholder" viewBox="0 0 100 100">
+          <g fill="#31405f">
+            <ellipse cx="50" cy="62" rx="20" ry="16"/>
+            <ellipse cx="28" cy="42" rx="8" ry="10" transform="rotate(-20 28 42)"/>
+            <ellipse cx="43" cy="34" rx="8" ry="10" transform="rotate(-7 43 34)"/>
+            <ellipse cx="59" cy="34" rx="8" ry="10" transform="rotate(7 59 34)"/>
+            <ellipse cx="73" cy="42" rx="8" ry="10" transform="rotate(20 73 42)"/>
+          </g>
+        </svg>
+      </div>
+      <div id="badge-info">
+        <div id="badge-name">MAELIE</div>
+        <div class="badge-role">ACTIVE RESCUE MEMBER</div>
+        <div class="badge-status"><span class="badge-dot"></span>ON DUTY</div>
+      </div>
+      <svg id="badge-logo" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 6 C 64 12, 76 14, 84 14 C 84 48, 79 74, 50 92 C 21 74, 16 48, 16 14 C 24 14, 36 12, 50 6 Z"
+              fill="none" stroke="#f2a7c6" stroke-width="5"/>
+        <g fill="#f2a7c6">
+          <ellipse cx="50" cy="52" rx="13" ry="10.5"/>
+          <ellipse cx="35" cy="39" rx="5" ry="6.5" transform="rotate(-20 35 39)"/>
+          <ellipse cx="45" cy="34" rx="5" ry="6.5" transform="rotate(-7 45 34)"/>
+          <ellipse cx="55" cy="34" rx="5" ry="6.5" transform="rotate(7 55 34)"/>
+          <ellipse cx="65" cy="39" rx="5" ry="6.5" transform="rotate(20 65 39)"/>
+        </g>
+      </svg>
+      <button id="badge-edit" aria-label="edit badge">
+        <svg viewBox="0 0 24 24"><path d="M4 20 L8 19 L19 8 L16 5 L5 16 Z M14.5 6.5 L17.5 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div id="hub-banner" class="hidden"></div>
+    <button id="hub-checkin-banner" class="hidden">&#9789; TIME FOR PUP CHECK-IN &mdash; TELL HQ ABOUT YOUR DAY</button>
+
+    <div id="hub-monitor">
+      <div class="monitor-title">DAILY MONITOR</div>
+      <div id="monitor-boxes">
+        <div class="hub-box" data-i="0"></div>
+        <div class="hub-box" data-i="1"></div>
+        <div class="hub-box" data-i="2"></div>
+      </div>
+    </div>
+
+    <div id="hub-mail">
+      <div id="mail-head">
+        <svg id="mail-head-icon" viewBox="0 0 60 44" aria-hidden="true">
+          <rect x="3" y="4" width="54" height="36" rx="6" fill="none" stroke="#f2a7c6" stroke-width="3"/>
+          <path d="M5 8 L30 26 L55 8" fill="none" stroke="#f2a7c6" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+        <span id="mail-title">PAW MAIL</span>
+        <span id="mail-badge" class="hidden"></span>
+      </div>
+      <div id="mail-list"></div>
+    </div>
+
+    <div id="hub-nav">
+      <button class="hub-nav-btn" id="nav-den" aria-label="calm den">
+        <svg viewBox="0 0 60 60">
+          <path d="M30 10 C 38 18, 50 22, 50 34 C 50 45, 41 52, 30 52 C 19 52, 10 45, 10 34 C 10 22, 22 18, 30 10 Z" fill="none" stroke="#8fd4c7" stroke-width="3.5"/>
+          <circle cx="30" cy="34" r="8" fill="#8fd4c7"/>
+        </svg>
+        <span>CALM DEN</span>
+      </button>
+      <button class="hub-nav-btn" id="nav-diary" aria-label="diary">
+        <svg viewBox="0 0 60 60">
+          <path d="M38 12 A 18 18 0 1 0 50 40 A 15 15 0 0 1 38 12 Z" fill="none" stroke="#c3b6dd" stroke-width="3.5" stroke-linejoin="round"/>
+          <circle cx="20" cy="18" r="2" fill="#c3b6dd"/>
+          <circle cx="14" cy="28" r="1.5" fill="#c3b6dd"/>
+        </svg>
+        <span>PUP CHECK-IN</span>
+      </button>
+      <button class="hub-nav-btn" id="nav-calendar" aria-label="calendar">
+        <svg viewBox="0 0 60 60">
+          <rect x="10" y="14" width="40" height="36" rx="6" fill="none" stroke="#a8c8e8" stroke-width="3.5"/>
+          <line x1="10" y1="26" x2="50" y2="26" stroke="#a8c8e8" stroke-width="3.5"/>
+          <line x1="21" y1="9" x2="21" y2="18" stroke="#a8c8e8" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="39" y1="9" x2="39" y2="18" stroke="#a8c8e8" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="22" cy="36" r="3" fill="#a8c8e8"/>
+          <circle cx="38" cy="44" r="3" fill="#a8c8e8"/>
+        </svg>
+        <span>LOG</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Badge setup overlay (parent) -->
+  <div id="badge-setup" class="hidden">
+    <div id="badge-setup-card">
+      <p class="voice-title">Rescue member ID</p>
+      <label class="setup-label">Name</label>
+      <input id="setup-name" type="text" maxlength="20" placeholder="Her name">
+      <label class="setup-label">Say it like &mdash; how the voice should pronounce it</label>
+      <input id="setup-speak" type="text" maxlength="30" placeholder="e.g. Maylee">
+      <label class="setup-label">Photo</label>
+      <button id="setup-photo-btn">Choose / take photo</button>
+      <!-- no `capture` attr: with it, iOS jumps straight to the camera and
+           never offers the photo library -->
+      <input id="setup-photo" type="file" accept="image/*" class="hidden">
+      <img id="setup-preview" class="hidden" alt="">
+      <button id="setup-save">Save</button>
+    </div>
+  </div>
+
+  <!-- ============ CALM DEN ============ -->
+  <section id="screen-home" class="screen dark">
+    <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="home-cards">
+      <button class="card" id="card-beacon" data-screen="beacon" aria-label="light the beacon">
+        <img class="pup card-pup" data-pup="beacon" alt="">
+        <svg class="card-icon" viewBox="0 0 80 100" aria-hidden="true">
+          <circle cx="40" cy="34" r="15" fill="#f9e6a8"/>
+          <g stroke="#f9e6a8" stroke-width="3" stroke-linecap="round" opacity="0.8">
+            <line x1="40" y1="8" x2="40" y2="14"/><line x1="62" y1="34" x2="68" y2="34"/>
+            <line x1="12" y1="34" x2="18" y2="34"/><line x1="56" y1="18" x2="60" y2="14"/>
+            <line x1="24" y1="18" x2="20" y2="14"/>
+          </g>
+          <path d="M32 48 h16 l6 40 h-28 Z" fill="#5d7292"/>
+          <line x1="30" y1="62" x2="50" y2="74" stroke="#3d5170" stroke-width="3"/>
+          <line x1="50" y1="62" x2="30" y2="74" stroke="#3d5170" stroke-width="3"/>
+        </svg>
+      </button>
+      <button class="card" id="card-breathing" data-screen="breathing" aria-label="breathing game">
+        <img class="pup card-pup" data-pup="breathing" alt="">
+        <svg class="card-icon" viewBox="0 0 80 100" aria-hidden="true">
+          <circle cx="40" cy="50" r="16" fill="#c3b6dd"/>
+          <circle cx="40" cy="50" r="24" fill="none" stroke="#c3b6dd" stroke-width="2.5" opacity="0.6"/>
+          <circle cx="40" cy="50" r="32" fill="none" stroke="#c3b6dd" stroke-width="2" opacity="0.3"/>
+        </svg>
+      </button>
+      <button class="card" id="card-bridge" data-screen="bridge" aria-label="cross the bridge">
+        <img class="pup card-pup" data-pup="bridge" alt="">
+        <svg class="card-icon" viewBox="0 0 80 100" aria-hidden="true">
+          <path d="M6 40 v40 M74 40 v40" stroke="#5d7292" stroke-width="5" stroke-linecap="round"/>
+          <path d="M6 44 C 30 58, 50 58, 74 44" fill="none" stroke="#8fc7bd" stroke-width="3.5"/>
+          <path d="M6 58 C 30 72, 50 72, 74 58" fill="none" stroke="#8fc7bd" stroke-width="3.5"/>
+          <g stroke="#8fc7bd" stroke-width="2.5">
+            <line x1="16" y1="48" x2="16" y2="62"/><line x1="28" y1="52" x2="28" y2="66"/>
+            <line x1="40" y1="53" x2="40" y2="67"/><line x1="52" y1="52" x2="52" y2="66"/>
+            <line x1="64" y1="48" x2="64" y2="62"/>
+          </g>
+          <path d="M36 30 l4 8 l4 -8 l8 3 l-12 9 l-12 -9 Z" fill="#f9e6a8" transform="translate(0,-6)"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ LIGHT THE BEACON ============ -->
+  <section id="screen-beacon" class="screen night">
+    <button class="home-btn dark-btn" data-target="home" aria-label="back">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button id="beacon-mic-btn" aria-label="microphone">
+      <svg viewBox="0 0 40 40">
+        <rect x="15" y="6" width="10" height="17" rx="5" fill="currentColor"/>
+        <path d="M11 20 a9 9 0 0 0 18 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="29" x2="20" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <line class="mic-slash" x1="8" y1="8" x2="32" y2="32" stroke="#d68a8a" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div id="beacon-stage">
+      <div id="beacon-beam"></div>
+      <div id="beacon-glow"></div>
+      <svg id="beacon-svg" viewBox="0 0 200 260" aria-hidden="true">
+        <path d="M85 92 h30 l14 150 h-58 Z" fill="#2a3a5c"/>
+        <line x1="76" y1="140" x2="124" y2="180" stroke="#1d2b47" stroke-width="6"/>
+        <line x1="124" y1="140" x2="76" y2="180" stroke="#1d2b47" stroke-width="6"/>
+        <line x1="74" y1="196" x2="126" y2="236" stroke="#1d2b47" stroke-width="6"/>
+        <line x1="126" y1="196" x2="74" y2="236" stroke="#1d2b47" stroke-width="6"/>
+        <rect x="78" y="84" width="44" height="10" rx="4" fill="#3d5170"/>
+        <circle id="beacon-lamp" cx="100" cy="52" r="34" fill="#3a3f52"/>
+        <circle cx="100" cy="52" r="34" fill="none" stroke="#3d5170" stroke-width="5"/>
+        <path d="M72 30 a38 38 0 0 1 56 0" fill="none" stroke="#3d5170" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <div id="beacon-sparkles" aria-hidden="true"></div>
+      <img id="beacon-pup" class="pup" data-pup="beacon" alt="pup">
+    </div>
+  </section>
+
+  <!-- ============ BREATHING ============ -->
+  <section id="screen-breathing" class="screen night">
+    <button class="home-btn dark-btn" data-target="home" aria-label="back">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="breath-lights" aria-hidden="true">
+      <div class="breath-light"></div><div class="breath-light"></div><div class="breath-light"></div><div class="breath-light"></div><div class="breath-light"></div>
+    </div>
+    <div id="breath-stage">
+      <div id="breath-halo"></div>
+      <div id="breath-orb">
+        <img id="breath-pup" class="pup" data-pup="breathing" alt="pup">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CROSS THE BRIDGE ============ -->
+  <section id="screen-bridge" class="screen night">
+    <button class="home-btn dark-btn" data-target="home" aria-label="back">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <img id="bridge-pup" class="pup" data-pup="bridge" alt="pup">
+    <div id="bridge-sparkles" aria-hidden="true"></div>
+    <canvas id="bridge-canvas"></canvas>
+  </section>
+
+  <!-- ============ DIARY ============ -->
+  <section id="screen-diary" class="screen dark">
+    <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="diary-progress"></div>
+    <img id="diary-pup" class="pup" data-pup="breathing" alt="pup">
+    <div id="diary-q"></div>
+    <img id="diary-selfie-preview" class="hidden" alt="">
+    <div id="diary-controls">
+      <button id="diary-rec" aria-label="record answer">
+        <svg viewBox="0 0 40 40">
+          <rect x="15" y="6" width="10" height="17" rx="5" fill="currentColor"/>
+          <path d="M11 20 a9 9 0 0 0 18 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="20" y1="29" x2="20" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <button id="diary-camera" class="hidden" aria-label="take selfie">
+        <svg viewBox="0 0 40 40">
+          <rect x="5" y="12" width="30" height="21" rx="5" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <path d="M14 12 L17 7 H23 L26 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="20" cy="22" r="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        </svg>
+      </button>
+      <button id="diary-next" aria-label="next question">
+        <svg viewBox="0 0 40 40"><path d="M14 8 L28 20 L14 32" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <input id="diary-selfie-input" type="file" accept="image/*" capture="user" class="hidden">
+    <div id="diary-end" class="hidden">
+      <svg id="diary-moon" viewBox="0 0 100 100">
+        <path d="M62 15 A 38 38 0 1 0 88 62 A 30 30 0 0 1 62 15 Z" fill="#f9e6a8"/>
+        <circle cx="26" cy="26" r="2.5" fill="#c3b6dd"/>
+        <circle cx="18" cy="44" r="1.8" fill="#c3b6dd"/>
+        <circle cx="30" cy="60" r="2" fill="#c3b6dd"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ PAW MAIL: READ + REPLY ============ -->
+  <section id="screen-mailread" class="screen dark">
+    <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="mail-letter">
+      <button id="mail-speak-btn" aria-label="read aloud">
+        <svg viewBox="0 0 40 40">
+          <path d="M8 16 v8 h6 l8 7 V9 l-8 7 Z" fill="currentColor"/>
+          <path d="M26 14 a8 8 0 0 1 0 12 M29 10 a13 13 0 0 1 0 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <img id="mail-from-photo" class="hidden" alt="">
+      <svg id="mail-seal" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M50 8 C 63 14, 74 16, 82 16 C 82 47, 77 71, 50 88 C 23 71, 18 47, 18 16 C 26 16, 37 14, 50 8 Z"
+              fill="#f2a7c6" stroke="#e386ad" stroke-width="3"/>
+        <g fill="#ffffff">
+          <ellipse cx="50" cy="52" rx="12" ry="10"/>
+          <ellipse cx="36" cy="40" rx="4.5" ry="6" transform="rotate(-20 36 40)"/>
+          <ellipse cx="45" cy="35" rx="4.5" ry="6" transform="rotate(-7 45 35)"/>
+          <ellipse cx="55" cy="35" rx="4.5" ry="6" transform="rotate(7 55 35)"/>
+          <ellipse cx="64" cy="40" rx="4.5" ry="6" transform="rotate(20 64 40)"/>
+        </g>
+      </svg>
+      <div id="mail-from">FROM PAW PATROL HQ</div>
+      <div id="mail-subject" class="hidden"></div>
+      <div id="mail-letter-date"></div>
+      <div id="mail-letter-text"></div>
+    </div>
+    <div id="mail-replies"></div>
+    <button id="mail-reply-btn" aria-label="record a reply">
+      <svg viewBox="0 0 40 40">
+        <rect x="15" y="6" width="10" height="17" rx="5" fill="currentColor"/>
+        <path d="M11 20 a9 9 0 0 0 18 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="29" x2="20" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div id="mail-sent-flash" class="hidden">REPLY SENT TO HQ &#10003;</div>
+  </section>
+
+  <!-- Delete-letter confirmation (long-press a letter in the inbox) -->
+  <div id="mail-delete-confirm" class="hidden">
+    <div id="mail-delete-card">
+      <p class="voice-title" style="color:#dce6f4">Delete this letter?</p>
+      <p class="mail-delete-sub" id="mail-delete-date"></p>
+      <p class="mail-delete-sub">Any voice replies saved on it will be deleted too.</p>
+      <div class="mail-delete-actions">
+        <button id="mail-delete-cancel">Cancel</button>
+        <button id="mail-delete-yes">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parent voice settings (tap the hub's top-right corner 5 times) -->
+  <div id="voice-settings" class="hidden">
+    <div id="voice-settings-card">
+      <p class="voice-title" style="color:#dce6f4">Reader voice</p>
+      <select id="vs-voice"></select>
+      <div class="vs-slider-row">
+        <span class="vs-label">SAY IT LIKE</span>
+        <input id="vs-speak" type="text" maxlength="30" placeholder="e.g. Maylee">
+      </div>
+      <div class="vs-slider-row">
+        <span class="vs-label">SPEED</span>
+        <input id="vs-rate" type="range" min="0.6" max="1.5" step="0.05">
+        <span class="vs-value" id="vs-rate-val"></span>
+      </div>
+      <div class="vs-slider-row">
+        <span class="vs-label">PITCH</span>
+        <input id="vs-pitch" type="range" min="0.8" max="2" step="0.05">
+        <span class="vs-value" id="vs-pitch-val"></span>
+      </div>
+      <div id="vs-actions">
+        <button id="vs-kid">&#128054; KID VOICE</button>
+        <button id="vs-test" aria-label="test voice">
+          <svg viewBox="0 0 40 40">
+            <path d="M8 16 v8 h6 l8 7 V9 l-8 7 Z" fill="currentColor"/>
+            <path d="M26 14 a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <button id="vs-done">Done</button>
+    </div>
+  </div>
+
+  <!-- Parent compose overlay (hold PAW MAIL title 5s) -->
+  <div id="mail-compose" class="hidden">
+    <div id="mail-compose-card">
+      <p class="voice-title" style="color:#dce6f4">Write a letter from HQ</p>
+      <input id="compose-subject" type="text" maxlength="60" placeholder="Subject (e.g. Great job today!)">
+      <textarea id="compose-text" rows="6" placeholder="Dear Maelie..."></textarea>
+      <button id="compose-photo-btn">From photo (optional) &mdash; who is this letter from?</button>
+      <input id="compose-photo" type="file" accept="image/*" class="hidden">
+      <img id="compose-photo-preview" class="hidden" alt="">
+      <button id="compose-voice-btn">Reader voice &amp; speed&hellip;</button>
+      <div id="compose-actions">
+        <button id="compose-cancel">Cancel</button>
+        <button id="compose-send">Send to her inbox</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ LOG: CALENDAR + DAY REPORT ============ -->
+  <section id="screen-calendar" class="screen dark">
+    <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="cal-head">
+      <button id="cal-prev" aria-label="previous month">&#9664;</button>
+      <div id="cal-title"></div>
+      <button id="cal-next" aria-label="next month">&#9654;</button>
+    </div>
+    <div id="cal-dow"></div>
+    <div id="cal-grid"></div>
+  </section>
+
+  <section id="screen-day" class="screen dark">
+    <button class="home-btn dark-btn" data-target="calendar" aria-label="back to calendar">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div id="day-report"></div>
+  </section>
+
+  <script src="js/pups.js" defer></script>
+  <script src="js/sounds.js" defer></script>
+  <script src="js/sfx.js" defer></script>
+  <script src="js/mic.js" defer></script>
+  <script src="js/store.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/login.js" defer></script>
+  <script src="js/hub.js" defer></script>
+  <script src="js/board.js" defer></script>
+  <script src="js/beacon.js" defer></script>
+  <script src="js/breathing.js" defer></script>
+  <script src="js/bridge.js" defer></script>
+  <script src="js/diary.js" defer></script>
+  <script src="js/calendar.js" defer></script>
+  <script src="js/mail.js" defer></script>
+</body>
+</html>

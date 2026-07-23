@@ -1,0 +1,32 @@
+name: PAW MAIL keep-alive
+
+# The shared mailbox lives in a free no-account JSON store (getpantry.cloud)
+# that deletes pantries after ~30 days without activity. This daily ping keeps
+# it alive forever, so the family never loses mail to inactivity.
+#
+# PANTRY_ID must match the one baked into dev/js/mailsync.js. While it is
+# empty this workflow is a no-op.
+
+on:
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping mailbox store
+        env:
+          PANTRY_ID: ""
+        run: |
+          if [ -z "$PANTRY_ID" ]; then
+            echo "No pantry configured yet - nothing to keep alive."
+            exit 0
+          fi
+          # GET counts as activity; also touch the pantry root for good measure.
+          curl -sS --max-time 30 "https://getpantry.cloud/apiv1/pantry/$PANTRY_ID" >/dev/null
+          curl -sS --max-time 30 "https://getpantry.cloud/apiv1/pantry/$PANTRY_ID/basket/mailbox" >/dev/null || true
+          echo "Mailbox store pinged."

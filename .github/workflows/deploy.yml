@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Stamp service worker cache version
-        run: sed -i "s/__VERSION__/${GITHUB_SHA::8}/" sw.js index.html
+        run: sed -i "s/__VERSION__/${GITHUB_SHA::8}/" sw.js index.html dev/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
