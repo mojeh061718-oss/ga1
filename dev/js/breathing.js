@@ -1,6 +1,9 @@
-/* Breathing buddy: the orb grows and shrinks on a preschool-paced cycle
- * (4s in, 2s hold, 6s out, 1s rest) using the Web Animations API so one JS
- * clock can drive both the visual and the audio cues in sync. */
+/* MOONBEAM BREATHING (Studio Aurora): the orb IS the smiling moon, low over
+ * the meadow. Same preschool-paced cycle (4s in, 2s hold, 6s out, 1s rest)
+ * via the Web Animations API so one JS clock drives visuals + audio in sync.
+ * 2.0 art: inhale draws aurora wisps into the moon, exhale sends moonbeams
+ * down to the meadow; each breath wakes one of five standing stones.
+ * Timings and light-up logic identical to v1. */
 (() => {
   const IN_MS = 4000, HOLD_MS = 2000, OUT_MS = 6000, REST_MS = 1000;
   const CYCLE_MS = IN_MS + HOLD_MS + OUT_MS + REST_MS;
@@ -8,6 +11,8 @@
 
   let orbAnim = null;
   let haloAnim = null;
+  let wispsAnim = null;
+  let beamsAnim = null;
   let rafId = null;
   let lastPhase = null;
   let cycles = 0;
@@ -63,6 +68,30 @@
       { transform: 'scale(1)', opacity: 0.5, offset: 1 },
     ], { duration: CYCLE_MS, iterations: Infinity, easing: 'linear' });
 
+    // aurora wisps flow INTO the moon while she breathes in…
+    const wisps = document.getElementById('breath-wisps');
+    if (wisps) {
+      wispsAnim = wisps.animate([
+        { opacity: 0.06, offset: 0 },
+        { opacity: 0.9, offset: o[0] },
+        { opacity: 0.7, offset: o[1] },
+        { opacity: 0.05, offset: o[2] },
+        { opacity: 0.06, offset: 1 },
+      ], { duration: CYCLE_MS, iterations: Infinity, easing: 'linear' });
+    }
+    // …and moonbeams pour down to the meadow while she breathes out
+    const beams = document.getElementById('breath-beams');
+    if (beams) {
+      beamsAnim = beams.animate([
+        { opacity: 0, offset: 0 },
+        { opacity: 0, offset: o[0] },
+        { opacity: 0.1, offset: o[1] },
+        { opacity: 0.85, offset: (o[1] + o[2]) / 2 },
+        { opacity: 0.3, offset: o[2] },
+        { opacity: 0, offset: 1 },
+      ], { duration: CYCLE_MS, iterations: Infinity, easing: 'linear' });
+    }
+
     lastPhase = null;
     cycles = 0;
     rafId = requestAnimationFrame(drive);
@@ -96,7 +125,9 @@
         rafId = null;
         if (orbAnim) orbAnim.cancel();
         if (haloAnim) haloAnim.cancel();
-        orbAnim = haloAnim = null;
+        if (wispsAnim) wispsAnim.cancel();
+        if (beamsAnim) beamsAnim.cancel();
+        orbAnim = haloAnim = wispsAnim = beamsAnim = null;
       },
     });
   });

@@ -1,2 +1,141 @@
-/* Studio Aurora — mission-screen art (lighthouse / bridge / moonbeam)
-   is implemented separately by the missions artist. Loaded after app.css. */
+/* ============================================================
+   Studio Aurora — mission-screen art (Rescue HQ 2.0)
+   THE LANTERN LIGHTHOUSE / MOONBEAM BREATHING / THE MOONLIT BRIDGE
+   Loaded after app.css: overrides the v1 mission chrome.
+   Mechanics (hold / breathe / drag) are untouched — art only.
+   ============================================================ */
+
+/* the hold/drag surfaces own their pointers (app.css covers these ids too;
+   restated here so the rule survives if the stage ids ever leave app.css) */
+#beacon-stage, #breath-stage, #bridge-canvas { touch-action: none; }
+
+/* ============ THE LANTERN LIGHTHOUSE ============ */
+#beacon-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#beacon-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+/* #beacon-glow is now an SVG circle inside the scene — kill the v1 div
+   transform (percent translates would fling an SVG node across the viewBox) */
+#beacon-glow {
+  transform: none;
+  transition: opacity 0.25s;
+}
+/* #beacon-beam is now an SVG group; app.css's opacity 0 / .on opacity 1 +
+   0.8s transition still drive it. The sweep itself is SMIL inside the svg. */
+
+/* staircase windows + Wick's lantern: warmth climbs as she holds */
+.bcn-win .win-pane {
+  fill: #232a58;
+  transition: fill 0.5s ease;
+}
+.bcn-win .win-halo {
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.bcn-win.lit .win-pane { fill: #ffd88a; }
+.bcn-win.lit .win-halo { opacity: 1; }
+
+/* Wick is an SVG group now — anchor his bounce to his paws */
+#beacon-pup {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+/* ============ MOONBEAM BREATHING ============ */
+#breath-wisps, #breath-beams {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+#breath-wisps { opacity: 0.06; }
+#breath-beams { opacity: 0; }
+
+/* app.css's halo gradient sizes to the farthest corner — on the painted
+   night it shows square edges. Clamp it to the circle. */
+#breath-halo {
+  background: radial-gradient(closest-side,
+    rgba(255, 237, 184, 0.4) 0%,
+    rgba(185, 167, 240, 0.24) 55%,
+    rgba(185, 167, 240, 0) 100%);
+}
+#breath-orb {
+  /* the orb IS the moon: cool rim + warm face over app.css's moon radial */
+  box-shadow:
+    0 0 64px rgba(255, 237, 184, 0.55),
+    0 0 140px rgba(185, 167, 240, 0.22),
+    inset -14px -18px 34px rgba(201, 168, 106, 0.28);
+}
+#breath-moon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+#breath-pup {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* five standing stones on the meadow (replace the v1 dot row) */
+#breath-lights {
+  top: auto;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
+  gap: 12px;
+  align-items: flex-end;
+}
+.breath-light,
+.breath-light.lit {
+  width: 50px;
+  height: 66px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  transition: none;
+}
+.breath-light svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.stone-body {
+  fill: #181f42;
+  stroke: #232a58;
+  stroke-width: 2;
+  transition: fill 0.8s ease;
+}
+.stone-paw {
+  fill: #39426e;
+  transition: fill 0.8s ease;
+}
+.breath-light.lit .stone-body { fill: #20284e; stroke: #2b356e; }
+.breath-light.lit .stone-paw { fill: var(--amber); }
+.breath-light.lit svg {
+  filter: drop-shadow(0 0 13px rgba(255, 216, 138, 0.8));
+  transition: filter 0.8s ease;
+}
+/* the row follows the crest of the hill */
+.breath-light:nth-child(3) { transform: translateY(-16px); }
+.breath-light:nth-child(2), .breath-light:nth-child(4) { transform: translateY(-8px); }
+
+/* ============ THE MOONLIT BRIDGE ============ */
+/* Juniper (inline SVG now) stands on the far cliff top */
+#bridge-pup {
+  top: 41%;
+  right: 2.5vw;
+  width: min(25vw, 124px);
+  height: auto;
+  overflow: visible;
+}

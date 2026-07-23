@@ -1,12 +1,16 @@
-/* LIGHT THE BEACON: hold the screen (or blow into the mic) steadily to
- * charge the rescue beacon until it blazes to life for the pup. Secretly
- * the same long-slow-exhale exercise as the old balloon: ~5s of sustained
- * effort, slow leak when idle, no fail state, endless. */
+/* THE LANTERN LIGHTHOUSE (Studio Aurora): hold the screen (or blow into the
+ * mic) steadily to warm the lighthouse lamp until it blazes for the pup.
+ * Secretly the same long-slow-exhale exercise as the old balloon: ~5s of
+ * sustained effort, slow leak when idle, no fail state, endless.
+ * 2.0 art: warmth visibly travels — Wick's lantern glows first, then window
+ * lights climb the tower stair, then the lamp blooms and twin beams sweep
+ * the sea. Mechanics identical to v1. */
 (() => {
   const RATE = 0.25;       // charge/second at full effort
   const LEAK = 0.03;       // slow dim when idle invites another breath/hold
   const TOUCH_EFFORT = 0.8;
-  const COLORS = ['#ffd977', '#f2a7c6', '#8fd4c7', '#a8c8e8', '#c3b6dd'];
+  // aurora palette: each rekindled beacon glows a new night color
+  const COLORS = ['#ffd88a', '#6fe3c1', '#b9a7f0', '#f0b8d9', '#9ff2b8'];
 
   let fill = 0;
   let held = false;
@@ -32,11 +36,20 @@
     const color = COLORS[colorIdx % COLORS.length];
     let level = fill;
     if (fill > 0.9 && !celebrating) level += Math.sin(now / 60) * 0.04; // eager flicker
-    lamp().setAttribute('fill', mix(color, Math.min(1, level)));
+    level = Math.max(0, Math.min(1, level));
+    lamp().setAttribute('fill', mix(color, level));
+    // the lamp halo (SVG circle) blooms and takes the round's color
+    const a = document.getElementById('bcn-glow-a');
+    const b = document.getElementById('bcn-glow-b');
+    if (a) a.setAttribute('stop-color', color);
+    if (b) b.setAttribute('stop-color', color);
     const g = glow();
-    g.style.background = `radial-gradient(circle, ${color}55 0%, ${color}22 40%, transparent 70%)`;
-    g.style.opacity = (0.2 + level * 0.8).toFixed(3);
-    g.style.transform = `translate(-50%, -50%) scale(${(0.5 + level * 0.9).toFixed(3)})`;
+    g.setAttribute('opacity', (0.15 + level * 0.85).toFixed(3));
+    g.setAttribute('r', Math.round(64 + level * 116));
+    // warmth climbs: Wick's lantern first, then the staircase windows
+    document.querySelectorAll('#screen-beacon .bcn-win').forEach((w) => {
+      w.classList.toggle('lit', fill >= parseFloat(w.dataset.th));
+    });
   }
 
   function tick(now) {
@@ -57,10 +70,9 @@
 
   function celebrate() {
     celebrating = true;
-    const color = COLORS[colorIdx % COLORS.length];
     paint(performance.now());
-    beam().style.background = `linear-gradient(180deg, ${color}00 0%, ${color}66 45%, ${color}00 100%)`;
-    beam().classList.add('on');
+    beam().classList.add('on'); // twin SVG beams sweep the sea (SMIL + CSS fade)
+
     Sfx.play('toppup');
     const pup = document.getElementById('beacon-pup');
     pup.classList.add('happy');
