@@ -1811,3 +1811,76 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   font-size: 15px;
   font-weight: 800;
 }
+
+/* ---- letter helper (templates inside compose) ---- */
+#compose-tpl-btn {
+  background: linear-gradient(180deg, rgba(255, 216, 138, 0.16), rgba(255, 216, 138, 0.07));
+  border: 1.5px solid rgba(255, 216, 138, 0.4);
+  border-radius: 12px;
+  padding: 12px;
+  color: #ffd88a;
+  font-size: 14px;
+  font-weight: 700;
+}
+#tpl-picker, #tpl-form {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 6, 20, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+#tpl-picker.hidden, #tpl-form.hidden { display: none; }
+#tpl-picker-card, #tpl-form-card {
+  background: linear-gradient(180deg, #2b2019 0%, #221812 100%);
+  border: 1.5px solid rgba(255, 216, 138, 0.28);
+  border-radius: 24px;
+  padding: 22px;
+  width: min(88vw, 400px);
+  max-height: 82vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 24px 60px rgba(2, 4, 14, 0.7);
+}
+#tpl-list { display: flex; flex-direction: column; gap: 10px; }
+.tpl-item {
+  text-align: left;
+  background: rgba(243, 234, 216, 0.06);
+  border: 1.5px solid rgba(255, 216, 138, 0.22);
+  border-radius: 14px;
+  padding: 13px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.tpl-item:active { background: rgba(255, 216, 138, 0.14); }
+.tpl-item-label { color: #ffd88a; font-size: 15px; font-weight: 800; }
+.tpl-item-desc { color: #c9a878; font-size: 12.5px; }
+#tpl-form-hint { color: #c9a878; font-size: 13px; line-height: 1.45; margin-top: -6px; }
+.tpl-q-label { color: #f3ead8; font-size: 13.5px; font-weight: 700; margin-top: 4px; }
+#tpl-questions { display: flex; flex-direction: column; gap: 7px; }
+#tpl-questions textarea {
+  background: rgba(243, 234, 216, 0.07);
+  border: 1.5px solid rgba(255, 216, 138, 0.22);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--cream);
+  outline: none;
+  resize: none;
+}
+#tpl-questions textarea.tpl-missing { border-color: #e05252; }
+#tpl-form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 4px; }
+.tpl-back { padding: 11px 18px; border-radius: 999px; color: #c9a878; font-size: 14px; font-weight: 700; }
+#tpl-generate {
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffd88a, #f0b95c);
+  color: #221812;
+  font-size: 14px;
+  font-weight: 800;
+}
