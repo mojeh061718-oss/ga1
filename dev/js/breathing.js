@@ -52,12 +52,14 @@
     const o = [IN_MS, HOLD_MS, OUT_MS].map((_, i) =>
       [IN_MS, IN_MS + HOLD_MS, IN_MS + HOLD_MS + OUT_MS][i] / CYCLE_MS);
 
+    /* no filter keyframes: Chrome composites a brightness() layer as a faint
+     * visible rectangle over the painted night — the halo carries the glow */
     orbAnim = orb.animate([
-      { transform: 'scale(1)', filter: 'brightness(1)', offset: 0 },
-      { transform: `scale(${GROW})`, filter: 'brightness(1.08)', offset: o[0] },
-      { transform: `scale(${GROW})`, filter: 'brightness(1.1)', offset: o[1] },
-      { transform: 'scale(1)', filter: 'brightness(0.97)', offset: o[2] },
-      { transform: 'scale(1)', filter: 'brightness(1)', offset: 1 },
+      { transform: 'scale(1)', offset: 0 },
+      { transform: `scale(${GROW})`, offset: o[0] },
+      { transform: `scale(${GROW})`, offset: o[1] },
+      { transform: 'scale(1)', offset: o[2] },
+      { transform: 'scale(1)', offset: 1 },
     ], { duration: CYCLE_MS, iterations: Infinity, easing: 'linear' });
 
     haloAnim = halo.animate([

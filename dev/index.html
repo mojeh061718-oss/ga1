@@ -1010,18 +1010,10 @@
           </g>
         </g>
 
-        <!-- sweeping beams (lit at celebration) -->
+        <!-- sweeping beams (lit at celebration; CSS sweeps them) -->
         <g id="beacon-beam">
-          <g>
-            <path d="M150 250 L-100 560 L-16 656 Z" fill="url(#bcnBeamL)"/>
-            <animateTransform attributeName="transform" type="rotate"
-              values="-9 150 250; 7 150 250; -9 150 250" dur="8s" repeatCount="indefinite"/>
-          </g>
-          <g>
-            <path d="M150 250 L336 588 L392 522 Z" fill="url(#bcnBeamR)"/>
-            <animateTransform attributeName="transform" type="rotate"
-              values="8 150 250; -7 150 250; 8 150 250" dur="8s" repeatCount="indefinite"/>
-          </g>
+          <g class="bcn-beam-l"><path d="M150 250 L-100 560 L-16 656 Z" fill="url(#bcnBeamL)"/></g>
+          <g class="bcn-beam-r"><path d="M150 250 L336 588 L392 522 Z" fill="url(#bcnBeamR)"/></g>
         </g>
 
         <!-- cliff + lighthouse -->
@@ -1161,8 +1153,16 @@
           <stop offset="1" stop-color="#b9a7f0" stop-opacity="0"/>
         </linearGradient>
         <filter id="mbbBlur" x="-40%" y="-300%" width="180%" height="700%"><feGaussianBlur stdDeviation="13"/></filter>
+        <radialGradient id="mbbMoonGlow" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#ffedb8" stop-opacity=".38"/>
+          <stop offset=".55" stop-color="#ffedb8" stop-opacity=".16"/>
+          <stop offset=".8" stop-color="#b9a7f0" stop-opacity=".07"/>
+          <stop offset="1" stop-color="#b9a7f0" stop-opacity="0"/>
+        </radialGradient>
       </defs>
       <rect width="390" height="844" fill="url(#mbbSky)"/>
+      <!-- ambient moon glow (static, behind the breathing orb) -->
+      <circle cx="195" cy="422" r="216" fill="url(#mbbMoonGlow)"/>
       <g class="aurora-drift" filter="url(#mbbBlur)">
         <path d="M-30 84 C 80 52, 180 110, 270 74 S 400 40, 440 62"
               fill="none" stroke="url(#mbbAur)" stroke-width="34" stroke-linecap="round"/>

@@ -29,7 +29,19 @@
   transition: opacity 0.25s;
 }
 /* #beacon-beam is now an SVG group; app.css's opacity 0 / .on opacity 1 +
-   0.8s transition still drive it. The sweep itself is SMIL inside the svg. */
+   0.8s transition still drive it, but its v1 div centering transform would
+   drag the group across the viewBox — pin it. The wedges sweep via CSS. */
+#beacon-beam { transform: none; }
+.bcn-beam-l, .bcn-beam-r {
+  transform-box: view-box;
+  transform-origin: 150px 250px;
+}
+.bcn-beam-l { animation: bcnSweep 9s ease-in-out infinite alternate; }
+.bcn-beam-r { animation: bcnSweep 9s ease-in-out infinite alternate-reverse; }
+@keyframes bcnSweep {
+  from { transform: rotate(-8deg); }
+  to { transform: rotate(7deg); }
+}
 
 /* staircase windows + Wick's lantern: warmth climbs as she holds */
 .bcn-win .win-pane {
@@ -69,11 +81,10 @@
     rgba(185, 167, 240, 0) 100%);
 }
 #breath-orb {
-  /* the orb IS the moon: cool rim + warm face over app.css's moon radial */
-  box-shadow:
-    0 0 64px rgba(255, 237, 184, 0.55),
-    0 0 140px rgba(185, 167, 240, 0.22),
-    inset -14px -18px 34px rgba(201, 168, 106, 0.28);
+  /* the orb IS the moon. No outer box-shadow: large blurs get clipped at the
+     composited layer's edge while the WAAPI transform runs, printing a faint
+     square on the night. The ambient glow lives in the scene + halo instead. */
+  box-shadow: inset -14px -18px 34px rgba(201, 168, 106, 0.28);
 }
 #breath-moon {
   position: absolute;
