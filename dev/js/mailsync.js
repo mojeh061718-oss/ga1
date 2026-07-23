@@ -186,6 +186,57 @@ const MailSync = (() => {
     return gotNew ? 'new' : (changed ? 'changed' : null);
   }
 
+  /* ---- Daily Monitor sync ----
+   * Remote basket 'monitor': { days: { 'Y-M-D': { marks, up } } }.
+   * Per-day newest-wins by the `up` edit stamp; history merges into the
+   * local day store so the Log reads the same on every device. */
+  const MONITOR_KEEP_DAYS = 120;
+
+  function dateMs(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d).getTime();
+  }
+
+  async function monitorPass() {
+    const remoteDoc = (await getBasket('monitor')) || {};
+    const remote = remoteDoc.days || {};
+    const cutoff = Date.now() - MONITOR_KEEP_DAYS * 24 * 3600 * 1000;
+
+    // local view: every stored day with marks, plus today's live board state
+    const local = {};
+    for (const date of (await Store.listDates()) || []) {
+      const day = await Store.getDay(date);
+      if (day && Array.isArray(day.marks)) {
+        local[date] = { marks: day.marks, up: day.marksUp || 0 };
+      }
+    }
+    const board = Board.syncState();
+    if (board) local[board.date] = { marks: board.marks, up: board.up };
+
+    let changed = false;
+    let remoteChanged = false;
+    const out = {};
+    const dates = new Set([...Object.keys(remote), ...Object.keys(local)]);
+    for (const date of dates) {
+      if (dateMs(date) < cutoff) continue;
+      const r = remote[date];
+      const l = local[date];
+      if (r && (!l || r.up > l.up)) {
+        out[date] = r;
+        await Store.updateDay(date, { marks: r.marks.slice(), marksUp: r.up });
+        if (board && date === board.date) Board.applySynced(r.marks, r.up);
+        changed = true;
+      } else if (l && l.up && (!r || l.up > r.up)) {
+        out[date] = { marks: l.marks, up: l.up };
+        remoteChanged = true;
+      } else {
+        out[date] = r || l;
+      }
+    }
+    if (remoteChanged) await putBasket('monitor', { days: out });
+    return changed;
+  }
+
   async function sync() {
     if (!enabled() || !navigator.onLine) return;
     if (syncing) { queued = true; return; }
@@ -193,6 +244,9 @@ const MailSync = (() => {
     setDot('busy');
     try {
       const result = await pass();
+      // monitor changes need no extra UI work here: Board.applySynced
+      // re-renders today's boxes, and the Log re-renders whenever opened
+      await monitorPass();
       setDot('ok');
       if (result) {
         Mail.refresh();
