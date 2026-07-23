@@ -46,7 +46,7 @@
         <filter id="lgBlur18" x="-40%" y="-200%" width="180%" height="500%">
           <feGaussianBlur stdDeviation="14"/>
         </filter>
-        <filter id="lgBlur8"><feGaussianBlur stdDeviation="7"/></filter>
+        <filter id="lgBlur8" x="-30%" y="-250%" width="160%" height="600%"><feGaussianBlur stdDeviation="7"/></filter>
         <radialGradient id="lgMoon" cx=".5" cy=".5" r=".5">
           <stop offset="0" stop-color="#fff6d8"/><stop offset=".75" stop-color="#ffedb8"/>
           <stop offset="1" stop-color="#f5dd9a"/>
@@ -221,7 +221,7 @@
             <linearGradient id="wlInk" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="#6fe3c1"/><stop offset="1" stop-color="#b9a7f0"/>
             </linearGradient>
-            <filter id="wlBlur"><feGaussianBlur stdDeviation="7"/></filter>
+            <filter id="wlBlur" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="7"/></filter>
           </defs>
           <circle cx="100" cy="100" r="92" fill="url(#wlPort)" stroke="url(#wlRim)" stroke-width="7"/>
           <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,216,138,.18)" stroke-width="2"/>
@@ -272,7 +272,7 @@
         <filter id="hbBlur18" x="-40%" y="-200%" width="180%" height="500%">
           <feGaussianBlur stdDeviation="14"/>
         </filter>
-        <filter id="hbBlur8"><feGaussianBlur stdDeviation="7"/></filter>
+        <filter id="hbBlur8" x="-30%" y="-250%" width="160%" height="600%"><feGaussianBlur stdDeviation="7"/></filter>
         <radialGradient id="hbMoon" cx=".5" cy=".5" r=".5">
           <stop offset="0" stop-color="#fff6d8"/><stop offset=".75" stop-color="#ffedb8"/>
           <stop offset="1" stop-color="#f5dd9a"/>
@@ -322,6 +322,7 @@
       <circle cx="344" cy="92" r="3" fill="#efd9a2" opacity=".45"/>
       <circle cx="337" cy="71" r="2.2" fill="#efd9a2" opacity=".4"/>
 
+      <g transform="translate(0 -52)"><!-- ridge band lifted into the divider gap -->
       <!-- horizon aurora glow (behind the ridge) -->
       <g filter="url(#hbBlur18)" opacity=".4">
         <path d="M-20 468 C 90 448, 200 486, 300 456 S 400 436, 430 452"
@@ -351,6 +352,7 @@
       <g fill="#10152e">
         <path d="M2 522 l8 -24 8 24 Z M4 511 l6 -17 6 17 Z"/>
         <path d="M368 516 l9 -25 9 25 Z M370 505 l7 -18 7 18 Z"/>
+      </g>
       </g>
 
       <!-- foreground hill (nav sits here) -->
@@ -422,7 +424,7 @@
             <linearGradient id="ptInk" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stop-color="#6fe3c1"/><stop offset="1" stop-color="#b9a7f0"/>
             </linearGradient>
-            <filter id="ptBlur"><feGaussianBlur stdDeviation="4"/></filter>
+            <filter id="ptBlur" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="4"/></filter>
           </defs>
           <circle cx="50" cy="50" r="50" fill="url(#ptG)"/>
           <path d="M12 60 C 28 48, 44 66, 60 54 S 84 46, 90 52" fill="none"
@@ -500,6 +502,8 @@
         <div class="hub-box" data-i="2"></div>
       </div>
     </div>
+
+    <div id="hub-ridge-gap" aria-hidden="true"></div>
 
     <!-- paw mail: carved wooden mailbox -->
     <div id="hub-mail" class="aur-panel">
@@ -652,7 +656,7 @@
               <stop offset="0" stop-color="#cfc4ab"/><stop offset=".42" stop-color="#f3ead8"/>
               <stop offset="1" stop-color="#b9ae95"/>
             </linearGradient>
-            <filter id="c1blur"><feGaussianBlur stdDeviation="6"/></filter>
+            <filter id="c1blur" x="-60%" y="-300%" width="220%" height="700%"><feGaussianBlur stdDeviation="6"/></filter>
           </defs>
           <rect width="360" height="118" fill="url(#c1sky)"/>
           <g filter="url(#c1blur)" opacity=".5">
@@ -664,12 +668,12 @@
           </g>
           <rect x="0" y="74" width="360" height="44" fill="url(#c1sea)"/>
           <g stroke="#ffedb8" stroke-linecap="round" opacity=".3">
-            <path d="M210 86 h22" stroke-width="2.6"/><path d="M244 98 h30" stroke-width="3"/>
-            <path d="M196 106 h24" stroke-width="2.6"/>
+            <path d="M236 84 h22" stroke-width="2.6"/><path d="M268 94 h30" stroke-width="3"/>
+            <path d="M310 104 h24" stroke-width="2.6"/>
           </g>
           <path d="M0 118 L0 62 Q 40 50 78 56 Q 110 60 122 74 L124 118 Z" fill="#10152e"/>
           <circle cx="66" cy="30" r="42" fill="url(#c1halo)" class="lamp-flicker"/>
-          <path d="M66 26 L360 -20 L360 20 Z" fill="url(#c1beam)" opacity=".5"/>
+          <path d="M66 26 L360 -14 L360 16 Z" fill="url(#c1beam)" opacity=".32"/>
           <path d="M57 36 L75 36 L80 78 L52 78 Z" fill="url(#c1tower)"/>
           <path d="M56 48 L76 48 L77 58 L55 58 Z" fill="#57c2a6"/>
           <rect x="53" y="30" width="26" height="7" rx="2.6" fill="#3a2b21"/>
@@ -699,7 +703,7 @@
               <stop offset="0" stop-color="#6fe3c1" stop-opacity="0"/>
               <stop offset="1" stop-color="#9ff2b8" stop-opacity=".6"/>
             </linearGradient>
-            <filter id="c2blur"><feGaussianBlur stdDeviation="6"/></filter>
+            <filter id="c2blur" x="-60%" y="-300%" width="220%" height="700%"><feGaussianBlur stdDeviation="6"/></filter>
           </defs>
           <rect width="360" height="118" fill="url(#c2sky)"/>
           <g fill="#e9f2ff" opacity=".8">
@@ -742,7 +746,7 @@
               <stop offset="0" stop-color="#9fb6e8" stop-opacity=".5"/>
               <stop offset="1" stop-color="#7f96d0" stop-opacity=".08"/>
             </linearGradient>
-            <filter id="c3blur"><feGaussianBlur stdDeviation="6"/></filter>
+            <filter id="c3blur" x="-60%" y="-300%" width="220%" height="700%"><feGaussianBlur stdDeviation="6"/></filter>
           </defs>
           <rect width="360" height="118" fill="url(#c3sky)"/>
           <g filter="url(#c3blur)" opacity=".5">
@@ -751,8 +755,8 @@
           <g fill="#e9f2ff" opacity=".8">
             <circle cx="60" cy="34" r="1.1"/><circle cx="186" cy="16" r="1.2"/><circle cx="290" cy="34" r="1"/>
           </g>
-          <rect x="120" y="80" width="120" height="38" fill="#0c1027"/>
-          <rect x="126" y="52" width="16" height="66" rx="6" fill="url(#c3fall)"/>
+          <rect x="108" y="78" width="148" height="40" fill="#0c1027"/>
+          <rect x="128" y="58" width="11" height="52" rx="5" fill="url(#c3fall)" opacity=".45"/>
           <path d="M0 118 L0 40 Q 40 28 78 38 Q 108 44 112 66 L114 118 Z" fill="#10152e"/>
           <path d="M360 118 L360 36 Q 320 24 284 36 Q 254 44 250 64 L248 118 Z" fill="#10152e"/>
           <g stroke="#3a2b21" stroke-width="6" stroke-linecap="round">
@@ -800,8 +804,8 @@
               <stop offset=".4" stop-color="#f0b8d9" stop-opacity=".4"/>
               <stop offset="1" stop-color="#f0b8d9" stop-opacity="0"/>
             </radialGradient>
-            <filter id="c4blur"><feGaussianBlur stdDeviation="7"/></filter>
-            <filter id="c4blur2"><feGaussianBlur stdDeviation="2.4"/></filter>
+            <filter id="c4blur" x="-60%" y="-300%" width="220%" height="700%"><feGaussianBlur stdDeviation="7"/></filter>
+            <filter id="c4blur2" x="-60%" y="-300%" width="220%" height="700%"><feGaussianBlur stdDeviation="2.4"/></filter>
           </defs>
           <rect width="360" height="118" fill="url(#c4sky)"/>
           <g fill="#3d4677">
@@ -809,11 +813,11 @@
             <circle cx="90" cy="84" r="1.6"/><circle cx="300" cy="80" r="1.6"/>
           </g>
           <g filter="url(#c4blur)">
-            <path d="M36 104 C 100 84, 130 52, 200 48 C 262 44, 288 28, 322 16"
+            <path d="M36 104 C 100 84, 130 52, 200 48 C 258 46, 278 34, 306 24"
                   fill="none" stroke="url(#c4rib)" stroke-width="26" stroke-linecap="round"/>
           </g>
           <g filter="url(#c4blur2)" opacity=".9">
-            <path d="M36 104 C 100 84, 130 52, 200 48 C 262 44, 288 28, 322 16"
+            <path d="M36 104 C 100 84, 130 52, 200 48 C 258 46, 278 34, 306 24"
                   fill="none" stroke="url(#c4rib)" stroke-width="8" stroke-linecap="round"/>
           </g>
           <g transform="translate(150 50)">
@@ -824,7 +828,7 @@
             <circle r="2.4" fill="#fff6d8"/>
             <path d="M0 -8 L1.4 -2.2 L7 0 L1.4 2.2 L0 8 L-1.4 2.2 L-7 0 L-1.4 -2.2 Z" fill="#fff6d8" opacity=".8" class="halo-pulse" style="animation-delay:-1.6s"/>
           </g>
-          <g transform="translate(322 16)">
+          <g transform="translate(306 24)">
             <circle r="20" fill="url(#c4touch)" class="halo-pulse"/>
             <circle r="10" fill="none" stroke="#ffffff" stroke-width="2" opacity=".9"/>
             <circle r="3.4" fill="#ffffff" opacity=".95"/>

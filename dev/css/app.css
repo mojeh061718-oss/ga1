@@ -664,10 +664,14 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   75% { transform: translateX(-3px); }
 }
 
+/* the divider gap: open sky where the far ridge + lighthouse show through */
+#hub-ridge-gap { flex: none; height: 54px; width: 100%; pointer-events: none; }
+
 /* ---- PAW MAIL: the wooden mailbox ---- */
 #hub-mail {
-  flex: 1;
-  min-height: 0;
+  flex: 0 1 auto;
+  min-height: 168px;
+  max-height: 318px;
   display: flex;
   flex-direction: column;
   padding: 12px 14px;
@@ -1278,7 +1282,7 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   margin-top: 52px;
   width: min(88vw, 400px);
   background:
-    repeating-linear-gradient(0deg, transparent 0 34px, rgba(139, 117, 78, 0.07) 34px 35px),
+    repeating-linear-gradient(0deg, transparent 0 34px, rgba(139, 117, 78, 0.045) 34px 35px),
     linear-gradient(160deg, #f7efdd 0%, var(--cream) 45%, #e9ddc2 100%);
   border-radius: 6px 20px 6px 20px;
   border: 1px solid #dccfae;
