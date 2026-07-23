@@ -16,7 +16,7 @@ const Login = (() => {
   const HOLD_SECONDS = 3;        // parent-tunable; partial credit is kept on lift
   const RELOCK_MIN = 2;          // backgrounded longer than this -> back to login
   const RING_LEN = 603.2;        // circumference of the scan ring circle
-  const GATE_KEY = 'calmpups-gate';
+  const GATE_KEY = 'calmpups2-gate';
 
   let progress = 0;              // 0..1, accumulates only while held
   let holding = false;

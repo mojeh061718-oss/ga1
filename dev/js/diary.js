@@ -83,7 +83,14 @@
     }
     const chunks = [];
     const qi = idx; // the question this recording belongs to
-    recorder = new MediaRecorder(stream);
+    try {
+      recorder = new MediaRecorder(stream);
+    } catch (err) {
+      // no MediaRecorder support: release the mic instead of leaving it live
+      stream.getTracks().forEach((t) => t.stop());
+      recorder = null;
+      return false;
+    }
     const mime = recorder.mimeType || 'audio/mp4';
     recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
     recorder.onstop = () => {

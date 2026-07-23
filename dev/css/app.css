@@ -1884,3 +1884,15 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   font-size: 14px;
   font-weight: 800;
 }
+
+/* ---- QA fixes ---- */
+/* denied popup is informational — never swallow taps (parent corner skip) */
+#denied-popup { pointer-events: none; }
+#setup-actions { display: flex; gap: 12px; justify-content: flex-end; }
+#setup-cancel {
+  padding: 11px 18px;
+  border-radius: 999px;
+  color: #c9a878;
+  font-size: 14px;
+  font-weight: 700;
+}
