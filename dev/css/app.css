@@ -412,16 +412,26 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 input, textarea, select { -webkit-user-select: text; user-select: text; font-family: inherit; }
 
 /* ============ HQ hub — "The HQ Hilltop" ============ */
+/* The hub is a self-fitting column: every section is height-aware (vh
+ * clamps) and only the designated absorbers (ridge gap, then mail) give way
+ * under pressure, so the lantern nav always fits on screen — any iPhone,
+ * any banner combination. Panels themselves never squash. */
 #screen-hub {
-  gap: 12px;
-  padding-top: calc(env(safe-area-inset-top, 0px) + 10px);
+  gap: clamp(6px, 1.3vh, 12px);
+  padding-top: calc(env(safe-area-inset-top, 0px) + 6px);
 }
-#screen-hub > * { position: relative; z-index: 1; }
+#screen-hub > * { position: relative; z-index: 1; flex-shrink: 0; }
 #screen-hub > .scene { z-index: 0; position: absolute; }
 #screen-hub > .vignette { z-index: 3; position: absolute; }
 
 #hub-sign { width: min(68vw, 262px); flex-shrink: 0; }
-#hub-sign svg { width: 100%; display: block; overflow: visible; }
+#hub-sign svg {
+  width: 100%;
+  max-height: clamp(46px, 7.6vh, 78px);
+  display: block;
+  margin: 0 auto;
+  overflow: visible;
+}
 
 /* shared storybook panel (badge / monitor / mail) */
 .aur-panel {
@@ -460,8 +470,8 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
 }
 #badge-photo-wrap {
   position: relative;
-  width: 96px;
-  height: 96px;
+  width: clamp(70px, 10.8vh, 96px);
+  height: clamp(70px, 10.8vh, 96px);
   flex-shrink: 0;
 }
 #badge-photo {
@@ -626,7 +636,7 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
 }
 .hub-box {
   position: relative;
-  width: min(24vw, 100px);
+  width: min(24vw, 100px, 12.5vh);
   aspect-ratio: 1;
   border-radius: 50%;
   background:
@@ -664,13 +674,22 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   75% { transform: translateX(-3px); }
 }
 
-/* the divider gap: open sky where the far ridge + lighthouse show through */
-#hub-ridge-gap { flex: none; height: 54px; width: 100%; pointer-events: none; }
+/* the divider gap: open sky where the far ridge + lighthouse show through.
+ * It's the first shock absorber — shrinks toward nothing before anything
+ * else in the column has to give. */
+#hub-ridge-gap {
+  flex: 0 999 54px;
+  height: 54px;
+  min-height: 4px;
+  width: 100%;
+  pointer-events: none;
+}
 
 /* ---- PAW MAIL: the wooden mailbox ---- */
+/* second absorber: compresses to its min before panels ever squash */
 #hub-mail {
   flex: 0 1 auto;
-  min-height: 168px;
+  min-height: clamp(118px, 17vh, 168px);
   max-height: 318px;
   display: flex;
   flex-direction: column;
@@ -805,7 +824,7 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   align-items: flex-end;
   width: min(96vw, 420px);
   margin-top: auto;
-  margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
 }
 .hub-nav-btn {
   flex: 1;
@@ -817,7 +836,12 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   border: none;
   padding: 0;
 }
-.hub-nav-btn svg { width: 74px; height: 74px; display: block; overflow: visible; }
+.hub-nav-btn svg {
+  width: clamp(56px, 8.6vh, 74px);
+  height: clamp(56px, 8.6vh, 74px);
+  display: block;
+  overflow: visible;
+}
 .hub-nav-btn span {
   font-size: 10px;
   font-weight: 900;
@@ -1895,4 +1919,24 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   color: #c9a878;
   font-size: 14px;
   font-weight: 700;
+}
+
+/* ---- compact mode for short screens (old SE-class phones) ---- */
+@media (max-height: 700px) {
+  #screen-hub { gap: 5px; padding-top: calc(env(safe-area-inset-top, 0px) + 4px); }
+  #hub-sign svg { max-height: 36px; }
+  #hub-badge { padding: 9px 12px 9px 14px; gap: 11px; }
+  #badge-photo-wrap { width: 58px; height: 58px; }
+  #hub-banner, #hub-checkin-banner {
+    padding: 7px 12px;
+    font-size: 10.5px;
+    border-radius: 12px;
+    line-height: 1.35;
+  }
+  #hub-monitor { padding: 6px 14px 9px; }
+  .hub-box { width: min(21vw, 74px); }
+  #hub-mail { min-height: 96px; }
+  #mail-head { padding-bottom: 6px; }
+  .hub-nav-btn svg { width: 46px; height: 46px; }
+  #hub-nav { margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 6px); }
 }
