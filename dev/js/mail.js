@@ -69,6 +69,10 @@ const Mail = (() => {
       const existing = (await Store.allLetters()) || [];
       const name = Hub.name;
       const prior = existing.find((l) => l.id === 'welcome-ryder');
+      if (prior && prior.deleted) { // deleted on some device — stay deleted
+        localStorage.setItem(SEED_KEY, '2');
+        return;
+      }
       if (!prior) {
         await Store.saveLetter({
           id: 'welcome-ryder',
@@ -90,7 +94,11 @@ const Mail = (() => {
   }
 
   async function refresh() {
-    letters = ((await Store.allLetters()) || []).sort((a, b) => b.at - a.at);
+    // deleted letters stay stored as tombstones (so cross-device sync can't
+    // resurrect them) but never render
+    letters = ((await Store.allLetters()) || [])
+      .filter((l) => !l.deleted)
+      .sort((a, b) => b.at - a.at);
     renderPanel();
   }
 
@@ -293,7 +301,7 @@ const Mail = (() => {
     // no auto-read: the letter speaks only when the speaker button is tapped
     if (!letter.opened) {
       letter.opened = true;
-      Store.saveLetter(letter).then(renderPanel);
+      Store.saveLetter(letter).then(renderPanel).then(() => MailSync.kick());
       Sfx.play('open');
     } else {
       renderPanel();
@@ -368,6 +376,7 @@ const Mail = (() => {
       current.replies = current.replies || [];
       current.replies.push({ at: Date.now(), audio: new Blob(chunks, { type: mime }) });
       await Store.saveLetter(current);
+      MailSync.kick();
       renderReplies();
       renderPanel();
       // make it feel like it flew off to HQ
@@ -410,7 +419,9 @@ const Mail = (() => {
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    seedWelcome().then(refresh);
+    // kick a sync once the seed exists, so a brand-new device both uploads
+    // its seeded letter and pulls the family mailbox right away
+    seedWelcome().then(refresh).then(() => MailSync.kick());
 
     // Parent compose: hold the PAW MAIL header for 2s. The header owns its
     // touches (touch-action: none) so iOS can't cancel the hold, and only a
@@ -457,6 +468,7 @@ const Mail = (() => {
       });
       document.getElementById('mail-compose').classList.add('hidden');
       await refresh();
+      MailSync.kick();
       Sfx.play('mail'); // new mail!
     });
 
@@ -465,7 +477,12 @@ const Mail = (() => {
       document.getElementById('mail-delete-confirm').classList.add('hidden');
     });
     document.getElementById('mail-delete-yes').addEventListener('click', async () => {
-      if (deleteTarget) await Store.deleteLetter(deleteTarget.id);
+      if (deleteTarget) {
+        // tombstone instead of hard delete: other devices must learn about
+        // the deletion, and a tombstone can't be resurrected by a sync pull
+        await Store.saveLetter({ id: deleteTarget.id, deleted: true, at: Date.now() });
+        MailSync.kick();
+      }
       deleteTarget = null;
       document.getElementById('mail-delete-confirm').classList.add('hidden');
       await refresh();
