@@ -69,9 +69,13 @@ const Board = (() => {
     save();
   }
 
+  /* Only real user edits (setMark/clearMark) stamp `up` — a freshly created
+   * or morning-reset board keeps up=0, so in sync merges another device's
+   * actual marks always beat an empty default. */
   function save() {
     try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (err) {}
-    Store.updateDay(state.date, { marks: state.marks.slice() });
+    Store.updateDay(state.date, { marks: state.marks.slice(), marksUp: state.up || 0 });
+    try { MailSync.kick(); } catch (err) {}
   }
 
   function boxes() {
@@ -129,6 +133,7 @@ const Board = (() => {
 
   function setMark(i, kind) {
     state.marks[i] = kind;
+    state.up = Date.now();
     save();
     render();
     if (kind === 'x') Sfx.play('strike');
@@ -138,6 +143,7 @@ const Board = (() => {
   function clearMark(i) {
     if (!state.marks[i]) return;
     state.marks[i] = null;
+    state.up = Date.now();
     save();
     render();
     Sounds.inviteChime();
@@ -209,5 +215,25 @@ const Board = (() => {
     });
   });
 
-  return { refreshBanner, checkDay, get marks() { return state ? state.marks.slice() : []; } };
+  /* ---- sync hooks (MailSync's monitor pass) ---- */
+  function syncState() {
+    if (!state || state.date !== today()) return null;
+    return { date: state.date, marks: state.marks.slice(), up: state.up || 0 };
+  }
+  /* Adopt marks for today that arrived from another device (already known to
+   * be newer). Writes without re-stamping `up` so the merge stays stable. */
+  function applySynced(marks, up) {
+    if (!state || state.date !== today()) return;
+    state.marks = marks.slice(0, 3);
+    while (state.marks.length < 3) state.marks.push(null);
+    state.up = up;
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (err) {}
+    Store.updateDay(state.date, { marks: state.marks.slice(), marksUp: up });
+    render();
+  }
+
+  return {
+    refreshBanner, checkDay, syncState, applySynced,
+    get marks() { return state ? state.marks.slice() : []; },
+  };
 })();
