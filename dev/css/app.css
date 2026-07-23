@@ -674,23 +674,23 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   75% { transform: translateX(-3px); }
 }
 
-/* the divider gap: open sky where the far ridge + lighthouse show through.
- * It's the first shock absorber — shrinks toward nothing before anything
- * else in the column has to give. */
+/* slim breath of open sky between the monitor and the mailbox — a divider,
+ * not dead space. Shrinks toward nothing before anything else gives. */
 #hub-ridge-gap {
-  flex: 0 999 54px;
-  height: 54px;
-  min-height: 4px;
+  flex: 0 999 22px;
+  height: 22px;
+  min-height: 2px;
   width: 100%;
   pointer-events: none;
 }
 
 /* ---- PAW MAIL: the wooden mailbox ---- */
-/* second absorber: compresses to its min before panels ever squash */
+/* The mailbox soaks up the column's spare height (more letters visible
+ * instead of empty sky) and is also the compress-second shock absorber. */
 #hub-mail {
-  flex: 0 1 auto;
+  flex: 1 1 auto;
   min-height: clamp(118px, 17vh, 168px);
-  max-height: 318px;
+  max-height: 356px;
   display: flex;
   flex-direction: column;
   padding: 12px 14px;
@@ -1939,4 +1939,16 @@ input, textarea, select { -webkit-user-select: text; user-select: text; font-fam
   #mail-head { padding-bottom: 6px; }
   .hub-nav-btn svg { width: 46px; height: 46px; }
   #hub-nav { margin-bottom: calc(env(safe-area-inset-bottom, 0px) + 6px); }
+}
+
+/* faint paw resting in the mailbox corner — sparse inboxes look furnished */
+#hub-mail::before {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  width: 52px;
+  height: 52px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cg fill='rgba(154,166,216,.09)'%3E%3Cellipse cx='48' cy='56' rx='13' ry='10'/%3E%3Cellipse cx='33' cy='43' rx='5' ry='6.5' transform='rotate(-20 33 43)'/%3E%3Cellipse cx='43' cy='38' rx='5' ry='6.5' transform='rotate(-7 43 38)'/%3E%3Cellipse cx='53' cy='38' rx='5' ry='6.5' transform='rotate(7 53 38)'/%3E%3Cellipse cx='63' cy='43' rx='5' ry='6.5' transform='rotate(20 63 43)'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain;
+  pointer-events: none;
 }
