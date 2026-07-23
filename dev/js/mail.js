@@ -33,7 +33,7 @@ const Mail = (() => {
 
   /* One-time built-in first letter from Ryder, personalized with the
    * badge name when it's created (nothing personal lives in the code). */
-  const SEED_KEY = 'calmpups-welcome-seeded';
+  const SEED_KEY = 'calmpups2-welcome-seeded';
 
   function welcomeText(name) {
     return [
@@ -183,9 +183,9 @@ const Mail = (() => {
    * changed. Otherwise the best installed English voice wins automatically. A raised pitch is the
    * closest a web app can get to a kid voice — real Siri/child voices
    * aren't exposed to web apps by iOS. */
-  const VOICE_KEY = 'calmpups-mail-voice';
-  const RATE_KEY = 'calmpups-voice-rate';
-  const PITCH_KEY = 'calmpups-voice-pitch';
+  const VOICE_KEY = 'calmpups2-mail-voice';
+  const RATE_KEY = 'calmpups2-voice-rate';
+  const PITCH_KEY = 'calmpups2-voice-pitch';
 
   function getRate() {
     const v = parseFloat(localStorage.getItem(RATE_KEY));
@@ -366,7 +366,14 @@ const Mail = (() => {
       stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (err) { return; }
     const chunks = [];
-    recorder = new MediaRecorder(stream);
+    try {
+      recorder = new MediaRecorder(stream);
+    } catch (err) {
+      // no MediaRecorder support: release the mic instead of leaving it live
+      stream.getTracks().forEach((t) => t.stop());
+      recorder = null;
+      return;
+    }
     const mime = recorder.mimeType || 'audio/mp4';
     recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
     recorder.onstop = async () => {

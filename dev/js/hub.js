@@ -2,7 +2,7 @@
  * the phone), the banner slot (suspension warning / top-pup reward — see
  * board.js), and navigation to the Calm Den, Diary, and Log. */
 const Hub = (() => {
-  const LS_KEY = 'calmpups-member';
+  const LS_KEY = 'calmpups2-member';
 
   const DEFAULT_NAME = 'Maelie';
   const DEFAULT_SPEAK = 'Maylee';
@@ -120,6 +120,10 @@ const Hub = (() => {
       fileInput.value = '';
     });
 
+    document.getElementById('setup-cancel').addEventListener('click', () => {
+      pendingPhoto = null;
+      setup.classList.add('hidden');
+    });
     document.getElementById('setup-save').addEventListener('click', () => {
       const name = nameInput.value.trim();
       if (name) member.name = name;

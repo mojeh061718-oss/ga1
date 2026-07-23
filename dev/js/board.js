@@ -6,7 +6,7 @@
 const Board = (() => {
   const TAP_WINDOW_MS = 420;
   const CLEAR_HOLD_MS = 1500;
-  const LS_KEY = 'calmpups-board';
+  const LS_KEY = 'calmpups2-board';
 
   // Studio Aurora marks: sleepy raincloud pebble (strike) /
   // glowing golden moonstone with a smile (star) — see mockup-home's
@@ -99,6 +99,17 @@ const Board = (() => {
     refreshBanner();
   }
 
+  /* Banner text is built with text nodes (never innerHTML) — the name is
+   * parent-typed, and typed markup must stay visible text, not become DOM. */
+  function setBanner(banner, icon, text) {
+    banner.textContent = '';
+    const ic = document.createElement('span');
+    ic.className = 'banner-icon';
+    ic.textContent = icon;
+    banner.appendChild(ic);
+    banner.appendChild(document.createTextNode(' ' + text));
+  }
+
   function refreshBanner() {
     const banner = document.getElementById('hub-banner');
     const name = Hub.name.toUpperCase();
@@ -106,10 +117,10 @@ const Board = (() => {
     const stars = state.marks.filter((m) => m === 'star').length;
     if (xs >= 3) {
       banner.className = 'warning';
-      banner.innerHTML = `<span class="banner-icon">&#9888;</span> WARNING: ${name} IS AT RISK OF SUSPENSION`;
+      setBanner(banner, '⚠', `WARNING: ${name} IS AT RISK OF SUSPENSION`);
     } else if (stars >= 3) {
       banner.className = 'reward';
-      banner.innerHTML = `<span class="banner-icon">&#9733;</span> TOP PUP! ${name} EARNED A GOLD STAR DAY`;
+      setBanner(banner, '★', `TOP PUP! ${name} EARNED A GOLD STAR DAY`);
       if (!rewarded) {
         rewarded = true;
         Sfx.play('toppup');
@@ -126,7 +137,7 @@ const Board = (() => {
       }
     } else {
       banner.className = 'hidden';
-      banner.innerHTML = '';
+      banner.textContent = '';
       rewarded = false;
     }
   }
@@ -161,8 +172,10 @@ const Board = (() => {
     let holdTimer = null;
     let downAt = 0;
 
-    el.addEventListener('pointerdown', () => {
+    let holdXY = null;
+    el.addEventListener('pointerdown', (e) => {
       downAt = Date.now();
+      holdXY = [e.clientX, e.clientY];
       if (state.marks[i]) {
         el.classList.add('clearing');
         holdTimer = setTimeout(() => {
@@ -175,6 +188,13 @@ const Board = (() => {
       el.classList.remove('clearing');
       if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
     };
+    // sliding off aborts the erase, same as mail rows
+    el.addEventListener('pointermove', (e) => {
+      if (holdTimer && holdXY &&
+          Math.hypot(e.clientX - holdXY[0], e.clientY - holdXY[1]) > 12) {
+        cancelHold();
+      }
+    });
     el.addEventListener('pointerup', cancelHold);
     el.addEventListener('pointerleave', cancelHold);
     el.addEventListener('pointercancel', cancelHold);

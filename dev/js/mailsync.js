@@ -44,7 +44,12 @@ const MailSync = (() => {
 
   async function getBasket(name) {
     const r = await fetch(url(name), { cache: 'no-store' });
-    if (!r.ok) return null; // pantry returns 400 for a missing basket
+    // pantry answers 400/404 for a basket that doesn't exist yet — that
+    // genuinely means "empty". Anything else (5xx, 429…) is an outage:
+    // abort the pass so a blip can't make us treat the mailbox as empty
+    // and overwrite it, and so the dot honestly shows red.
+    if (r.status === 400 || r.status === 404) return null;
+    if (!r.ok) throw new Error('store outage: ' + r.status + ' on ' + name);
     return r.json().catch(() => null);
   }
 
