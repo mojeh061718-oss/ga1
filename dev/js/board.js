@@ -8,18 +8,44 @@ const Board = (() => {
   const CLEAR_HOLD_MS = 1500;
   const LS_KEY = 'calmpups-board';
 
-  // marks: red sad face (strike) / green happy face (star)
-  const X_SVG = `<svg viewBox="0 0 60 60">
-    <circle cx="30" cy="30" r="25" fill="#e05252" stroke="#ff8a8a" stroke-width="3"/>
-    <circle cx="21" cy="24" r="3.6" fill="#4a0f0f"/>
-    <circle cx="39" cy="24" r="3.6" fill="#4a0f0f"/>
-    <path d="M19 42 q 11 -10 22 0" fill="none" stroke="#4a0f0f" stroke-width="4" stroke-linecap="round"/>
+  // Studio Aurora marks: sleepy raincloud pebble (strike) /
+  // glowing golden moonstone with a smile (star) — see mockup-home's
+  // Daily Monitor. Same slots, same logic, new art.
+  const X_SVG = `<svg viewBox="0 0 96 96">
+    <defs>
+      <radialGradient id="aurStoneSad" cx=".42" cy=".36" r=".72">
+        <stop offset="0" stop-color="#8b95c2"/>
+        <stop offset=".6" stop-color="#5d6795"/><stop offset="1" stop-color="#414a75"/>
+      </radialGradient>
+    </defs>
+    <g>
+      <circle cx="38" cy="52" r="16" fill="url(#aurStoneSad)"/>
+      <circle cx="56" cy="52" r="14" fill="url(#aurStoneSad)"/>
+      <circle cx="47" cy="42" r="15" fill="url(#aurStoneSad)"/>
+      <rect x="26" y="52" width="44" height="14" rx="7" fill="url(#aurStoneSad)"/>
+    </g>
+    <path d="M38 49 q3 2.5 6 0 M53 49 q3 2.5 6 0" fill="none" stroke="#20264a" stroke-width="3" stroke-linecap="round"/>
+    <path d="M41 60 q7 -5 14 0" fill="none" stroke="#20264a" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M62 66 q3 5 0 7.5 q-3 -2.5 0 -7.5" fill="#8b95c2" opacity=".8"/>
   </svg>`;
-  const STAR_SVG = `<svg viewBox="0 0 60 60">
-    <circle cx="30" cy="30" r="25" fill="#3fbf82" stroke="#8ff0c2" stroke-width="3"/>
-    <circle cx="21" cy="24" r="3.6" fill="#0d3a25"/>
-    <circle cx="39" cy="24" r="3.6" fill="#0d3a25"/>
-    <path d="M18 35 q 12 13 24 0" fill="none" stroke="#0d3a25" stroke-width="4" stroke-linecap="round"/>
+  const STAR_SVG = `<svg viewBox="0 0 96 96">
+    <defs>
+      <radialGradient id="aurStoneHappy" cx=".42" cy=".36" r=".72">
+        <stop offset="0" stop-color="#fff2c8"/><stop offset=".55" stop-color="#ffd88a"/>
+        <stop offset="1" stop-color="#f0a95c"/>
+      </radialGradient>
+      <radialGradient id="aurStoneHalo" cx=".5" cy=".5" r=".5">
+        <stop offset="0" stop-color="#ffd88a" stop-opacity=".45"/>
+        <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <circle cx="48" cy="48" r="46" fill="url(#aurStoneHalo)"/>
+    <circle cx="48" cy="48" r="30" fill="url(#aurStoneHappy)"/>
+    <path d="M34 44 q4 -5 8 0 M54 44 q4 -5 8 0" fill="none" stroke="#7a4a1e" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M37 55 q11 10 22 0" fill="none" stroke="#7a4a1e" stroke-width="3.6" stroke-linecap="round"/>
+    <circle cx="33" cy="52" r="3.4" fill="#ff9d6b" opacity=".45"/>
+    <circle cx="63" cy="52" r="3.4" fill="#ff9d6b" opacity=".45"/>
+    <circle cx="40" cy="36" r="3" fill="#fff8e2" opacity=".8"/>
   </svg>`;
 
   let state = null;

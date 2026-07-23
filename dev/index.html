@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#131a2c">
+  <meta name="theme-color" content="#0b1026">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Calm Pups">
@@ -12,48 +12,184 @@
   <link rel="icon" href="assets/icons/icon-192.png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/missions.css">
+  <link rel="stylesheet" href="css/newgames.css">
 </head>
 <body>
 
-  <!-- ============ RESCUE LOGIN ============ -->
+  <!-- ============ RESCUE LOGIN — "The Lantern Gate" (Studio Aurora) ============ -->
   <section id="screen-login" class="screen active">
     <div id="login-corner-skip" aria-hidden="true"></div>
     <div id="gate-dot" aria-hidden="true"></div>
 
+    <!-- painted night sky -->
+    <svg class="scene" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="lgSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#070b1e"/><stop offset=".34" stop-color="#0b1026"/>
+          <stop offset=".62" stop-color="#1a2148"/><stop offset=".85" stop-color="#2b2f63"/>
+          <stop offset="1" stop-color="#33366e"/>
+        </linearGradient>
+        <linearGradient id="lgAur1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#6fe3c1" stop-opacity="0"/>
+          <stop offset=".25" stop-color="#6fe3c1" stop-opacity=".55"/>
+          <stop offset=".55" stop-color="#9ff2b8" stop-opacity=".65"/>
+          <stop offset=".8" stop-color="#b9a7f0" stop-opacity=".45"/>
+          <stop offset="1" stop-color="#b9a7f0" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="lgAur2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#b9a7f0" stop-opacity="0"/>
+          <stop offset=".35" stop-color="#f0b8d9" stop-opacity=".38"/>
+          <stop offset=".7" stop-color="#6fe3c1" stop-opacity=".5"/>
+          <stop offset="1" stop-color="#6fe3c1" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="lgBlur18" x="-40%" y="-200%" width="180%" height="500%">
+          <feGaussianBlur stdDeviation="14"/>
+        </filter>
+        <filter id="lgBlur8"><feGaussianBlur stdDeviation="7"/></filter>
+        <radialGradient id="lgMoon" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#fff6d8"/><stop offset=".75" stop-color="#ffedb8"/>
+          <stop offset="1" stop-color="#f5dd9a"/>
+        </radialGradient>
+        <radialGradient id="lgMoonHalo" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#ffedb8" stop-opacity=".35"/>
+          <stop offset="1" stop-color="#ffedb8" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="lgFar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#232a58"/><stop offset="1" stop-color="#1b2350"/>
+        </linearGradient>
+        <linearGradient id="lgHill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#131938"/><stop offset="1" stop-color="#0c1027"/>
+        </linearGradient>
+        <radialGradient id="lgLampHalo" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#ffd88a" stop-opacity=".55"/>
+          <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="390" height="844" fill="url(#lgSky)"/>
+      <g class="aurora-drift" filter="url(#lgBlur18)">
+        <path d="M-30 102 C 70 65, 150 130, 240 90 S 390 55, 440 80"
+              fill="none" stroke="url(#lgAur1)" stroke-width="48" stroke-linecap="round"/>
+      </g>
+      <g class="aurora-drift2" filter="url(#lgBlur18)">
+        <path d="M-40 168 C 80 140, 180 194, 270 158 S 400 122, 450 142"
+              fill="none" stroke="url(#lgAur2)" stroke-width="30" stroke-linecap="round" opacity=".8"/>
+      </g>
+      <g class="aurora-drift" filter="url(#lgBlur8)" opacity=".55">
+        <path d="M-20 58 C 90 38, 200 78, 300 52 S 400 32, 430 44"
+              fill="none" stroke="url(#lgAur1)" stroke-width="13" stroke-linecap="round"/>
+      </g>
+      <g fill="#e9f2ff"><circle class="st" cx="290" cy="503" r="1.5" style="animation:twinkle 6.6s ease-in-out -0.4s infinite"/><circle class="st" cx="43" cy="120" r="0.8" style="animation:twinkle 5.2s ease-in-out -4.9s infinite"/><circle class="st" cx="217" cy="360" r="1.6" style="animation:twinkle 5.6s ease-in-out -3.9s infinite"/><circle class="st" cx="200" cy="82" r="1.4" style="animation:twinkle 6.6s ease-in-out -1.9s infinite"/><circle class="st" cx="141" cy="163" r="1.1" style="animation:twinkle 5.4s ease-in-out -1.8s infinite"/><circle class="st stb" cx="359" cy="290" r="1.2" style="animation:twinkle 5.3s ease-in-out -2.5s infinite"/><circle class="st" cx="105" cy="382" r="0.7" style="animation:twinkle 6.9s ease-in-out -0.3s infinite"/><circle class="st" cx="24" cy="461" r="1.3" style="animation:twinkle 4.4s ease-in-out -3.4s infinite"/><circle class="st" cx="311" cy="192" r="0.6" style="animation:twinkle 4.2s ease-in-out -2.7s infinite"/><circle class="st" cx="223" cy="253" r="1.4" style="animation:twinkle 6.0s ease-in-out -1.5s infinite"/><circle class="st" cx="366" cy="45" r="1.0" style="animation:twinkle 4.1s ease-in-out -0.6s infinite"/><circle class="st" cx="55" cy="270" r="1.5" style="animation:twinkle 6.1s ease-in-out -3.4s infinite"/><circle class="st" cx="153" cy="45" r="0.9" style="animation:twinkle 4.4s ease-in-out -2.4s infinite"/><circle class="st" cx="34" cy="356" r="1.6" style="animation:twinkle 4.8s ease-in-out -3.2s infinite"/><circle class="st stb" cx="99" cy="82" r="1.3" style="animation:twinkle 5.5s ease-in-out -4.9s infinite"/><circle class="st" cx="330" cy="374" r="1.0" style="animation:twinkle 6.6s ease-in-out -2.9s infinite"/><circle class="st" cx="269" cy="66" r="1.5" style="animation:twinkle 5.6s ease-in-out -0.4s infinite"/><circle class="st" cx="126" cy="240" r="0.7" style="animation:twinkle 5.1s ease-in-out -3.6s infinite"/><circle class="st" cx="8" cy="203" r="1.3" style="animation:twinkle 5.6s ease-in-out -4.6s infinite"/><circle class="st" cx="316" cy="120" r="1.0" style="animation:twinkle 6.9s ease-in-out -1.6s infinite"/><circle class="st" cx="66" cy="500" r="1.2" style="animation:twinkle 4.1s ease-in-out -3.5s infinite"/><circle class="st" cx="176" cy="424" r="0.9" style="animation:twinkle 5.8s ease-in-out -3.7s infinite"/><circle class="st stb" cx="245" cy="150" r="1.5" style="animation:twinkle 7.4s ease-in-out -0.9s infinite"/><circle class="st" cx="345" cy="430" r="0.7" style="animation:twinkle 4.6s ease-in-out -1.2s infinite"/><circle class="st" cx="87" cy="313" r="1.2" style="animation:twinkle 6.3s ease-in-out -2.2s infinite"/><circle class="st" cx="188" cy="196" r="1.0" style="animation:twinkle 5.0s ease-in-out -4.1s infinite"/><circle class="st" cx="279" cy="416" r="1.4" style="animation:twinkle 6.8s ease-in-out -0.7s infinite"/><circle class="st" cx="18" cy="61" r="0.8" style="animation:twinkle 4.9s ease-in-out -2.0s infinite"/><circle class="st" cx="240" cy="486" r="1.1" style="animation:twinkle 5.9s ease-in-out -3.0s infinite"/><circle class="st stb" cx="147" cy="330" r="1.4" style="animation:twinkle 6.2s ease-in-out -1.3s infinite"/></g>
+      <!-- moon -->
+      <circle cx="332" cy="92" r="52" fill="url(#lgMoonHalo)"/>
+      <circle cx="332" cy="92" r="23" fill="url(#lgMoon)"/>
+      <circle cx="324" cy="85" r="4.4" fill="#efd9a2" opacity=".55"/>
+      <circle cx="339" cy="100" r="3" fill="#efd9a2" opacity=".45"/>
+      <!-- far ridge -->
+      <path d="M0 622 L60 584 L120 612 L200 576 L275 616 L330 586 L390 620 L390 844 L0 844 Z"
+            fill="url(#lgFar)"/>
+      <!-- foreground hill with the gate posts -->
+      <path d="M0 700 C 90 664, 160 688, 220 678 C 290 666, 340 684, 390 670 L390 844 L0 844 Z"
+            fill="url(#lgHill)"/>
+      <!-- wooden gate posts with lanterns, framing the crest -->
+      <g>
+        <rect x="30" y="596" width="14" height="112" rx="5" fill="#3a2b21" stroke="#2c1f18" stroke-width="2"/>
+        <circle cx="37" cy="586" r="22" fill="url(#lgLampHalo)" class="lamp-flicker"/>
+        <rect x="29" y="574" width="16" height="19" rx="5" fill="#3a2b21" stroke="#2c1f18" stroke-width="1.6"/>
+        <circle cx="37" cy="583" r="5" fill="#ffd88a" class="lamp-flicker"/>
+        <rect x="346" y="592" width="14" height="116" rx="5" fill="#3a2b21" stroke="#2c1f18" stroke-width="2"/>
+        <circle cx="353" cy="582" r="22" fill="url(#lgLampHalo)" class="lamp-flicker" style="animation-delay:-3s"/>
+        <rect x="345" y="570" width="16" height="19" rx="5" fill="#3a2b21" stroke="#2c1f18" stroke-width="1.6"/>
+        <circle cx="353" cy="579" r="5" fill="#ffd88a" class="lamp-flicker" style="animation-delay:-3s"/>
+      </g>
+      <!-- grass tufts -->
+      <g stroke="#1d2450" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".9">
+        <path d="M62 700 q2 -12 -3 -18 M68 700 q1 -10 6 -15"/>
+        <path d="M310 684 q2 -12 -3 -17 M317 684 q1 -9 6 -14"/>
+        <path d="M180 686 q2 -11 -3 -16 M187 686 q1 -9 5 -13"/>
+      </g>
+      <!-- fireflies -->
+      <g fill="#ffd88a">
+        <circle class="ffly" cx="70" cy="640" r="2.6"/>
+        <circle class="ffly" cx="320" cy="650" r="2.2" style="animation-delay:-3s"/>
+        <circle class="ffly" cx="205" cy="600" r="2.4" style="animation-delay:-6s"/>
+      </g>
+    </svg>
+
     <div id="login-scan" class="login-step active">
       <div id="shield-wrap">
         <svg id="shield" viewBox="0 0 200 220" aria-label="rescue badge">
-          <!-- progress ring -->
+          <defs>
+            <linearGradient id="shWood" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5a4232"/><stop offset=".5" stop-color="#4a352a"/>
+              <stop offset="1" stop-color="#39281f"/>
+            </linearGradient>
+            <linearGradient id="shBrass" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffd88a"/><stop offset=".5" stop-color="#b98a4e"/>
+              <stop offset="1" stop-color="#ffd88a"/>
+            </linearGradient>
+            <radialGradient id="shGlow" cx=".5" cy=".42" r=".65">
+              <stop offset="0" stop-color="#6b4f33"/><stop offset=".7" stop-color="#4a352a"/>
+              <stop offset="1" stop-color="#39281f"/>
+            </radialGradient>
+            <radialGradient id="shLamp" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#fff2c8"/><stop offset=".6" stop-color="#ffd88a"/>
+              <stop offset="1" stop-color="#ffb85c"/>
+            </radialGradient>
+          </defs>
+          <!-- progress ring: circumference 603.2 (r=96), driven by login.js -->
           <circle id="scan-ring-track" cx="100" cy="110" r="96" fill="none"
-                  stroke="#f6d7e4" stroke-width="6" opacity="0.5"/>
+                  stroke="#2b2f63" stroke-width="6" opacity="0.6"/>
           <circle id="scan-ring" cx="100" cy="110" r="96" fill="none"
-                  stroke="#ef8bb5" stroke-width="6" stroke-linecap="round"
+                  stroke="#ffd88a" stroke-width="6" stroke-linecap="round"
                   stroke-dasharray="603.2" stroke-dashoffset="603.2"
                   transform="rotate(-90 100 110)"/>
-          <!-- original shield: rounded badge with paw + star (not any TV show's badge) -->
+          <!-- brass-and-wood rescue crest -->
           <path id="shield-body" d="M100 22
                    C 128 34, 152 38, 168 38
                    C 168 108, 158 160, 100 196
                    C 42 160, 32 108, 32 38
                    C 48 38, 72 34, 100 22 Z"
-                fill="#f2a7c6" stroke="#e386ad" stroke-width="4"/>
+                fill="url(#shWood)" stroke="url(#shBrass)" stroke-width="4.5"/>
           <path d="M100 34 C 124 44, 144 48, 156 48 C 156 106, 148 150, 100 182
                    C 52 150, 44 106, 44 48 C 56 48, 76 44, 100 34 Z"
-                fill="#f7c2d8"/>
-          <!-- paw print -->
-          <g fill="#ffffff">
-            <ellipse cx="100" cy="122" rx="24" ry="20"/>
-            <ellipse cx="72" cy="98" rx="9" ry="12" transform="rotate(-20 72 98)"/>
-            <ellipse cx="90" cy="88" rx="9" ry="12" transform="rotate(-7 90 88)"/>
-            <ellipse cx="110" cy="88" rx="9" ry="12" transform="rotate(7 110 88)"/>
-            <ellipse cx="128" cy="98" rx="9" ry="12" transform="rotate(20 128 98)"/>
+                fill="url(#shGlow)"/>
+          <!-- rope-stitch inner border -->
+          <path d="M100 42 C 121 51, 138 54, 149 54 C 149 104, 142 143, 100 172
+                   C 58 143, 51 104, 51 54 C 62 54, 79 51, 100 42 Z"
+                fill="none" stroke="rgba(255,216,138,.28)" stroke-width="2"
+                stroke-dasharray="1 6" stroke-linecap="round"/>
+          <!-- brass rivets -->
+          <g fill="#e8c887">
+            <circle cx="100" cy="30" r="2.6"/><circle cx="160" cy="42" r="2.6"/>
+            <circle cx="40" cy="42" r="2.6"/><circle cx="146" cy="128" r="2.6"/>
+            <circle cx="54" cy="128" r="2.6"/><circle cx="100" cy="188" r="2.6"/>
           </g>
-          <!-- star -->
+          <!-- warm lantern paw -->
+          <g fill="#ffd88a">
+            <ellipse cx="100" cy="118" rx="24" ry="19"/>
+            <ellipse cx="72" cy="94" rx="9" ry="12" transform="rotate(-20 72 94)"/>
+            <ellipse cx="90" cy="85" rx="9" ry="12" transform="rotate(-7 90 85)"/>
+            <ellipse cx="110" cy="85" rx="9" ry="12" transform="rotate(7 110 85)"/>
+            <ellipse cx="128" cy="94" rx="9" ry="12" transform="rotate(20 128 94)"/>
+          </g>
+          <!-- little star under the paw -->
           <path d="M100 148 l4.7 9.5 10.5 1.5 -7.6 7.4 1.8 10.4 -9.4 -4.9 -9.4 4.9 1.8 -10.4 -7.6 -7.4 10.5 -1.5 Z"
-                fill="#f9e6a8" stroke="#eccf7f" stroke-width="1.5" transform="translate(0,8)"/>
+                fill="#fff2c8" stroke="#e8c887" stroke-width="1.2" transform="translate(0,4)"/>
+          <!-- tiny hanging lanterns on the crest shoulders -->
+          <g class="lamp-flicker">
+            <line x1="52" y1="46" x2="52" y2="56" stroke="#2c1f18" stroke-width="2"/>
+            <rect x="47" y="56" width="10" height="13" rx="3.4" fill="#2c1f18"/>
+            <circle cx="52" cy="62" r="3.4" fill="url(#shLamp)"/>
+          </g>
+          <g class="lamp-flicker" style="animation-delay:-3s">
+            <line x1="148" y1="46" x2="148" y2="56" stroke="#2c1f18" stroke-width="2"/>
+            <rect x="143" y="56" width="10" height="13" rx="3.4" fill="#2c1f18"/>
+            <circle cx="148" cy="62" r="3.4" fill="url(#shLamp)"/>
+          </g>
           <!-- scan line -->
           <rect id="scan-line" x="36" y="30" width="128" height="5" rx="2.5"
-                fill="#ffffff" opacity="0"/>
+                fill="#fff2c8" opacity="0"/>
         </svg>
         <div id="scan-sparkles" aria-hidden="true"></div>
       </div>
@@ -62,8 +198,8 @@
     <div id="denied-popup" class="hidden" aria-hidden="true">
       <div id="denied-card">
         <svg viewBox="0 0 60 60">
-          <circle cx="30" cy="30" r="26" fill="none" stroke="#ff5a5a" stroke-width="5"/>
-          <line x1="12" y1="48" x2="48" y2="12" stroke="#ff5a5a" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="30" cy="30" r="26" fill="none" stroke="#ff8a7a" stroke-width="5"/>
+          <line x1="12" y1="48" x2="48" y2="12" stroke="#ff8a7a" stroke-width="5" stroke-linecap="round"/>
         </svg>
         <div class="denied-title">ACCESS DENIED</div>
         <div class="denied-sub">MUST BE A PAW PATROL MEMBER</div>
@@ -73,16 +209,32 @@
     <div id="login-welcome" class="login-step">
       <div id="welcome-photo-wrap">
         <img id="welcome-photo" class="hidden" alt="">
-        <svg id="welcome-shield" viewBox="0 0 200 220">
-          <path d="M100 22 C 128 34, 152 38, 168 38 C 168 108, 158 160, 100 196
-                   C 42 160, 32 108, 32 38 C 48 38, 72 34, 100 22 Z"
-                fill="#f2a7c6" stroke="#e386ad" stroke-width="4"/>
-          <path d="M100 34 C 124 44, 144 48, 156 48 C 156 106, 148 150, 100 182
-                   C 52 150, 44 106, 44 48 C 56 48, 76 44, 100 34 Z"
-                fill="#f7c2d8"/>
-          <text id="welcome-initial" x="100" y="105" text-anchor="middle"
-                dominant-baseline="central" fill="#ffffff"
-                font-size="96" font-weight="800" font-family="-apple-system, sans-serif">M</text>
+        <svg id="welcome-shield" viewBox="0 0 200 200">
+          <defs>
+            <radialGradient id="wlPort" cx=".5" cy=".42" r=".65">
+              <stop offset="0" stop-color="#2b2f63"/><stop offset="1" stop-color="#161b3e"/>
+            </radialGradient>
+            <linearGradient id="wlRim" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffd88a"/><stop offset=".5" stop-color="#b98a4e"/>
+              <stop offset="1" stop-color="#ffd88a"/>
+            </linearGradient>
+            <linearGradient id="wlInk" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#6fe3c1"/><stop offset="1" stop-color="#b9a7f0"/>
+            </linearGradient>
+            <filter id="wlBlur"><feGaussianBlur stdDeviation="7"/></filter>
+          </defs>
+          <circle cx="100" cy="100" r="92" fill="url(#wlPort)" stroke="url(#wlRim)" stroke-width="7"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,216,138,.18)" stroke-width="2"/>
+          <path d="M28 120 C 58 98, 88 130, 118 108 S 162 94, 174 104" fill="none"
+                stroke="#6fe3c1" stroke-width="20" stroke-linecap="round" opacity=".22" filter="url(#wlBlur)"/>
+          <text id="welcome-initial" x="100" y="104" text-anchor="middle"
+                dominant-baseline="central" fill="url(#wlInk)"
+                font-size="96" font-weight="800"
+                font-family="ui-rounded, 'SF Pro Rounded', -apple-system, sans-serif">M</text>
+          <g fill="#e8c887">
+            <circle cx="100" cy="9" r="4"/><circle cx="100" cy="191" r="4"/>
+            <circle cx="9" cy="100" r="4"/><circle cx="191" cy="100" r="4"/>
+          </g>
         </svg>
       </div>
       <div id="welcome-text">WELCOME</div>
@@ -91,26 +243,210 @@
         <svg viewBox="0 0 40 40"><path d="M14 8 L28 20 L14 32" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
-    <div id="version-tag" aria-hidden="true">v__VERSION__</div>
+    <div id="version-tag" aria-hidden="true">DEV v__VERSION__</div>
   </section>
 
-  <!-- ============ HQ HUB ============ -->
+  <!-- ============ HQ HUB — "The HQ Hilltop" ============ -->
   <section id="screen-hub" class="screen dark">
-    <div id="hub-topbar">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><g fill="#f2a7c6"><ellipse cx="50" cy="62" rx="22" ry="18"/><ellipse cx="26" cy="40" rx="8.5" ry="11" transform="rotate(-20 26 40)"/><ellipse cx="42" cy="31" rx="8.5" ry="11" transform="rotate(-7 42 31)"/><ellipse cx="60" cy="31" rx="8.5" ry="11" transform="rotate(7 60 31)"/><ellipse cx="75" cy="40" rx="8.5" ry="11" transform="rotate(20 75 40)"/></g></svg>
-      <span>RESCUE HQ</span>
-      <svg viewBox="0 0 100 100" aria-hidden="true"><g fill="#8fd4c7"><ellipse cx="50" cy="62" rx="22" ry="18"/><ellipse cx="26" cy="40" rx="8.5" ry="11" transform="rotate(-20 26 40)"/><ellipse cx="42" cy="31" rx="8.5" ry="11" transform="rotate(-7 42 31)"/><ellipse cx="60" cy="31" rx="8.5" ry="11" transform="rotate(7 60 31)"/><ellipse cx="75" cy="40" rx="8.5" ry="11" transform="rotate(20 75 40)"/></g></svg>
+    <!-- painted sky: aurora, moon, ridge with lighthouse, foreground hill -->
+    <svg class="scene" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="hbSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#070b1e"/><stop offset=".34" stop-color="#0b1026"/>
+          <stop offset=".62" stop-color="#1a2148"/><stop offset=".85" stop-color="#2b2f63"/>
+          <stop offset="1" stop-color="#33366e"/>
+        </linearGradient>
+        <linearGradient id="hbAur1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#6fe3c1" stop-opacity="0"/>
+          <stop offset=".25" stop-color="#6fe3c1" stop-opacity=".55"/>
+          <stop offset=".55" stop-color="#9ff2b8" stop-opacity=".65"/>
+          <stop offset=".8" stop-color="#b9a7f0" stop-opacity=".45"/>
+          <stop offset="1" stop-color="#b9a7f0" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="hbAur2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#b9a7f0" stop-opacity="0"/>
+          <stop offset=".35" stop-color="#f0b8d9" stop-opacity=".38"/>
+          <stop offset=".7" stop-color="#6fe3c1" stop-opacity=".5"/>
+          <stop offset="1" stop-color="#6fe3c1" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="hbBlur18" x="-40%" y="-200%" width="180%" height="500%">
+          <feGaussianBlur stdDeviation="14"/>
+        </filter>
+        <filter id="hbBlur8"><feGaussianBlur stdDeviation="7"/></filter>
+        <radialGradient id="hbMoon" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#fff6d8"/><stop offset=".75" stop-color="#ffedb8"/>
+          <stop offset="1" stop-color="#f5dd9a"/>
+        </radialGradient>
+        <radialGradient id="hbMoonHalo" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#ffedb8" stop-opacity=".35"/>
+          <stop offset="1" stop-color="#ffedb8" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="hbFar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#232a58"/><stop offset="1" stop-color="#1b2350"/>
+        </linearGradient>
+        <linearGradient id="hbMid" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1a2148"/><stop offset="1" stop-color="#141a38"/>
+        </linearGradient>
+        <linearGradient id="hbHill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#131938"/><stop offset="1" stop-color="#0c1027"/>
+        </linearGradient>
+        <radialGradient id="hbBeam" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#ffd88a" stop-opacity=".8"/>
+          <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <rect width="390" height="844" fill="url(#hbSky)"/>
+
+      <!-- aurora ribbons -->
+      <g class="aurora-drift" filter="url(#hbBlur18)">
+        <path d="M-30 92 C 70 55, 150 120, 240 80 S 390 45, 440 70"
+              fill="none" stroke="url(#hbAur1)" stroke-width="48" stroke-linecap="round"/>
+      </g>
+      <g class="aurora-drift2" filter="url(#hbBlur18)">
+        <path d="M-40 152 C 80 124, 180 178, 270 142 S 400 106, 450 126"
+              fill="none" stroke="url(#hbAur2)" stroke-width="30" stroke-linecap="round" opacity=".8"/>
+      </g>
+      <g class="aurora-drift" filter="url(#hbBlur8)" opacity=".55">
+        <path d="M-20 52 C 90 32, 200 72, 300 46 S 400 26, 430 38"
+              fill="none" stroke="url(#hbAur1)" stroke-width="13" stroke-linecap="round"/>
+      </g>
+
+      <!-- seeded star field -->
+      <g fill="#e9f2ff"><circle class="st" cx="359" cy="124" r="0.6" style="animation:twinkle 6.4s ease-in-out -1.1s infinite"/><circle class="st" cx="293" cy="325" r="1.0" style="animation:twinkle 6.2s ease-in-out -2.7s infinite"/><circle class="st" cx="94" cy="161" r="1.5" style="animation:twinkle 6.3s ease-in-out -3.5s infinite"/><circle class="st" cx="182" cy="397" r="1.4" style="animation:twinkle 4.0s ease-in-out -4.0s infinite"/><circle class="st stb" cx="269" cy="277" r="1.6" style="animation:twinkle 7.1s ease-in-out -2.9s infinite"/><circle class="st" cx="131" cy="360" r="1.0" style="animation:twinkle 4.1s ease-in-out -1.7s infinite"/><circle class="st stb" cx="115" cy="403" r="1.1" style="animation:twinkle 6.4s ease-in-out -2.8s infinite"/><circle class="st" cx="107" cy="241" r="0.7" style="animation:twinkle 5.2s ease-in-out -2.5s infinite"/><circle class="st stb" cx="21" cy="42" r="1.4" style="animation:twinkle 7.0s ease-in-out -3.8s infinite"/><circle class="st" cx="146" cy="107" r="1.4" style="animation:twinkle 5.1s ease-in-out -4.9s infinite"/><circle class="st" cx="43" cy="196" r="1.4" style="animation:twinkle 7.3s ease-in-out -3.9s infinite"/><circle class="st" cx="66" cy="299" r="1.0" style="animation:twinkle 4.7s ease-in-out -2.7s infinite"/><circle class="st" cx="336" cy="204" r="0.8" style="animation:twinkle 6.8s ease-in-out -3.5s infinite"/><circle class="st" cx="230" cy="24" r="1.5" style="animation:twinkle 5.2s ease-in-out -4.2s infinite"/><circle class="st" cx="121" cy="70" r="1.4" style="animation:twinkle 4.3s ease-in-out -0.1s infinite"/><circle class="st" cx="20" cy="132" r="0.9" style="animation:twinkle 4.6s ease-in-out -3.6s infinite"/><circle class="st" cx="311" cy="61" r="1.4" style="animation:twinkle 4.8s ease-in-out -3.1s infinite"/><circle class="st" cx="171" cy="178" r="0.8" style="animation:twinkle 5.4s ease-in-out -2.6s infinite"/><circle class="st" cx="257" cy="122" r="1.2" style="animation:twinkle 6.6s ease-in-out -1.6s infinite"/><circle class="st stb" cx="60" cy="87" r="1.2" style="animation:twinkle 6.9s ease-in-out -0.3s infinite"/><circle class="st" cx="204" cy="145" r="0.9" style="animation:twinkle 4.2s ease-in-out -1.5s infinite"/><circle class="st" cx="30" cy="371" r="1.3" style="animation:twinkle 5.5s ease-in-out -2.2s infinite"/><circle class="st" cx="285" cy="180" r="1.3" style="animation:twinkle 5.6s ease-in-out -4.6s infinite"/><circle class="st" cx="358" cy="273" r="1.0" style="animation:twinkle 4.4s ease-in-out -0.8s infinite"/><circle class="st" cx="160" cy="286" r="1.5" style="animation:twinkle 6.1s ease-in-out -0.6s infinite"/><circle class="st" cx="83" cy="30" r="0.9" style="animation:twinkle 5.0s ease-in-out -2.9s infinite"/><circle class="st" cx="246" cy="222" r="1.1" style="animation:twinkle 4.5s ease-in-out -4.4s infinite"/><circle class="st" cx="377" cy="349" r="1.4" style="animation:twinkle 6.5s ease-in-out -1.2s infinite"/><circle class="st stb" cx="212" cy="308" r="1.0" style="animation:twinkle 6.2s ease-in-out -2.0s infinite"/><circle class="st" cx="139" cy="216" r="0.8" style="animation:twinkle 5.8s ease-in-out -4.7s infinite"/><circle class="st" cx="9" cy="255" r="1.2" style="animation:twinkle 4.9s ease-in-out -1.3s infinite"/><circle class="st" cx="330" cy="392" r="1.2" style="animation:twinkle 6.0s ease-in-out -0.5s infinite"/><circle class="st" cx="192" cy="59" r="1.1" style="animation:twinkle 4.3s ease-in-out -1.9s infinite"/><circle class="st" cx="52" cy="338" r="0.7" style="animation:twinkle 5.7s ease-in-out -2.4s infinite"/><circle class="st" cx="269" cy="359" r="1.5" style="animation:twinkle 7.2s ease-in-out -1.7s infinite"/><circle class="st stb" cx="99" cy="123" r="1.1" style="animation:twinkle 6.7s ease-in-out -0.2s infinite"/><circle class="st" cx="304" cy="252" r="0.9" style="animation:twinkle 4.7s ease-in-out -4.5s infinite"/><circle class="st" cx="226" cy="392" r="1.3" style="animation:twinkle 5.3s ease-in-out -3.3s infinite"/><circle class="st" cx="152" cy="20" r="1.0" style="animation:twinkle 6.4s ease-in-out -2.1s infinite"/><circle class="st" cx="14" cy="318" r="1.5" style="animation:twinkle 5.9s ease-in-out -0.9s infinite"/><circle class="st" cx="352" cy="164" r="0.8" style="animation:twinkle 4.5s ease-in-out -3.7s infinite"/><circle class="st" cx="242" cy="63" r="1.2" style="animation:twinkle 6.1s ease-in-out -4.3s infinite"/><circle class="st" cx="76" cy="228" r="1.1" style="animation:twinkle 5.5s ease-in-out -1.4s infinite"/><circle class="st" cx="187" cy="337" r="0.7" style="animation:twinkle 4.8s ease-in-out -2.8s infinite"/><circle class="st stb" cx="317" cy="24" r="1.3" style="animation:twinkle 7.4s ease-in-out -1.0s infinite"/><circle class="st" cx="128" cy="308" r="1.0" style="animation:twinkle 5.1s ease-in-out -3.0s infinite"/></g>
+
+      <!-- moon -->
+      <circle cx="337" cy="84" r="54" fill="url(#hbMoonHalo)"/>
+      <circle cx="337" cy="84" r="24" fill="url(#hbMoon)"/>
+      <circle cx="329" cy="77" r="4.6" fill="#efd9a2" opacity=".55"/>
+      <circle cx="344" cy="92" r="3" fill="#efd9a2" opacity=".45"/>
+      <circle cx="337" cy="71" r="2.2" fill="#efd9a2" opacity=".4"/>
+
+      <!-- horizon aurora glow (behind the ridge) -->
+      <g filter="url(#hbBlur18)" opacity=".4">
+        <path d="M-20 468 C 90 448, 200 486, 300 456 S 400 436, 430 452"
+              fill="none" stroke="url(#hbAur1)" stroke-width="30" stroke-linecap="round"/>
+      </g>
+
+      <!-- far ridge with tiny lighthouse -->
+      <path d="M0 488 L60 450 L120 478 L200 442 L275 482 L330 452 L390 486 L390 700 L0 700 Z"
+            fill="url(#hbFar)"/>
+      <g transform="translate(120 452) scale(.9)">
+        <ellipse cx="0" cy="34" rx="26" ry="7" fill="url(#hbBeam)" opacity=".5"/>
+        <path d="M-5 30 L5 30 L3.4 8 L-3.4 8 Z" fill="#3a3f6e"/>
+        <rect x="-4" y="4" width="8" height="5" rx="1.6" fill="#2b2f5a"/>
+        <circle cx="0" cy="2" r="3.2" fill="#ffd88a">
+          <animate attributeName="opacity" values=".5;1;.5" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="0" cy="2" r="8" fill="url(#hbBeam)">
+          <animate attributeName="opacity" values=".4;.9;.4" dur="4s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <!-- mid mountains -->
+      <path d="M0 522 L55 480 L118 510 L185 472 L255 516 L318 486 L390 514 L390 760 L0 760 Z"
+            fill="url(#hbMid)"/>
+      <path d="M185 472 l13 10 -7 3 -6 -4 -6 4 -7 -3 Z" fill="#aeb8e6" opacity=".5"/>
+      <path d="M55 480 l10 9 -6 2 -4 -3 -5 3 -5 -2 Z" fill="#aeb8e6" opacity=".4"/>
+      <g fill="#10152e">
+        <path d="M2 522 l8 -24 8 24 Z M4 511 l6 -17 6 17 Z"/>
+        <path d="M368 516 l9 -25 9 25 Z M370 505 l7 -18 7 18 Z"/>
+      </g>
+
+      <!-- foreground hill (nav sits here) -->
+      <path d="M0 742 C 90 700, 160 726, 220 716 C 290 704, 340 722, 390 708 L390 844 L0 844 Z"
+            fill="url(#hbHill)"/>
+      <g stroke="#1d2450" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".9">
+        <path d="M42 742 q2 -12 -3 -18 M48 742 q1 -10 6 -15 M54 743 q0 -8 -2 -12"/>
+        <path d="M330 726 q2 -12 -3 -17 M337 726 q1 -9 6 -14"/>
+        <path d="M180 728 q2 -11 -3 -16 M187 728 q1 -9 5 -13"/>
+      </g>
+      <!-- fireflies -->
+      <g fill="#ffd88a">
+        <circle class="ffly" cx="40" cy="700" r="2.6"/>
+        <circle class="ffly" cx="340" cy="690" r="2.4" style="animation-delay:-2.7s"/>
+        <circle class="ffly" cx="200" cy="660" r="2.4" style="animation-delay:-5.4s"/>
+        <circle class="ffly" cx="70" cy="300" r="2.2" style="animation-delay:-8.1s"/>
+        <circle class="ffly" cx="320" cy="460" r="2.2" style="animation-delay:-10.8s"/>
+      </g>
+    </svg>
+
+    <!-- wooden RESCUE HQ sign with hanging lanterns -->
+    <div id="hub-sign" aria-hidden="true">
+      <svg viewBox="0 0 262 64">
+        <defs>
+          <linearGradient id="sgWood" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#5a4232"/><stop offset=".5" stop-color="#4a352a"/>
+            <stop offset="1" stop-color="#39281f"/>
+          </linearGradient>
+          <radialGradient id="sgLamp" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#fff2c8"/><stop offset=".6" stop-color="#ffd88a"/>
+            <stop offset="1" stop-color="#ffb85c"/>
+          </radialGradient>
+          <radialGradient id="sgHalo" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#ffd88a" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="36" y="12" width="190" height="42" rx="12" fill="url(#sgWood)"
+              stroke="#2c1f18" stroke-width="2"/>
+        <rect x="41" y="17" width="180" height="32" rx="8" fill="none"
+              stroke="rgba(255,216,138,.22)" stroke-width="1.6" stroke-dasharray="1 5" stroke-linecap="round"/>
+        <text x="131" y="39.5" text-anchor="middle" fill="#f3ead8" font-size="17" font-weight="900"
+              letter-spacing="5" font-family="ui-rounded,'SF Pro Rounded',-apple-system,sans-serif">RESCUE HQ</text>
+        <g class="lamp-flicker">
+          <line x1="18" y1="10" x2="18" y2="22" stroke="#2c1f18" stroke-width="2"/>
+          <circle cx="18" cy="34" r="16" fill="url(#sgHalo)"/>
+          <rect x="12" y="22" width="12" height="15" rx="4" fill="#3a2b21" stroke="#2c1f18" stroke-width="1.4"/>
+          <circle cx="18" cy="29.5" r="4" fill="url(#sgLamp)"/>
+        </g>
+        <g class="lamp-flicker" style="animation-delay:-3s">
+          <line x1="244" y1="10" x2="244" y2="22" stroke="#2c1f18" stroke-width="2"/>
+          <circle cx="244" cy="34" r="16" fill="url(#sgHalo)"/>
+          <rect x="238" y="22" width="12" height="15" rx="4" fill="#3a2b21" stroke="#2c1f18" stroke-width="1.4"/>
+          <circle cx="244" cy="29.5" r="4" fill="url(#sgLamp)"/>
+        </g>
+      </svg>
     </div>
-    <div id="hub-badge">
+
+    <!-- rescue member ID badge -->
+    <div id="hub-badge" class="aur-panel">
+      <div id="badge-rope" aria-hidden="true"></div>
       <div id="badge-photo-wrap">
         <img id="badge-photo" class="hidden" alt="">
         <svg id="badge-photo-placeholder" viewBox="0 0 100 100">
-          <g fill="#31405f">
-            <ellipse cx="50" cy="62" rx="20" ry="16"/>
-            <ellipse cx="28" cy="42" rx="8" ry="10" transform="rotate(-20 28 42)"/>
-            <ellipse cx="43" cy="34" rx="8" ry="10" transform="rotate(-7 43 34)"/>
-            <ellipse cx="59" cy="34" rx="8" ry="10" transform="rotate(7 59 34)"/>
-            <ellipse cx="73" cy="42" rx="8" ry="10" transform="rotate(20 73 42)"/>
+          <defs>
+            <radialGradient id="ptG" cx=".5" cy=".42" r=".65">
+              <stop offset="0" stop-color="#2b2f63"/><stop offset="1" stop-color="#161b3e"/>
+            </radialGradient>
+            <linearGradient id="ptInk" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#6fe3c1"/><stop offset="1" stop-color="#b9a7f0"/>
+            </linearGradient>
+            <filter id="ptBlur"><feGaussianBlur stdDeviation="4"/></filter>
+          </defs>
+          <circle cx="50" cy="50" r="50" fill="url(#ptG)"/>
+          <path d="M12 60 C 28 48, 44 66, 60 54 S 84 46, 90 52" fill="none"
+                stroke="#6fe3c1" stroke-width="11" stroke-linecap="round" opacity=".22" filter="url(#ptBlur)"/>
+          <g fill="url(#ptInk)" opacity=".9">
+            <ellipse cx="50" cy="60" rx="18" ry="14"/>
+            <ellipse cx="29" cy="42" rx="7" ry="9" transform="rotate(-20 29 42)"/>
+            <ellipse cx="43" cy="35" rx="7" ry="9" transform="rotate(-7 43 35)"/>
+            <ellipse cx="57" cy="35" rx="7" ry="9" transform="rotate(7 57 35)"/>
+            <ellipse cx="71" cy="42" rx="7" ry="9" transform="rotate(20 71 42)"/>
+          </g>
+        </svg>
+        <svg class="porthole-ring" viewBox="0 0 104 104" aria-hidden="true">
+          <defs>
+            <linearGradient id="ptRim" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ffd88a"/><stop offset=".5" stop-color="#b98a4e"/>
+              <stop offset="1" stop-color="#ffd88a"/>
+            </linearGradient>
+          </defs>
+          <circle cx="52" cy="52" r="49" fill="none" stroke="url(#ptRim)" stroke-width="4.5"/>
+          <circle cx="52" cy="52" r="44" fill="none" stroke="rgba(255,216,138,.18)" stroke-width="1.4"/>
+          <g fill="#e8c887">
+            <circle cx="52" cy="5.5" r="2.4"/><circle cx="52" cy="98.5" r="2.4"/>
+            <circle cx="5.5" cy="52" r="2.4"/><circle cx="98.5" cy="52" r="2.4"/>
           </g>
         </svg>
       </div>
@@ -119,27 +455,45 @@
         <div class="badge-role">ACTIVE RESCUE MEMBER</div>
         <div class="badge-status"><span class="badge-dot"></span>ON DUTY</div>
       </div>
-      <svg id="badge-logo" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M50 6 C 64 12, 76 14, 84 14 C 84 48, 79 74, 50 92 C 21 74, 16 48, 16 14 C 24 14, 36 12, 50 6 Z"
-              fill="none" stroke="#f2a7c6" stroke-width="5"/>
-        <g fill="#f2a7c6">
-          <ellipse cx="50" cy="52" rx="13" ry="10.5"/>
-          <ellipse cx="35" cy="39" rx="5" ry="6.5" transform="rotate(-20 35 39)"/>
-          <ellipse cx="45" cy="34" rx="5" ry="6.5" transform="rotate(-7 45 34)"/>
-          <ellipse cx="55" cy="34" rx="5" ry="6.5" transform="rotate(7 55 34)"/>
-          <ellipse cx="65" cy="39" rx="5" ry="6.5" transform="rotate(20 65 39)"/>
+      <svg id="badge-logo" viewBox="0 0 100 110" aria-hidden="true">
+        <defs>
+          <linearGradient id="emG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2b2f63"/><stop offset="1" stop-color="#191f4a"/>
+          </linearGradient>
+          <linearGradient id="emEdge" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#6fe3c1"/><stop offset="1" stop-color="#b9a7f0"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 6 C 64 12, 76 14, 84 14 C 84 48, 79 76, 50 94 C 21 76, 16 48, 16 14 C 24 14, 36 12, 50 6 Z"
+              fill="url(#emG)" stroke="url(#emEdge)" stroke-width="4"/>
+        <g fill="#ffd88a">
+          <ellipse cx="50" cy="56" rx="13" ry="10.5"/>
+          <ellipse cx="35" cy="43" rx="5" ry="6.5" transform="rotate(-20 35 43)"/>
+          <ellipse cx="45" cy="38" rx="5" ry="6.5" transform="rotate(-7 45 38)"/>
+          <ellipse cx="55" cy="38" rx="5" ry="6.5" transform="rotate(7 55 38)"/>
+          <ellipse cx="65" cy="43" rx="5" ry="6.5" transform="rotate(20 65 43)"/>
         </g>
+        <path d="M50 72 l2.7 5.4 6 1 -4.3 4.2 1 6 -5.4 -2.9 -5.4 2.9 1 -6 -4.3 -4.2 6 -1 Z" fill="#fff2c8"/>
       </svg>
       <button id="badge-edit" aria-label="edit badge">
-        <svg viewBox="0 0 24 24"><path d="M4 20 L8 19 L19 8 L16 5 L5 16 Z M14.5 6.5 L17.5 9.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        <svg viewBox="0 0 30 30">
+          <circle cx="15" cy="15" r="12.5" fill="none" stroke="#9aa6d8" stroke-width="2"/>
+          <path d="M15 6.5 L17.4 13 L15 11.8 L12.6 13 Z" fill="#9aa6d8"/>
+          <path d="M15 23.5 L12.6 17 L15 18.2 L17.4 17 Z" fill="#67719f"/>
+        </svg>
       </button>
     </div>
 
     <div id="hub-banner" class="hidden"></div>
     <button id="hub-checkin-banner" class="hidden">&#9789; TIME FOR PUP CHECK-IN &mdash; TELL HQ ABOUT YOUR DAY</button>
 
-    <div id="hub-monitor">
-      <div class="monitor-title">DAILY MONITOR</div>
+    <!-- moonstone monitor -->
+    <div id="hub-monitor" class="aur-panel">
+      <div class="monitor-title">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2 l1.9 5.3 5.6.2 -4.4 3.5 1.5 5.4 -4.6 -3.2 -4.6 3.2 1.5 -5.4 -4.4 -3.5 5.6 -.2 Z" fill="#9aa6d8"/></svg>
+        <span>DAILY MONITOR</span>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2 l1.9 5.3 5.6.2 -4.4 3.5 1.5 5.4 -4.6 -3.2 -4.6 3.2 1.5 -5.4 -4.4 -3.5 5.6 -.2 Z" fill="#9aa6d8"/></svg>
+      </div>
       <div id="monitor-boxes">
         <div class="hub-box" data-i="0"></div>
         <div class="hub-box" data-i="1"></div>
@@ -147,46 +501,73 @@
       </div>
     </div>
 
-    <div id="hub-mail">
+    <!-- paw mail: carved wooden mailbox -->
+    <div id="hub-mail" class="aur-panel">
       <div id="mail-head">
-        <svg id="mail-head-icon" viewBox="0 0 60 44" aria-hidden="true">
-          <rect x="3" y="4" width="54" height="36" rx="6" fill="none" stroke="#f2a7c6" stroke-width="3"/>
-          <path d="M5 8 L30 26 L55 8" fill="none" stroke="#f2a7c6" stroke-width="3" stroke-linejoin="round"/>
+        <svg id="mail-head-icon" viewBox="0 0 60 46" aria-hidden="true">
+          <rect x="3" y="6" width="54" height="36" rx="8" fill="#3a2b21" stroke="#5a4232" stroke-width="2.5"/>
+          <path d="M5 10 L30 28 L55 10" fill="none" stroke="#ffd88a" stroke-width="3" stroke-linejoin="round" opacity=".85"/>
+          <circle cx="30" cy="26" r="7.5" fill="#c9503f"/>
+          <g fill="#f3ead8" transform="translate(30 26.5) scale(.34) translate(-50 -50)">
+            <ellipse cx="50" cy="58" rx="16" ry="12"/>
+            <ellipse cx="33" cy="42" rx="6.4" ry="8.4" transform="rotate(-20 33 42)"/>
+            <ellipse cx="44" cy="36" rx="6.4" ry="8.4" transform="rotate(-7 44 36)"/>
+            <ellipse cx="56" cy="36" rx="6.4" ry="8.4" transform="rotate(7 56 36)"/>
+            <ellipse cx="67" cy="42" rx="6.4" ry="8.4" transform="rotate(20 67 42)"/>
+          </g>
         </svg>
         <span id="mail-title">PAW MAIL</span>
         <span id="mail-badge" class="hidden"></span>
+        <span id="mail-sync-dot" class="hidden"></span>
       </div>
       <div id="mail-list"></div>
     </div>
 
+    <!-- lantern nav -->
     <div id="hub-nav">
       <button class="hub-nav-btn" id="nav-den" aria-label="calm den">
-        <svg viewBox="0 0 60 60">
-          <path d="M30 10 C 38 18, 50 22, 50 34 C 50 45, 41 52, 30 52 C 19 52, 10 45, 10 34 C 10 22, 22 18, 30 10 Z" fill="none" stroke="#8fd4c7" stroke-width="3.5"/>
-          <circle cx="30" cy="34" r="8" fill="#8fd4c7"/>
+        <svg viewBox="0 0 76 76">
+          <defs>
+            <radialGradient id="nvHalo" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffd88a" stop-opacity=".4"/>
+              <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="38" cy="38" r="36" fill="url(#nvHalo)" class="lamp-flicker"/>
+          <circle cx="38" cy="38" r="27" fill="rgba(14,18,44,.85)" stroke="rgba(255,216,138,.4)" stroke-width="2"/>
+          <path d="M38 22 C 45 29, 54 32, 54 41 C 54 49, 47 54, 38 54 C 29 54, 22 49, 22 41 C 22 32, 31 29, 38 22 Z"
+                fill="none" stroke="#ffd88a" stroke-width="3"/>
+          <path d="M33 54 C 33 46, 43 46, 43 54 Z" fill="#ffd88a"/>
+          <circle cx="38" cy="38" r="4.5" fill="#ffd88a" opacity=".9"/>
         </svg>
         <span>CALM DEN</span>
       </button>
-      <button class="hub-nav-btn" id="nav-diary" aria-label="diary">
-        <svg viewBox="0 0 60 60">
-          <path d="M38 12 A 18 18 0 1 0 50 40 A 15 15 0 0 1 38 12 Z" fill="none" stroke="#c3b6dd" stroke-width="3.5" stroke-linejoin="round"/>
-          <circle cx="20" cy="18" r="2" fill="#c3b6dd"/>
-          <circle cx="14" cy="28" r="1.5" fill="#c3b6dd"/>
+      <button class="hub-nav-btn" id="nav-diary" aria-label="pup check-in">
+        <svg viewBox="0 0 76 76">
+          <circle class="nav-due-halo" cx="38" cy="38" r="36" fill="url(#nvHalo)"/>
+          <circle cx="38" cy="38" r="27" fill="rgba(14,18,44,.85)" stroke="rgba(185,167,240,.4)" stroke-width="2"/>
+          <path d="M45 22 A 19 19 0 1 0 56 47 A 15 15 0 0 1 45 22 Z" fill="none"
+                stroke="#b9a7f0" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="30" cy="28" r="2" fill="#b9a7f0"/>
+          <circle cx="25" cy="38" r="1.5" fill="#b9a7f0"/>
+          <circle cx="31" cy="47" r="1.8" fill="#b9a7f0"/>
         </svg>
         <span>PUP CHECK-IN</span>
       </button>
-      <button class="hub-nav-btn" id="nav-calendar" aria-label="calendar">
-        <svg viewBox="0 0 60 60">
-          <rect x="10" y="14" width="40" height="36" rx="6" fill="none" stroke="#a8c8e8" stroke-width="3.5"/>
-          <line x1="10" y1="26" x2="50" y2="26" stroke="#a8c8e8" stroke-width="3.5"/>
-          <line x1="21" y1="9" x2="21" y2="18" stroke="#a8c8e8" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="39" y1="9" x2="39" y2="18" stroke="#a8c8e8" stroke-width="3.5" stroke-linecap="round"/>
-          <circle cx="22" cy="36" r="3" fill="#a8c8e8"/>
-          <circle cx="38" cy="44" r="3" fill="#a8c8e8"/>
+      <button class="hub-nav-btn" id="nav-calendar" aria-label="log">
+        <svg viewBox="0 0 76 76">
+          <circle cx="38" cy="38" r="27" fill="rgba(14,18,44,.85)" stroke="rgba(111,227,193,.4)" stroke-width="2"/>
+          <path d="M38 26 C 33 22.5, 25 22.5, 22 25 L22 50 C 25 47.5, 33 47.5, 38 51
+                   C 43 47.5, 51 47.5, 54 50 L54 25 C 51 22.5, 43 22.5, 38 26 Z"
+                fill="none" stroke="#6fe3c1" stroke-width="3" stroke-linejoin="round"/>
+          <line x1="38" y1="26" x2="38" y2="51" stroke="#6fe3c1" stroke-width="2.4"/>
+          <path d="M27 32 h7 M27 38 h7 M42 32 h7" stroke="#6fe3c1" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          <path d="M44 40 l1.4 2.8 3 .4 -2.2 2.1 .5 3 -2.7 -1.5 -2.7 1.5 .5 -3 -2.2 -2.1 3 -.4 Z" fill="#6fe3c1" opacity=".8"/>
         </svg>
         <span>LOG</span>
       </button>
     </div>
+    <div class="vignette" aria-hidden="true"></div>
   </section>
 
   <!-- Badge setup overlay (parent) -->
@@ -207,47 +588,304 @@
     </div>
   </div>
 
-  <!-- ============ CALM DEN ============ -->
+  <!-- ============ CALM DEN — "the hillside at night" ============ -->
   <section id="screen-home" class="screen dark">
+    <svg class="scene" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="cdSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#070b1e"/><stop offset=".45" stop-color="#0e1330"/>
+          <stop offset=".75" stop-color="#1a2148"/><stop offset="1" stop-color="#232a58"/>
+        </linearGradient>
+        <linearGradient id="cdAur" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#6fe3c1" stop-opacity="0"/>
+          <stop offset=".3" stop-color="#6fe3c1" stop-opacity=".5"/>
+          <stop offset=".6" stop-color="#9ff2b8" stop-opacity=".55"/>
+          <stop offset=".85" stop-color="#b9a7f0" stop-opacity=".4"/>
+          <stop offset="1" stop-color="#b9a7f0" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="cdBlur" x="-40%" y="-300%" width="180%" height="700%"><feGaussianBlur stdDeviation="13"/></filter>
+        <linearGradient id="cdHill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#131938"/><stop offset="1" stop-color="#0c1027"/>
+        </linearGradient>
+      </defs>
+      <rect width="390" height="844" fill="url(#cdSky)"/>
+      <g class="aurora-drift" filter="url(#cdBlur)">
+        <path d="M-30 90 C 70 55, 160 120, 250 78 S 390 40, 440 66"
+              fill="none" stroke="url(#cdAur)" stroke-width="40" stroke-linecap="round"/>
+      </g>
+      <g fill="#e9f2ff"><circle class="st stb" cx="42" cy="60" r="1.7" style="animation:twinkle 7.2s ease-in-out -2.6s infinite"/><circle class="st" cx="343" cy="34" r="1.0" style="animation:twinkle 4.3s ease-in-out -3.7s infinite"/><circle class="st" cx="128" cy="136" r="1.5" style="animation:twinkle 5.5s ease-in-out -0.7s infinite"/><circle class="st" cx="219" cy="59" r="0.9" style="animation:twinkle 6.6s ease-in-out -2.1s infinite"/><circle class="st" cx="290" cy="119" r="1.3" style="animation:twinkle 4.7s ease-in-out -4.4s infinite"/><circle class="st" cx="70" cy="182" r="0.8" style="animation:twinkle 5.8s ease-in-out -1.4s infinite"/><circle class="st" cx="176" cy="24" r="1.2" style="animation:twinkle 6.1s ease-in-out -3.1s infinite"/><circle class="st stb" cx="252" cy="160" r="1.4" style="animation:twinkle 7.0s ease-in-out -0.4s infinite"/><circle class="st" cx="18" cy="118" r="1.1" style="animation:twinkle 4.9s ease-in-out -2.8s infinite"/><circle class="st" cx="366" cy="196" r="1.3" style="animation:twinkle 5.2s ease-in-out -1.9s infinite"/><circle class="st" cx="104" cy="76" r="0.7" style="animation:twinkle 6.4s ease-in-out -4.1s infinite"/><circle class="st" cx="315" cy="72" r="1.5" style="animation:twinkle 5.0s ease-in-out -0.9s infinite"/><circle class="st" cx="152" cy="188" r="1.0" style="animation:twinkle 6.8s ease-in-out -3.4s infinite"/><circle class="st" cx="232" cy="216" r="1.2" style="animation:twinkle 4.4s ease-in-out -1.1s infinite"/><circle class="st" cx="58" cy="248" r="1.4" style="animation:twinkle 5.7s ease-in-out -2.4s infinite"/><circle class="st" cx="196" cy="128" r="0.8" style="animation:twinkle 6.2s ease-in-out -4.8s infinite"/><circle class="st" cx="336" cy="268" r="1.1" style="animation:twinkle 4.6s ease-in-out -0.2s infinite"/><circle class="st stb" cx="270" cy="34" r="1.2" style="animation:twinkle 6.9s ease-in-out -1.6s infinite"/><circle class="st" cx="12" cy="200" r="0.9" style="animation:twinkle 5.4s ease-in-out -2.9s infinite"/><circle class="st" cx="118" cy="256" r="1.3" style="animation:twinkle 6.6s ease-in-out -3.9s infinite"/></g>
+      <path d="M0 764 C 90 726, 160 748, 220 740 C 290 730, 340 746, 390 734 L390 844 L0 844 Z"
+            fill="url(#cdHill)"/>
+      <g fill="#ffd88a">
+        <circle class="ffly" cx="52" cy="740" r="2.4"/>
+        <circle class="ffly" cx="330" cy="750" r="2.2" style="animation-delay:-4s"/>
+      </g>
+    </svg>
     <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="home-cards">
-      <button class="card" id="card-beacon" data-screen="beacon" aria-label="light the beacon">
-        <img class="pup card-pup" data-pup="beacon" alt="">
-        <svg class="card-icon" viewBox="0 0 80 100" aria-hidden="true">
-          <circle cx="40" cy="34" r="15" fill="#f9e6a8"/>
-          <g stroke="#f9e6a8" stroke-width="3" stroke-linecap="round" opacity="0.8">
-            <line x1="40" y1="8" x2="40" y2="14"/><line x1="62" y1="34" x2="68" y2="34"/>
-            <line x1="12" y1="34" x2="18" y2="34"/><line x1="56" y1="18" x2="60" y2="14"/>
-            <line x1="24" y1="18" x2="20" y2="14"/>
+      <!-- THE LANTERN LIGHTHOUSE -->
+      <button class="card" id="card-beacon" data-screen="beacon" aria-label="the lantern lighthouse">
+        <svg class="card-scene" viewBox="0 0 360 118" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="c1sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0b1026"/><stop offset=".6" stop-color="#141a3e"/>
+              <stop offset="1" stop-color="#1b2350"/>
+            </linearGradient>
+            <linearGradient id="c1sea" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#1b2350"/><stop offset="1" stop-color="#0a0e26"/>
+            </linearGradient>
+            <radialGradient id="c1lamp" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#fff6d8"/><stop offset=".55" stop-color="#ffd88a"/>
+              <stop offset="1" stop-color="#ffb85c"/>
+            </radialGradient>
+            <radialGradient id="c1halo" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffd88a" stop-opacity=".6"/>
+              <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="c1beam" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#ffe9b5" stop-opacity=".45"/>
+              <stop offset="1" stop-color="#ffe9b5" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="c1tower" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#cfc4ab"/><stop offset=".42" stop-color="#f3ead8"/>
+              <stop offset="1" stop-color="#b9ae95"/>
+            </linearGradient>
+            <filter id="c1blur"><feGaussianBlur stdDeviation="6"/></filter>
+          </defs>
+          <rect width="360" height="118" fill="url(#c1sky)"/>
+          <g filter="url(#c1blur)" opacity=".5">
+            <path d="M120 18 C 190 4, 260 30, 350 12" fill="none" stroke="#6fe3c1" stroke-width="14" stroke-linecap="round"/>
           </g>
-          <path d="M32 48 h16 l6 40 h-28 Z" fill="#5d7292"/>
-          <line x1="30" y1="62" x2="50" y2="74" stroke="#3d5170" stroke-width="3"/>
-          <line x1="50" y1="62" x2="30" y2="74" stroke="#3d5170" stroke-width="3"/>
-        </svg>
-      </button>
-      <button class="card" id="card-breathing" data-screen="breathing" aria-label="breathing game">
-        <img class="pup card-pup" data-pup="breathing" alt="">
-        <svg class="card-icon" viewBox="0 0 80 100" aria-hidden="true">
-          <circle cx="40" cy="50" r="16" fill="#c3b6dd"/>
-          <circle cx="40" cy="50" r="24" fill="none" stroke="#c3b6dd" stroke-width="2.5" opacity="0.6"/>
-          <circle cx="40" cy="50" r="32" fill="none" stroke="#c3b6dd" stroke-width="2" opacity="0.3"/>
-        </svg>
-      </button>
-      <button class="card" id="card-bridge" data-screen="bridge" aria-label="cross the bridge">
-        <img class="pup card-pup" data-pup="bridge" alt="">
-        <svg class="card-icon" viewBox="0 0 80 100" aria-hidden="true">
-          <path d="M6 40 v40 M74 40 v40" stroke="#5d7292" stroke-width="5" stroke-linecap="round"/>
-          <path d="M6 44 C 30 58, 50 58, 74 44" fill="none" stroke="#8fc7bd" stroke-width="3.5"/>
-          <path d="M6 58 C 30 72, 50 72, 74 58" fill="none" stroke="#8fc7bd" stroke-width="3.5"/>
-          <g stroke="#8fc7bd" stroke-width="2.5">
-            <line x1="16" y1="48" x2="16" y2="62"/><line x1="28" y1="52" x2="28" y2="66"/>
-            <line x1="40" y1="53" x2="40" y2="67"/><line x1="52" y1="52" x2="52" y2="66"/>
-            <line x1="64" y1="48" x2="64" y2="62"/>
+          <g fill="#e9f2ff" opacity=".8">
+            <circle cx="150" cy="22" r="1.2"/><circle cx="230" cy="40" r="1"/><circle cx="300" cy="20" r="1.3"/>
+            <circle cx="196" cy="14" r="0.9"/><circle cx="340" cy="46" r="1"/>
           </g>
-          <path d="M36 30 l4 8 l4 -8 l8 3 l-12 9 l-12 -9 Z" fill="#f9e6a8" transform="translate(0,-6)"/>
+          <rect x="0" y="74" width="360" height="44" fill="url(#c1sea)"/>
+          <g stroke="#ffedb8" stroke-linecap="round" opacity=".3">
+            <path d="M210 86 h22" stroke-width="2.6"/><path d="M244 98 h30" stroke-width="3"/>
+            <path d="M196 106 h24" stroke-width="2.6"/>
+          </g>
+          <path d="M0 118 L0 62 Q 40 50 78 56 Q 110 60 122 74 L124 118 Z" fill="#10152e"/>
+          <circle cx="66" cy="30" r="42" fill="url(#c1halo)" class="lamp-flicker"/>
+          <path d="M66 26 L360 -20 L360 20 Z" fill="url(#c1beam)" opacity=".5"/>
+          <path d="M57 36 L75 36 L80 78 L52 78 Z" fill="url(#c1tower)"/>
+          <path d="M56 48 L76 48 L77 58 L55 58 Z" fill="#57c2a6"/>
+          <rect x="53" y="30" width="26" height="7" rx="2.6" fill="#3a2b21"/>
+          <circle cx="66" cy="26" r="7" fill="url(#c1lamp)" class="lamp-flicker"/>
+          <path d="M55 20 Q 66 8 77 20 Z" fill="#c9503f"/>
+          <circle class="ffly" cx="120" cy="52" r="2.2" fill="#ffd88a"/>
         </svg>
+        <span class="card-label">THE LANTERN LIGHTHOUSE</span>
+      </button>
+      <!-- MOONBEAM BREATHING -->
+      <button class="card" id="card-breathing" data-screen="breathing" aria-label="moonbeam breathing">
+        <svg class="card-scene" viewBox="0 0 360 118" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="c2sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0b1026"/><stop offset=".7" stop-color="#161c42"/>
+              <stop offset="1" stop-color="#1c2350"/>
+            </linearGradient>
+            <radialGradient id="c2moon" cx=".5" cy=".44" r=".6">
+              <stop offset="0" stop-color="#fff8e2"/><stop offset=".62" stop-color="#ffedb8"/>
+              <stop offset="1" stop-color="#f0d494"/>
+            </radialGradient>
+            <radialGradient id="c2out" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffedb8" stop-opacity=".4"/>
+              <stop offset="1" stop-color="#ffedb8" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="c2aur" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#6fe3c1" stop-opacity="0"/>
+              <stop offset="1" stop-color="#9ff2b8" stop-opacity=".6"/>
+            </linearGradient>
+            <filter id="c2blur"><feGaussianBlur stdDeviation="6"/></filter>
+          </defs>
+          <rect width="360" height="118" fill="url(#c2sky)"/>
+          <g fill="#e9f2ff" opacity=".8">
+            <circle cx="40" cy="26" r="1.2"/><circle cx="96" cy="14" r="1"/><circle cx="140" cy="42" r="1.2"/>
+            <circle cx="70" cy="66" r="0.9"/><circle cx="120" cy="86" r="1"/>
+          </g>
+          <g filter="url(#c2blur)" class="breathe-slow">
+            <path d="M212 6 C 232 30, 250 40, 262 56" fill="none" stroke="url(#c2aur)" stroke-width="16" stroke-linecap="round" opacity=".8"/>
+            <path d="M320 2 C 300 26, 286 40, 276 56" fill="none" stroke="url(#c2aur)" stroke-width="11" stroke-linecap="round" opacity=".6"/>
+          </g>
+          <g class="breathe-slow">
+            <circle cx="268" cy="78" r="66" fill="url(#c2out)"/>
+            <circle cx="268" cy="78" r="56" fill="none" stroke="#b9a7f0" stroke-width="1.4" opacity=".3"/>
+            <circle cx="268" cy="78" r="40" fill="url(#c2moon)"/>
+            <circle cx="252" cy="64" r="4.6" fill="#f0d494" opacity=".5"/>
+            <circle cx="284" cy="80" r="3.2" fill="#f0d494" opacity=".45"/>
+            <path d="M248 82 q4 -4.5 8 0 M276 82 q4 -4.5 8 0" fill="none" stroke="#8a6d3c" stroke-width="2.6" stroke-linecap="round" opacity=".7"/>
+          </g>
+          <path d="M0 108 C 90 92, 240 94, 360 106 L360 118 L0 118 Z" fill="#0c1027"/>
+        </svg>
+        <span class="card-label">MOONBEAM BREATHING</span>
+      </button>
+      <!-- THE MOONLIT BRIDGE -->
+      <button class="card" id="card-bridge" data-screen="bridge" aria-label="the moonlit bridge">
+        <svg class="card-scene" viewBox="0 0 360 118" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="c3sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0b1026"/><stop offset=".6" stop-color="#151b40"/>
+              <stop offset="1" stop-color="#1c2350"/>
+            </linearGradient>
+            <radialGradient id="c3glow" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffd88a" stop-opacity=".6"/>
+              <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="c3lamp" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#fff6d8"/><stop offset=".55" stop-color="#ffd88a"/>
+              <stop offset="1" stop-color="#ffb85c"/>
+            </radialGradient>
+            <linearGradient id="c3fall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#9fb6e8" stop-opacity=".5"/>
+              <stop offset="1" stop-color="#7f96d0" stop-opacity=".08"/>
+            </linearGradient>
+            <filter id="c3blur"><feGaussianBlur stdDeviation="6"/></filter>
+          </defs>
+          <rect width="360" height="118" fill="url(#c3sky)"/>
+          <g filter="url(#c3blur)" opacity=".5">
+            <path d="M20 20 C 110 2, 220 30, 340 10" fill="none" stroke="#b9a7f0" stroke-width="12" stroke-linecap="round"/>
+          </g>
+          <g fill="#e9f2ff" opacity=".8">
+            <circle cx="60" cy="34" r="1.1"/><circle cx="186" cy="16" r="1.2"/><circle cx="290" cy="34" r="1"/>
+          </g>
+          <rect x="120" y="80" width="120" height="38" fill="#0c1027"/>
+          <rect x="126" y="52" width="16" height="66" rx="6" fill="url(#c3fall)"/>
+          <path d="M0 118 L0 40 Q 40 28 78 38 Q 108 44 112 66 L114 118 Z" fill="#10152e"/>
+          <path d="M360 118 L360 36 Q 320 24 284 36 Q 254 44 250 64 L248 118 Z" fill="#10152e"/>
+          <g stroke="#3a2b21" stroke-width="6" stroke-linecap="round">
+            <line x1="106" y1="62" x2="106" y2="30"/>
+            <line x1="254" y1="60" x2="254" y2="28"/>
+          </g>
+          <path d="M106 34 C 140 56, 220 56, 254 32" fill="none" stroke="#8a6d55" stroke-width="3"/>
+          <path d="M106 64 C 140 82, 220 82, 254 62" fill="none" stroke="#8a6d55" stroke-width="4"/>
+          <g stroke="#8a6d55" stroke-width="2" opacity=".9">
+            <line x1="130" y1="47" x2="130" y2="74"/><line x1="160" y1="53" x2="160" y2="79"/>
+            <line x1="190" y1="54" x2="190" y2="80"/><line x1="220" y1="51" x2="220" y2="77"/>
+          </g>
+          <g stroke-linecap="round">
+            <line x1="118" y1="70" x2="140" y2="73" stroke="#e8b06a" stroke-width="6"/>
+            <line x1="146" y1="75" x2="168" y2="77" stroke="#e8b06a" stroke-width="6"/>
+            <line x1="174" y1="78" x2="196" y2="78" stroke="#6d563f" stroke-width="6"/>
+            <line x1="202" y1="77" x2="224" y2="74" stroke="#6d563f" stroke-width="6"/>
+          </g>
+          <g transform="translate(160 62)">
+            <circle cx="0" cy="0" r="30" fill="url(#c3glow)" class="lamp-flicker"/>
+            <rect x="-13" y="-7" width="26" height="14" rx="4" fill="#8a5f3c" stroke="#5d3f28" stroke-width="1.6"/>
+            <circle cx="-7" cy="8" r="4.4" fill="#3a2b21"/><circle cx="7" cy="8" r="4.4" fill="#3a2b21"/>
+            <circle cx="10" cy="-14" r="3.4" fill="url(#c3lamp)" class="lamp-flicker"/>
+          </g>
+        </svg>
+        <span class="card-label">THE MOONLIT BRIDGE</span>
+      </button>
+      <!-- PAINT THE SKY (new) -->
+      <button class="card" id="card-sky" data-screen="sky" aria-label="paint the sky">
+        <svg class="card-scene" viewBox="0 0 360 118" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="c4sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#04061a"/><stop offset=".7" stop-color="#0a0e2c"/>
+              <stop offset="1" stop-color="#141a3e"/>
+            </linearGradient>
+            <linearGradient id="c4rib" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0" stop-color="#6fe3c1" stop-opacity="0"/>
+              <stop offset=".25" stop-color="#6fe3c1" stop-opacity=".4"/>
+              <stop offset=".55" stop-color="#9ff2b8" stop-opacity=".7"/>
+              <stop offset=".85" stop-color="#b9a7f0" stop-opacity=".85"/>
+              <stop offset="1" stop-color="#f0b8d9" stop-opacity=".9"/>
+            </linearGradient>
+            <radialGradient id="c4touch" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffffff" stop-opacity=".8"/>
+              <stop offset=".4" stop-color="#f0b8d9" stop-opacity=".4"/>
+              <stop offset="1" stop-color="#f0b8d9" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="c4blur"><feGaussianBlur stdDeviation="7"/></filter>
+            <filter id="c4blur2"><feGaussianBlur stdDeviation="2.4"/></filter>
+          </defs>
+          <rect width="360" height="118" fill="url(#c4sky)"/>
+          <g fill="#3d4677">
+            <circle cx="40" cy="30" r="1.8"/><circle cx="120" cy="16" r="1.6"/><circle cx="330" cy="26" r="1.8"/>
+            <circle cx="90" cy="84" r="1.6"/><circle cx="300" cy="80" r="1.6"/>
+          </g>
+          <g filter="url(#c4blur)">
+            <path d="M36 104 C 100 84, 130 52, 200 48 C 262 44, 288 28, 322 16"
+                  fill="none" stroke="url(#c4rib)" stroke-width="26" stroke-linecap="round"/>
+          </g>
+          <g filter="url(#c4blur2)" opacity=".9">
+            <path d="M36 104 C 100 84, 130 52, 200 48 C 262 44, 288 28, 322 16"
+                  fill="none" stroke="url(#c4rib)" stroke-width="8" stroke-linecap="round"/>
+          </g>
+          <g transform="translate(150 50)">
+            <circle r="2.8" fill="#fff6d8"/>
+            <path d="M0 -9 L1.6 -2.4 L8 0 L1.6 2.4 L0 9 L-1.6 2.4 L-8 0 L-1.6 -2.4 Z" fill="#fff6d8" opacity=".85" class="halo-pulse"/>
+          </g>
+          <g transform="translate(238 38)">
+            <circle r="2.4" fill="#fff6d8"/>
+            <path d="M0 -8 L1.4 -2.2 L7 0 L1.4 2.2 L0 8 L-1.4 2.2 L-7 0 L-1.4 -2.2 Z" fill="#fff6d8" opacity=".8" class="halo-pulse" style="animation-delay:-1.6s"/>
+          </g>
+          <g transform="translate(322 16)">
+            <circle r="20" fill="url(#c4touch)" class="halo-pulse"/>
+            <circle r="10" fill="none" stroke="#ffffff" stroke-width="2" opacity=".9"/>
+            <circle r="3.4" fill="#ffffff" opacity=".95"/>
+          </g>
+          <path d="M0 112 L46 92 L92 108 L150 90 L206 110 L262 94 L310 108 L360 96 L360 118 L0 118 Z" fill="#0e1330"/>
+        </svg>
+        <span class="card-label">PAINT THE SKY</span>
+      </button>
+      <!-- THE FIREFLY LULLABY (new) -->
+      <button class="card" id="card-fireflies" data-screen="fireflies" aria-label="the firefly lullaby">
+        <svg class="card-scene" viewBox="0 0 360 118" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="c5sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#0b1026"/><stop offset=".6" stop-color="#12173a"/>
+              <stop offset="1" stop-color="#1d244e"/>
+            </linearGradient>
+            <radialGradient id="c5jar" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#ffd88a" stop-opacity=".5"/>
+              <stop offset=".55" stop-color="#ffd88a" stop-opacity=".18"/>
+              <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="c5fly" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#fff6cf"/><stop offset=".5" stop-color="#ffd88a"/>
+              <stop offset="1" stop-color="#ffd88a" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="c5grass" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#161d40"/><stop offset="1" stop-color="#0e1330"/>
+            </linearGradient>
+          </defs>
+          <rect width="360" height="118" fill="url(#c5sky)"/>
+          <g fill="#e9f2ff" opacity=".7">
+            <circle cx="50" cy="20" r="1.1"/><circle cx="130" cy="34" r="1"/><circle cx="210" cy="14" r="1.2"/>
+          </g>
+          <path d="M46 22 A 12 12 0 1 0 48 44 A 9 9 0 0 1 46 22 Z" fill="#ffedb8" opacity=".9"/>
+          <path d="M0 84 C 100 70, 260 70, 360 82 L360 118 L0 118 Z" fill="url(#c5grass)"/>
+          <ellipse cx="268" cy="80" rx="110" ry="52" fill="url(#c5jar)" class="lamp-flicker"/>
+          <g>
+            <path d="M250 96 Q 249 112 252 118 L286 118 Q 289 112 288 96 Z" fill="#3a2b21"/>
+            <ellipse cx="269" cy="96" rx="19" ry="6" fill="#5d4530"/>
+          </g>
+          <g>
+            <path d="M254 52 L254 84 Q 254 92 262 92 L276 92 Q 284 92 284 84 L284 52 Z"
+                  fill="rgba(190,220,236,.14)" stroke="#9fb6d0" stroke-width="2"/>
+            <rect x="251" y="42" width="36" height="11" rx="4.4" fill="#8a6d55"/>
+            <ellipse cx="269" cy="84" rx="11" ry="5" fill="#ffd88a" opacity=".5"/>
+            <circle cx="264" cy="74" r="5.4" fill="url(#c5fly)" class="lamp-flicker"/>
+            <circle cx="274" cy="62" r="4.8" fill="url(#c5fly)" class="lamp-flicker" style="animation-delay:-2s"/>
+          </g>
+          <g font-family="ui-rounded,-apple-system,sans-serif" font-weight="800" text-anchor="middle">
+            <text x="238" y="38" font-size="12" fill="#ffd88a" opacity=".9">&#9834;</text>
+            <text x="258" y="28" font-size="10" fill="#ffd88a" opacity=".7">&#9834;</text>
+          </g>
+          <circle class="ffly" cx="120" cy="60" r="4" fill="url(#c5fly)"/>
+          <circle class="ffly" cx="60" cy="80" r="3.2" fill="url(#c5fly)" style="animation-delay:-5s"/>
+          <circle class="ffly" cx="180" cy="44" r="3.4" fill="url(#c5fly)" style="animation-delay:-8s"/>
+          <g stroke="#131938" stroke-width="3.4" stroke-linecap="round" fill="none">
+            <path d="M24 118 q-4 -22 4 -34"/><path d="M38 118 q2 -18 -6 -28"/>
+            <path d="M330 118 q-4 -20 4 -30"/><path d="M344 118 q2 -16 -5 -26"/>
+          </g>
+        </svg>
+        <span class="card-label">THE FIREFLY LULLABY</span>
       </button>
     </div>
   </section>
@@ -255,7 +893,7 @@
   <!-- ============ LIGHT THE BEACON ============ -->
   <section id="screen-beacon" class="screen night">
     <button class="home-btn dark-btn" data-target="home" aria-label="back">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <button id="beacon-mic-btn" aria-label="microphone">
       <svg viewBox="0 0 40 40">
@@ -287,7 +925,7 @@
   <!-- ============ BREATHING ============ -->
   <section id="screen-breathing" class="screen night">
     <button class="home-btn dark-btn" data-target="home" aria-label="back">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="breath-lights" aria-hidden="true">
       <div class="breath-light"></div><div class="breath-light"></div><div class="breath-light"></div><div class="breath-light"></div><div class="breath-light"></div>
@@ -303,17 +941,37 @@
   <!-- ============ CROSS THE BRIDGE ============ -->
   <section id="screen-bridge" class="screen night">
     <button class="home-btn dark-btn" data-target="home" aria-label="back">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <img id="bridge-pup" class="pup" data-pup="bridge" alt="pup">
     <div id="bridge-sparkles" aria-hidden="true"></div>
     <canvas id="bridge-canvas"></canvas>
   </section>
 
+  <!-- ============ PAINT THE SKY (stub — game implemented separately) ============ -->
+  <section id="screen-sky" class="screen dark">
+    <button class="home-btn dark-btn" data-target="home" aria-label="back">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <h1 class="mission-title">PAINT THE SKY</h1>
+    <canvas id="sky-canvas"></canvas>
+    <div id="sky-hint" class="mission-hint"></div>
+  </section>
+
+  <!-- ============ THE FIREFLY LULLABY (stub — game implemented separately) ============ -->
+  <section id="screen-fireflies" class="screen dark">
+    <button class="home-btn dark-btn" data-target="home" aria-label="back">
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <h1 class="mission-title">THE FIREFLY LULLABY</h1>
+    <div id="firefly-stage"><div id="firefly-jar"></div></div>
+    <div id="firefly-hint" class="mission-hint"></div>
+  </section>
+
   <!-- ============ DIARY ============ -->
   <section id="screen-diary" class="screen dark">
     <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="diary-progress"></div>
     <img id="diary-pup" class="pup" data-pup="breathing" alt="pup">
@@ -341,10 +999,10 @@
     <input id="diary-selfie-input" type="file" accept="image/*" capture="user" class="hidden">
     <div id="diary-end" class="hidden">
       <svg id="diary-moon" viewBox="0 0 100 100">
-        <path d="M62 15 A 38 38 0 1 0 88 62 A 30 30 0 0 1 62 15 Z" fill="#f9e6a8"/>
-        <circle cx="26" cy="26" r="2.5" fill="#c3b6dd"/>
-        <circle cx="18" cy="44" r="1.8" fill="#c3b6dd"/>
-        <circle cx="30" cy="60" r="2" fill="#c3b6dd"/>
+        <path d="M62 15 A 38 38 0 1 0 88 62 A 30 30 0 0 1 62 15 Z" fill="#ffedb8"/>
+        <circle cx="26" cy="26" r="2.5" fill="#b9a7f0"/>
+        <circle cx="18" cy="44" r="1.8" fill="#b9a7f0"/>
+        <circle cx="30" cy="60" r="2" fill="#b9a7f0"/>
       </svg>
     </div>
   </section>
@@ -352,7 +1010,7 @@
   <!-- ============ PAW MAIL: READ + REPLY ============ -->
   <section id="screen-mailread" class="screen dark">
     <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="mail-letter">
       <button id="mail-speak-btn" aria-label="read aloud">
@@ -363,14 +1021,22 @@
       </button>
       <img id="mail-from-photo" class="hidden" alt="">
       <svg id="mail-seal" viewBox="0 0 100 100" aria-hidden="true">
-        <path d="M50 8 C 63 14, 74 16, 82 16 C 82 47, 77 71, 50 88 C 23 71, 18 47, 18 16 C 26 16, 37 14, 50 8 Z"
-              fill="#f2a7c6" stroke="#e386ad" stroke-width="3"/>
-        <g fill="#ffffff">
-          <ellipse cx="50" cy="52" rx="12" ry="10"/>
-          <ellipse cx="36" cy="40" rx="4.5" ry="6" transform="rotate(-20 36 40)"/>
-          <ellipse cx="45" cy="35" rx="4.5" ry="6" transform="rotate(-7 45 35)"/>
-          <ellipse cx="55" cy="35" rx="4.5" ry="6" transform="rotate(7 55 35)"/>
-          <ellipse cx="64" cy="40" rx="4.5" ry="6" transform="rotate(20 64 40)"/>
+        <defs>
+          <radialGradient id="wsWax" cx=".4" cy=".35" r=".78">
+            <stop offset="0" stop-color="#e0705a"/><stop offset=".55" stop-color="#c9503f"/>
+            <stop offset="1" stop-color="#a33a2e"/>
+          </radialGradient>
+        </defs>
+        <path d="M50 5 C 68 3, 90 15, 94 38 C 98 60, 88 84, 62 93 C 38 99, 12 86, 6 60
+                 C 1 36, 22 8, 50 5 Z" fill="url(#wsWax)"/>
+        <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(255,242,200,.35)" stroke-width="2"
+                stroke-dasharray="1 5" stroke-linecap="round"/>
+        <g fill="#f3ead8">
+          <ellipse cx="50" cy="58" rx="14" ry="11"/>
+          <ellipse cx="34" cy="44" rx="5.4" ry="7" transform="rotate(-20 34 44)"/>
+          <ellipse cx="45" cy="38" rx="5.4" ry="7" transform="rotate(-7 45 38)"/>
+          <ellipse cx="56" cy="38" rx="5.4" ry="7" transform="rotate(7 56 38)"/>
+          <ellipse cx="66" cy="44" rx="5.4" ry="7" transform="rotate(20 66 44)"/>
         </g>
       </svg>
       <div id="mail-from">FROM PAW PATROL HQ</div>
@@ -392,7 +1058,7 @@
   <!-- Delete-letter confirmation (long-press a letter in the inbox) -->
   <div id="mail-delete-confirm" class="hidden">
     <div id="mail-delete-card">
-      <p class="voice-title" style="color:#dce6f4">Delete this letter?</p>
+      <p class="voice-title" style="color:#f3ead8">Delete this letter?</p>
       <p class="mail-delete-sub" id="mail-delete-date"></p>
       <p class="mail-delete-sub">Any voice replies saved on it will be deleted too.</p>
       <div class="mail-delete-actions">
@@ -402,10 +1068,10 @@
     </div>
   </div>
 
-  <!-- Parent voice settings (tap the hub's top-right corner 5 times) -->
+  <!-- Parent voice settings (opened from the compose panel) -->
   <div id="voice-settings" class="hidden">
     <div id="voice-settings-card">
-      <p class="voice-title" style="color:#dce6f4">Reader voice</p>
+      <p class="voice-title" style="color:#f3ead8">Reader voice</p>
       <select id="vs-voice"></select>
       <div class="vs-slider-row">
         <span class="vs-label">SAY IT LIKE</span>
@@ -434,10 +1100,10 @@
     </div>
   </div>
 
-  <!-- Parent compose overlay (hold PAW MAIL title 5s) -->
+  <!-- Parent compose overlay (hold PAW MAIL title) -->
   <div id="mail-compose" class="hidden">
     <div id="mail-compose-card">
-      <p class="voice-title" style="color:#dce6f4">Write a letter from HQ</p>
+      <p class="voice-title" style="color:#f3ead8">Write a letter from HQ</p>
       <input id="compose-subject" type="text" maxlength="60" placeholder="Subject (e.g. Great job today!)">
       <textarea id="compose-text" rows="6" placeholder="Dear Maelie..."></textarea>
       <button id="compose-photo-btn">From photo (optional) &mdash; who is this letter from?</button>
@@ -454,7 +1120,7 @@
   <!-- ============ LOG: CALENDAR + DAY REPORT ============ -->
   <section id="screen-calendar" class="screen dark">
     <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="cal-head">
       <button id="cal-prev" aria-label="previous month">&#9664;</button>
@@ -467,7 +1133,7 @@
 
   <section id="screen-day" class="screen dark">
     <button class="home-btn dark-btn" data-target="calendar" aria-label="back to calendar">
-      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#8fa8cc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="day-report"></div>
   </section>
@@ -487,5 +1153,8 @@
   <script src="js/diary.js" defer></script>
   <script src="js/calendar.js" defer></script>
   <script src="js/mail.js" defer></script>
+  <script src="js/sky.js" defer></script>
+  <script src="js/fireflies.js" defer></script>
+  <script src="js/mailsync.js" defer></script>
 </body>
 </html>
