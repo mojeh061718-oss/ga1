@@ -1538,6 +1538,7 @@
   <div id="mail-compose" class="hidden">
     <div id="mail-compose-card">
       <p class="voice-title" style="color:#f3ead8">Write a letter from HQ</p>
+      <button id="compose-tpl-btn">Letter helper &mdash; start from a template&hellip;</button>
       <input id="compose-subject" type="text" maxlength="60" placeholder="Subject (e.g. Great job today!)">
       <textarea id="compose-text" rows="6" placeholder="Dear Maelie..."></textarea>
       <button id="compose-photo-btn">From photo (optional) &mdash; who is this letter from?</button>
@@ -1547,6 +1548,27 @@
       <div id="compose-actions">
         <button id="compose-cancel">Cancel</button>
         <button id="compose-send">Send to her inbox</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Letter helper: pick a letter type, answer a few detail questions,
+       and a natural letter is drafted into the compose fields (editable). -->
+  <div id="tpl-picker" class="hidden">
+    <div id="tpl-picker-card">
+      <p class="voice-title">What kind of letter?</p>
+      <div id="tpl-list"></div>
+      <button id="tpl-picker-close" class="tpl-back">Back</button>
+    </div>
+  </div>
+  <div id="tpl-form" class="hidden">
+    <div id="tpl-form-card">
+      <p class="voice-title" id="tpl-form-title"></p>
+      <p id="tpl-form-hint"></p>
+      <div id="tpl-questions"></div>
+      <div id="tpl-form-actions">
+        <button id="tpl-form-back" class="tpl-back">Back</button>
+        <button id="tpl-generate">Write the letter</button>
       </div>
     </div>
   </div>
@@ -1590,5 +1612,6 @@
   <script src="js/sky.js" defer></script>
   <script src="js/fireflies.js" defer></script>
   <script src="js/mailsync.js" defer></script>
+  <script src="js/mailtemplates.js" defer></script>
 </body>
 </html>
