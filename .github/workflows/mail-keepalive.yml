@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Ping mailbox store
         env:
-          PANTRY_ID: ""
+          PANTRY_ID: "c543c575-8429-4573-988f-df6dbc46b73e"
         run: |
           if [ -z "$PANTRY_ID" ]; then
             echo "No pantry configured yet - nothing to keep alive."
