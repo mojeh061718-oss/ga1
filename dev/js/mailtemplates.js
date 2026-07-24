@@ -301,6 +301,72 @@ const MailTemplates = (() => {
         return p;
       },
     },
+    {
+      key: 'brave',
+      label: 'Being brave…',
+      desc: 'A long courage letter for something scary coming up (or conquered)',
+      hint: 'Tell us what needs bravery — a storm, the doctor, the dark, a big first. The letter does the rest.',
+      questions: [
+        { id: 'what', label: 'What does she need to be brave about?', ph: 'sleeping in your own bed when it feels dark and quiet', req: true },
+        { id: 'feel', label: 'How does she feel about it? (optional)', ph: 'it makes you feel scared and you want to come find Mommy' },
+        { id: 'before', label: 'A brave thing she has done before (optional)', ph: 'you went down the big slide all by yourself' },
+        { id: 'helper', label: 'Something or someone that can help her (optional)', ph: 'your stuffed puppy and your night light' },
+      ],
+      subjects: [
+        'A bravery letter for {n}',
+        'The bravest pup we know',
+        'Courage training for Ranger {n}',
+        'From one brave team to a brave girl',
+        'Something important about being brave',
+      ],
+      build(a) {
+        const p = [];
+        p.push(pick([
+          `Tonight I want to write you a longer letter than usual, because it is about the most important thing a rescue pup ever learns: being brave. We heard about ${weave(a.what)}, and we have some things to tell you that every single pup at HQ had to learn too.`,
+          `Gather close, because this letter is a big one. It is all about courage. We know about ${weave(a.what)}, and Ryder called a special team meeting just to write to you about it — every pup wanted to add something.`,
+          `This is an extra-long letter, the kind we only send for extra-important things. The important thing is this: ${weave(a.what)}. That takes bravery, and bravery is our specialty at Rescue HQ.`,
+        ]));
+        if (given(a.feel)) {
+          p.push(pick([
+            `First, we heard that ${weave(a.feel)}. We want you to know something: that is completely okay. Feelings like that are not bad, and having them does not mean anything is wrong with you. Every brave hero who ever lived felt exactly that way first.`,
+            `We also know that ${weave(a.feel)}. Thank you for letting us know, because here is a secret: telling someone how you feel is already the FIRST kind of brave. The feeling is real, it is allowed, and it will not last forever.`,
+          ]));
+        }
+        p.push(pick([
+          `Now, here is the biggest secret in the whole tower, the one we usually only tell pups when they finish their training. Ready? Being brave does NOT mean you are not scared. Being brave means doing the thing even while you feel a little scared. Scared and brave happen at the same time — that is exactly how courage works. If you were never scared, you would never get to be brave!`,
+          `Here is the number one thing to remember, the rule written above the door at HQ: brave does not mean "not scared." Brave means "a little scared, and trying anyway." The scared feeling is like a cloud — it looks big, but you can walk right through it, and it cannot hold you.`,
+        ]));
+        p.push(pick([
+          `Do you think the pups are never afraid? Ha! Marshall gets nervous before climbing the tall ladder — every time. Chase used to be afraid of loud thunder. Even Ryder gets butterflies in his tummy before a big rescue. And you know what they all do? They take a big slow breath, they say "I can do this," and they do it a little scared. Afterward they always say the same thing: "That was not as big as it looked."`,
+          `Every hero you love has been afraid. Skye was scared of eagles once — a flying pup, scared of something in the sky! She practiced being brave in tiny steps, and now she flies loop-de-loops right past them. Fear shrinks every time you face it. It is the strangest thing: the monster gets smaller every time you look at it.`,
+        ]));
+        p.push(pick([
+          `So here is your official HQ bravery plan. Step one: take a big slow moon-breath — in through your nose like you are smelling warm cookies, out through your mouth like you are cooling them down. Step two: say the rescue words, out loud or in your heart: "I am ${name()}, and I can do brave things." Step three: do just the first tiny piece of the brave thing. Not the whole mountain — just the first step. That is how every mountain gets climbed.`,
+          `Want to know exactly what to do when the scared feeling comes? This is straight from the HQ training book. One: breathe slow, like the moon game in your Calm Den — slow breathing tells your body "we are safe." Two: hug something soft and squeeze the scared into it. Three: whisper "I am brave, I am safe, my family is close." Four: do the brave thing one tiny piece at a time. Tiny pieces count. Tiny pieces are how pups become heroes.`,
+        ]));
+        if (given(a.before)) {
+          p.push(pick([
+            `And ${name()}, do not forget — you have DONE brave things before. We keep records at HQ, and ours says: ${weave(a.before)}. Do you remember? You were probably a little scared right before that too, and you did it anyway. That was not luck. That was YOUR courage, and it is still inside you right now, fully charged like a lantern.`,
+            `Here is proof you can do this, straight from your own file at HQ: ${weave(a.before)}. That really happened. That was you. The same brave girl who did that is the one reading this letter. Courage does not run out — every time you use it, you get MORE.`,
+          ]));
+        }
+        if (given(a.helper)) {
+          p.push(pick([
+            `And remember, brave pups never work alone. You have helpers: ${weave(a.helper)}. Keep them close. Even the strongest rescue pup brings a buddy on a big mission — that is not cheating, that is smart.`,
+            `One more tool for your bravery belt: ${weave(a.helper)}. Helpers count as part of the plan. The PAW Patrol never does a rescue alone, and you never have to be brave alone either.`,
+          ]));
+        }
+        p.push(pick([
+          `Tonight, or whenever the moment comes, we will all be thinking of you — the whole tower, every pup, every lantern lit in your honor. And no matter how it goes, whether it is easy, or wobbly, or you only manage one tiny step: we will be proud. Trying IS the brave part. The rest is just practice.`,
+          `One last thing, and it is the truest thing in this whole letter: whether the brave thing goes perfectly or gets wobbly, you cannot lose. Every single try makes your courage stronger, and we are proud of you before you even start. That is how much we believe in you.`,
+        ]));
+        p.push(pick([
+          `You are braver than you feel, stronger than you know, and more loved than all the stars over the lighthouse. Now take a big breath, Ranger — you have got this.`,
+          `No job is too big, no pup is too small — and no scared feeling is bigger than your brave heart. We will be cheering the whole time.`,
+        ]));
+        return p;
+      },
+    },
   ];
 
   let activeType = null;
