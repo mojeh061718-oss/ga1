@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0b1026">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Calm Pups">
+  <meta name="apple-mobile-web-app-title" content="Rescue HQ">
   <title>Calm Pups</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon-192.png">
@@ -587,7 +587,13 @@
       <!-- no `capture` attr: with it, iOS jumps straight to the camera and
            never offers the photo library -->
       <input id="setup-photo" type="file" accept="image/*" class="hidden">
-      <img id="setup-preview" class="hidden" alt="">
+      <img id="setup-preview" class="hidden" alt="a photo of the rescue member">
+      <!-- Backup. Every recording of her voice and every goodnight selfie
+           lives only in this phone's IndexedDB, which iOS may evict. Until
+           now there was no way to get any of it out. -->
+      <label class="setup-label">Backup</label>
+      <button id="setup-export">Save a copy of everything</button>
+      <p id="setup-storage" class="setup-note"></p>
       <div id="setup-actions">
         <button id="setup-cancel">Cancel</button>
         <button id="setup-save">Save</button>
@@ -1407,11 +1413,73 @@
 
   <!-- ============ DIARY ============ -->
   <section id="screen-diary" class="screen dark">
+    <!-- The check-in was the one screen with no painted world: a flat gradient
+         and a leftover v1 sprite, on the app's most tender surface. It gets
+         the meadow at moonrise, and Nimbus asleep in it. -->
+    <svg class="scene" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="dySky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#070b1e"/>
+          <stop offset=".45" stop-color="#0b1026"/>
+          <stop offset=".75" stop-color="#1a2148"/>
+          <stop offset="1" stop-color="#2b2f63"/>
+        </linearGradient>
+        <linearGradient id="dyAur" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#6fe3c1" stop-opacity="0"/>
+          <stop offset=".35" stop-color="#6fe3c1" stop-opacity=".30"/>
+          <stop offset=".65" stop-color="#9ff2b8" stop-opacity=".22"/>
+          <stop offset="1" stop-color="#b9a7f0" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="dyBlur" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="13"/></filter>
+        <radialGradient id="dyMoonGlow">
+          <stop offset="0" stop-color="#ffedb8" stop-opacity=".30"/>
+          <stop offset="1" stop-color="#ffedb8" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="390" height="844" fill="url(#dySky)"/>
+      <g filter="url(#dyBlur)">
+        <path d="M-40 176 C 90 130, 250 210, 430 156" fill="none" stroke="url(#dyAur)" stroke-width="52" stroke-linecap="round"/>
+        <path d="M-40 232 C 120 196, 260 258, 430 214" fill="none" stroke="url(#dyAur)" stroke-width="30" stroke-linecap="round" opacity=".7"/>
+      </g>
+      <circle cx="316" cy="120" r="120" fill="url(#dyMoonGlow)"/>
+      <circle cx="316" cy="120" r="34" fill="#ffedb8" opacity=".92"/>
+      <circle cx="303" cy="110" r="7" fill="#f0d494" opacity=".45"/>
+      <circle cx="328" cy="132" r="4.5" fill="#f0d494" opacity=".4"/>
+      <g fill="#f3ead8">
+        <circle cx="44" cy="96" r="1.6" opacity=".8"/><circle cx="112" cy="62" r="1.2" opacity=".6"/>
+        <circle cx="182" cy="118" r="1.7" opacity=".75"/><circle cx="248" cy="70" r="1.1" opacity=".55"/>
+        <circle cx="70" cy="182" r="1.3" opacity=".65"/><circle cx="150" cy="212" r="1" opacity=".5"/>
+        <circle cx="342" cy="232" r="1.5" opacity=".6"/><circle cx="26" cy="268" r="1.2" opacity=".5"/>
+      </g>
+      <path d="M0 604 L 78 556 L 150 596 L 226 548 L 300 592 L 390 550 L 390 844 L 0 844 Z" fill="#141a38" opacity=".9"/>
+      <path d="M0 686 C 90 654, 200 700, 390 660 L 390 844 L 0 844 Z" fill="#0d1129"/>
+    </svg>
     <button class="home-btn dark-btn" data-target="hub" aria-label="back to hub">
       <svg viewBox="0 0 40 40"><path d="M24 8 L12 20 L24 32" fill="none" stroke="#9aa6d8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div id="diary-progress"></div>
-    <img id="diary-pup" class="pup" data-pup="breathing" alt="pup">
+    <!-- Nimbus, curled asleep — the same character as the breathing moon, so
+         the check-in and the calm den are recognisably the same world. -->
+    <svg id="diary-pup" viewBox="0 0 200 140" aria-hidden="true">
+      <g transform="translate(100 78) scale(.92)">
+        <ellipse cx="0" cy="46" rx="58" ry="9" fill="#070b1e" opacity=".45"/>
+        <circle cx="0" cy="0" r="42" fill="#cdbfe8"/>
+        <path d="M-40 12 A 42 42 0 0 0 40 8 Q 20 34 -12 30 Q -34 26 -40 12 Z" fill="#bcabdd"/>
+        <path d="M38 14 q 16 10 2 24 q -20 14 -48 2" stroke="#bcabdd" stroke-width="12" stroke-linecap="round" fill="none"/>
+        <circle cx="-16" cy="-14" r="26" fill="#d6c9ee"/>
+        <ellipse cx="-38" cy="-24" rx="8" ry="12.5" transform="rotate(-30 -38 -24)" fill="#f3ead8"/>
+        <ellipse cx="0" cy="-34" rx="8" ry="12.5" transform="rotate(18 0 -34)" fill="#f3ead8"/>
+        <ellipse cx="-26" cy="-6" rx="11" ry="8.4" fill="#e6dcf6"/>
+        <ellipse cx="-33" cy="-10" rx="4" ry="3.4" fill="#4a3f64"/>
+        <g stroke="#4a3f64" stroke-width="2.6" stroke-linecap="round" fill="none">
+          <path d="M-24 -18 q4 -4 8 0"/>
+          <path d="M-6 -20 q4 -4 8 0"/>
+        </g>
+        <circle cx="-30" cy="2" r="5" fill="#f0b8a0" opacity=".45"/>
+        <!-- rim light from the moon, upper right -->
+        <path d="M20 -30 A 42 42 0 0 1 40 6" fill="none" stroke="#ffedb8" stroke-width="3.4" stroke-linecap="round" opacity=".55"/>
+      </g>
+    </svg>
     <div id="diary-q"></div>
     <img id="diary-selfie-preview" class="hidden" alt="">
     <div id="diary-controls">
@@ -1597,7 +1665,7 @@
     <div id="day-report"></div>
   </section>
 
-  <script src="js/pups.js" defer></script>
+  <script src="js/day.js" defer></script>
   <script src="js/sounds.js" defer></script>
   <script src="js/sfx.js" defer></script>
   <script src="js/mic.js" defer></script>
@@ -1616,5 +1684,6 @@
   <script src="js/fireflies.js" defer></script>
   <script src="js/mailsync.js" defer></script>
   <script src="js/mailtemplates.js" defer></script>
+  <script src="js/backup.js" defer></script>
 </body>
 </html>

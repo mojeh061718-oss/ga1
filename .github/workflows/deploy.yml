@@ -22,8 +22,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Generate the 3.0 precache manifest
+        # Generated from the tree rather than hand-maintained: a stale manifest
+        # means the app half-loads with no signal, which is the one situation
+        # it exists for.
+        run: node tools/gen-precache.js
+      - name: Check the app's DOM contract
+        # Every getElementById literal must exist in the HTML. With ~120 of
+        # them and no null checks, one renamed id silently kills a whole
+        # feature at runtime; this turns that into a failed build.
+        run: node tools/check-dom-contract.js
       - name: Stamp service worker cache version
-        run: sed -i "s/__VERSION__/${GITHUB_SHA::8}/" sw.js index.html dev/index.html
+        run: sed -i "s/__VERSION__/${GITHUB_SHA::8}/" sw.js index.html dev/index.html dev/sw.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

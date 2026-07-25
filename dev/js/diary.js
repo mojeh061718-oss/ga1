@@ -36,10 +36,28 @@
   let selfieBlob = null;
   let recorder = null;
   let recTimer = null;
+  let sessionDate = null; // the day this in-progress session belongs to
 
-  function today() {
-    const d = new Date();
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  const today = () => Day.today();
+
+  /* Persist whatever the session has so far.
+   *
+   * Until 3.0 the entire check-in lived in these module globals and was only
+   * written at `finish()`. Backing out at question 19 — or an iOS tab
+   * eviction, or a dead battery — threw the whole night away silently. Now
+   * every landed recording and the selfie are written immediately, and
+   * `diaryProgress` marks the session as resumable-but-unfinished.
+   *
+   * `diaryAt` is deliberately NOT set here: the hub's evening nudge and the
+   * Log both treat it as "the check-in was completed", so only finish() sets
+   * it. A partial session still shows in the Log with the answers it has. */
+  function saveProgress() {
+    if (!sessionDate) return Promise.resolve(null);
+    return Store.updateDay(sessionDate, {
+      diary: QUESTIONS.map((q, i) => answers[i] || { q, audio: null, skipped: true }),
+      selfie: selfieBlob,
+      diaryProgress: idx,
+    });
   }
 
   const qEl = () => document.getElementById('diary-q');
@@ -95,14 +113,20 @@
     recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
     recorder.onstop = () => {
       stream.getTracks().forEach((t) => t.stop());
+      recorder = null;
+      recBtn().classList.remove('recording');
+      // A discarded take (stopRecording(true) nulls ondataavailable) leaves
+      // `chunks` empty. Writing it anyway produced a 0-byte answer that the
+      // Log rendered as a play button doing nothing — indistinguishable from
+      // a real recording. Leave the slot untouched instead.
+      if (!chunks.length) return;
       answers[qi] = {
         q: QUESTIONS[qi],
         audio: new Blob(chunks, { type: mime }),
         skipped: false,
       };
-      recorder = null;
-      recBtn().classList.remove('recording');
       recBtn().classList.add('answered');
+      saveProgress();
     };
     recorder.start();
     recBtn().classList.add('recording');
@@ -131,13 +155,17 @@
     document.getElementById('diary-end').classList.remove('hidden');
     Sounds.settleChime();
     await new Promise((r) => setTimeout(r, 350)); // let a final onstop land
-    await Store.updateDay(today(), {
+    const ok = await Store.updateDay(sessionDate || today(), {
       // build from QUESTIONS, not answers — a sparse answers array would
       // silently drop every skipped question from the record
       diary: QUESTIONS.map((q, i) => answers[i] || { q, audio: null, skipped: true }),
       selfie: selfieBlob,
       diaryAt: Date.now(),
+      diaryProgress: null, // the session is complete; nothing to resume
     });
+    // The goodnight moon is already on screen at this point, so a failed
+    // write used to read as success. Say so instead.
+    if (!ok) Store.reportProblem('The check-in could not be saved.');
   }
 
   function next() {
@@ -145,7 +173,7 @@
     stopRecording(false);
     idx++;
     // slight delay so a just-stopped recording lands in answers first
-    setTimeout(showQuestion, 120);
+    setTimeout(() => { showQuestion(); saveProgress(); }, 120);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -167,19 +195,39 @@
       preview.classList.remove('hidden');
       camBtn().classList.add('answered');
       fileInput.value = '';
+      saveProgress();
     });
 
     App.register('diary', {
-      enter() {
+      async enter() {
         idx = 0;
         answers = [];
         selfieBlob = null;
+        sessionDate = today();
         recBtn().classList.remove('answered', 'recording');
         camBtn().classList.remove('answered');
+        showQuestion(); // paint question 1 immediately; resume may replace it
+
+        // Resume an unfinished session from earlier tonight. Only today's,
+        // and only if it was never completed — a finished day must never be
+        // reopened and half-overwritten.
+        const day = await Store.getDay(sessionDate);
+        if (!day || day.diaryAt || typeof day.diaryProgress !== 'number') return;
+        if (App.current !== 'diary') return; // she left while we were reading
+        (day.diary || []).forEach((a, i) => {
+          if (a && a.audio && !a.skipped) answers[i] = a;
+        });
+        if (day.selfie) selfieBlob = day.selfie;
+        idx = Math.min(Math.max(day.diaryProgress, 0), SELFIE_INDEX);
         showQuestion();
+        if (answers[idx]) recBtn().classList.add('answered');
       },
       exit() {
-        stopRecording(true);
+        // Stop the take in flight without discarding it, then flush. onstop
+        // fires asynchronously and saves itself; this covers the selfie and
+        // the question index for a session backed out of between recordings.
+        stopRecording(false);
+        saveProgress();
       },
     });
   });

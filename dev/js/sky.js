@@ -215,11 +215,13 @@
   }
 
   // ---- hints: gentle cycling with a fade ----
+  let hintFade = null;
   function setHint(text) {
     const el = hintEl();
     if (!el) return;
     el.style.opacity = '0';
-    setTimeout(() => { el.textContent = text; el.style.opacity = '1'; }, 700);
+    clearTimeout(hintFade);
+    hintFade = setTimeout(() => { el.textContent = text; el.style.opacity = '1'; }, 700);
   }
 
   function cycleHint(dt) {
@@ -460,8 +462,9 @@
   document.addEventListener('DOMContentLoaded', () => {
     canvas = document.getElementById('sky-canvas');
     ctx = canvas.getContext('2d');
-    makeSprites();
-    buildScene();
+    // Sprites and the painted scene are built on first entry, not at launch.
+    // 25 offscreen 128x128 canvases is ~1.5MiB allocated on every device for a
+    // screen she may never open; with the backing stores it peaks far higher.
 
     canvas.addEventListener('pointerdown', (e) => {
       e.preventDefault();
@@ -480,8 +483,10 @@
       if (App.current === 'sky') resize();
     });
 
+    let built = false;
     App.register('sky', {
       enter() {
+        if (!built) { makeSprites(); buildScene(); built = true; }
         resize();
         reset();
         lastFrame = performance.now();
@@ -491,6 +496,7 @@
         if (rafId) cancelAnimationFrame(rafId);
         rafId = null;
         endStroke();
+        clearTimeout(hintFade); // don't write hint text onto a screen she left
       },
     });
   });

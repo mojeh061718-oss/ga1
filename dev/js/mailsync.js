@@ -23,6 +23,13 @@ const MailSync = (() => {
   const BASE = 'https://getpantry.cloud/apiv1/pantry/';
   const POLL_MS = 90 * 1000;
   const DEBOUNCE_MS = 1500;
+  /* A pantry basket tops out around 1.4MB. A 60-second voice reply is ~0.5-1MB
+   * of AAC, and base64 adds a third — so a long reply could exceed it. When it
+   * did, putBasket threw, the index write below it never ran, and the same
+   * doomed upload was retried every 90 seconds on every device forever: mail
+   * AND monitor sync dead until someone found and deleted that letter. Now
+   * oversized bodies are skipped and flagged instead of throwing. */
+  const MAX_BASKET_CHARS = 1300000;
 
   const enabled = () => PANTRY_ID && !PANTRY_ID.startsWith('__');
 
@@ -60,6 +67,10 @@ const MailSync = (() => {
       body: JSON.stringify(obj),
     });
     if (!r.ok) throw new Error('pantry put failed: ' + name);
+  }
+
+  async function deleteBasket(name) {
+    try { await fetch(url(name), { method: 'DELETE' }); } catch (err) {}
   }
 
   // ---- blob <-> dataURL ----
@@ -109,7 +120,16 @@ const MailSync = (() => {
           await Store.saveLetter({ id, deleted: true, at });
           if (l) changed = true; // a visible letter vanished
         }
-        if (!r || !r.deleted) remoteChanged = true;
+        if (!r || !r.deleted) {
+          remoteChanged = true;
+          // Tombstoning left the bodies behind: a deleted letter's photo and
+          // the child's voice replies stayed readable on the public relay
+          // forever. Drop them as the tombstone goes up.
+          if (r && r.photo) await deleteBasket(r.photo);
+          for (const rr of (r && r.replies) || []) {
+            if (rr && rr.basket) await deleteBasket(rr.basket);
+          }
+        }
         outLetters.push({ id, deleted: true, at });
         continue;
       }
@@ -168,15 +188,22 @@ const MailSync = (() => {
         }
       }
       for (const [at, lr] of localReplies) {
-        if (!remoteReplies.has(at)) {
-          const name = 'r-' + id + '-' + at;
-          meta.replies.push({ at, mime: (lr.audio && lr.audio.type) || 'audio/mp4', basket: name });
-          blobsToPush.push([name, {
-            d: await blobToDataURL(lr.audio),
-            mime: (lr.audio && lr.audio.type) || 'audio/mp4',
-          }]);
-          remoteChanged = true;
+        if (remoteReplies.has(at)) continue;
+        if (lr.tooBig) continue; // already judged unsendable; keep it local
+        const name = 'r-' + id + '-' + at;
+        const mime = (lr.audio && lr.audio.type) || 'audio/mp4';
+        const d = await blobToDataURL(lr.audio);
+        if (d.length > MAX_BASKET_CHARS) {
+          // Too large for the relay. Flag it so we stop re-encoding it every
+          // pass, and leave it playable on the device that recorded it.
+          lr.tooBig = true;
+          saveL = true;
+          Store.reportProblem('One voice reply was too long to send to HQ. It is saved on this phone.');
+          continue;
         }
+        meta.replies.push({ at, mime, basket: name });
+        blobsToPush.push([name, { d, mime }]);
+        remoteChanged = true;
       }
       if (saveL) await Store.saveLetter(l);
       if (!r) remoteChanged = true;
@@ -185,7 +212,23 @@ const MailSync = (() => {
     }
 
     if (remoteChanged || blobsToPush.length) {
-      for (const [name, payload] of blobsToPush) await putBasket(name, payload);
+      // One failed body must not abandon the index write. Push what we can,
+      // then strip any reference that didn't make it so the index never
+      // points at a basket that isn't there.
+      const failed = new Set();
+      for (const [name, payload] of blobsToPush) {
+        try {
+          await putBasket(name, payload);
+        } catch (err) {
+          failed.add(name);
+        }
+      }
+      if (failed.size) {
+        outLetters.forEach((l) => {
+          if (l.photo && failed.has(l.photo)) delete l.photo;
+          if (l.replies) l.replies = l.replies.filter((x) => !failed.has(x.basket));
+        });
+      }
       await putBasket('mailbox', { rev: Date.now(), letters: outLetters });
     }
     return gotNew ? 'new' : (changed ? 'changed' : null);

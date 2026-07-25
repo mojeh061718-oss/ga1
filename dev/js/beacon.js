@@ -18,6 +18,7 @@
   let celebrating = false;
   let rafId = null;
   let lastT = 0;
+  let wins = null; // cached .bcn-win nodes, filled on first paint
 
   const lamp = () => document.getElementById('beacon-lamp');
   const glow = () => document.getElementById('beacon-glow');
@@ -46,8 +47,11 @@
     const g = glow();
     g.setAttribute('opacity', (0.15 + level * 0.85).toFixed(3));
     g.setAttribute('r', Math.round(64 + level * 116));
-    // warmth climbs: Wick's lantern first, then the staircase windows
-    document.querySelectorAll('#screen-beacon .bcn-win').forEach((w) => {
+    // warmth climbs: Wick's lantern first, then the staircase windows.
+    // The node list is cached — this ran the selector engine 60x a second for
+    // state that changes about four times a round.
+    if (!wins) wins = document.querySelectorAll('#screen-beacon .bcn-win');
+    wins.forEach((w) => {
       w.classList.toggle('lit', fill >= parseFloat(w.dataset.th));
     });
   }

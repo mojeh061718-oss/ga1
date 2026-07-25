@@ -208,10 +208,13 @@ const Board = (() => {
       decideTimer = setTimeout(() => {
         const n = taps.length;
         taps = [];
-        if (state.marks[i]) return; // long-press is the only way to change a mark
+        if (state.marks[i]) { wiggle(el); return; } // long-press is the only way to change a mark
         if (n === 2) setMark(i, 'x');
         else if (n >= 3) setMark(i, 'star');
-        // single tap: no-op so she can poke around safely
+        // Single tap deliberately sets nothing, so she can poke around safely —
+        // but it must still answer her. The wiggle was written for exactly this
+        // and never wired up, so a big glowing button just ignored her taps.
+        else wiggle(el);
       }, TAP_WINDOW_MS);
     });
   }

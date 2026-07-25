@@ -39,14 +39,23 @@ const Login = (() => {
     document.getElementById('gate-dot').classList.toggle('locked', !gateOpen());
   }
 
+  /* Only runs while a finger is actually down. It used to reschedule itself
+   * unconditionally from load, so every launch burned a 60fps loop doing
+   * nothing on the one screen guaranteed to be shown — against a wake lock
+   * that stops the browser throttling it. `startTick` re-arms on press. */
   function tick(now) {
-    if (holding && !done) {
-      progress = Math.min(1, progress + (now - lastT) / 1000 / HOLD_SECONDS);
-      ring().style.strokeDashoffset = RING_LEN * (1 - progress);
-      Sounds.humProgress(progress);
-      if (progress >= 1) scanComplete();
-    }
+    if (!holding || done) { rafId = null; return; }
+    progress = Math.min(1, progress + (now - lastT) / 1000 / HOLD_SECONDS);
+    ring().style.strokeDashoffset = RING_LEN * (1 - progress);
+    Sounds.humProgress(progress);
+    if (progress >= 1) scanComplete();
     lastT = now;
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function startTick() {
+    if (rafId) return;
+    lastT = performance.now();
     rafId = requestAnimationFrame(tick);
   }
 
@@ -150,6 +159,7 @@ const Login = (() => {
       holding = true;
       screen().classList.add('scanning');
       Sounds.humStart();
+      startTick();
     });
 
     const release = () => {
@@ -187,8 +197,7 @@ const Login = (() => {
       if (taps.length >= 3) enterApp();
     });
 
-    lastT = performance.now();
-    rafId = requestAnimationFrame(tick);
+    // No idle loop here any more — pointerdown starts it, tick stops itself.
   });
 
   return {};

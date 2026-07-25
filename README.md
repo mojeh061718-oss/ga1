@@ -22,8 +22,16 @@ bedtime diary.
   sealed envelopes with an unread badge. The **speaker button on the
   letter reads it aloud** with the phone's voice (silent until tapped),
   and the big mic button records her **voice
-  reply**, which stamps "REPLY SENT TO HQ ✓". Nothing is actually sent
-  anywhere — letters and replies live only on the phone.
+  reply**, which stamps "REPLY SENT TO HQ ✓".
+
+  **Where letters actually go (3.0 correction).** In v1 nothing left the
+  phone. The 2.0 app at `/dev/` added cross-device sync, so letters, "from"
+  photos and her recorded voice replies are relayed through a free
+  no-account JSON store (getpantry.cloud). The store is addressed by an ID
+  compiled into the client JavaScript, which is served publicly — so that ID
+  is readable by anyone who views source, and the store is readable *and
+  writable* by anyone holding it. Treat the shared mailbox as public. See
+  `docs/3.0-PLAN.md` for the specifics and the planned fix.
 - **Calm Den** — the three calming activities.
 - **PUP CHECK-IN** — the bedtime ritual (below). Between **6pm and 10pm**,
   if it hasn't been done yet, the hub shows a glowing "TIME FOR PUP
@@ -68,9 +76,12 @@ progress report: stars/X's that day, every diary question with a play
 button for her recorded answer, and the goodnight selfie.
 
 Storage notes: recordings and photos live in the app's on-phone database
-(IndexedDB). Installed home-screen apps keep this across launches, but it
-never leaves the phone — there is no cloud backup. A nightly diary is
-roughly 5–15 MB, so storage grows over months of use.
+(IndexedDB). Diary recordings and selfies never leave the phone. A nightly
+diary is roughly 5–15 MB, so storage grows over months of use — a year is
+on the order of a few GB, and iOS can evict it. **Take backups:** open the
+ID badge editor (the pencil on the badge) and tap *Save a copy of
+everything*. It shows how much is stored and writes the whole archive —
+every recording, every selfie, every letter — to one file.
 
 ## The Rescue Login
 
@@ -130,6 +141,29 @@ deploys to a public URL.
 ## Credits
 
 Sound effects from [Kenney](https://kenney.nl) (CC0 / public domain).
+
+## Versions in this repo
+
+- `/` — **v1**, the original app. Frozen.
+- `/dev/` — **Rescue HQ 3.0**, the current app, deployed to
+  `https://<user>.github.io/<repo>/dev/`. All new work goes here.
+
+## Checks
+
+No build step and no dependencies to install — the checks run the files
+exactly as the browser loads them.
+
+```bash
+eslint .                          # no-undef catches renamed/typo'd globals
+node tools/check-dom-contract.js  # every getElementById id exists in the HTML
+node tools/gen-precache.js        # regenerate the offline manifest
+
+npx http-server -p 8099 -s .      # then, in another shell:
+node tools/smoke.js               # every screen opens, no page errors, no overflow
+node tools/test-data-safety.js    # check-in autosave/resume, backup, day keys
+```
+
+`gen-precache` and `check-dom-contract` also run in CI before every deploy.
 
 ## Developing locally
 

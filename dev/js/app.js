@@ -67,10 +67,23 @@ const App = (() => {
       if (document.visibilityState === 'visible') requestWakeLock();
     });
 
-    // DEV build: no service worker — every launch loads the newest deploy.
-    // (The v1 worker scoped at ../ may control this page, but it only serves
-    // its own precached files from cache; everything under dev/ hits the
-    // network.)
+    /* Offline. 2.0 shipped without a worker on purpose so dev builds were
+     * always fresh — but that made the app useless in the one place it matters
+     * most, a car with no signal, and left the v1 worker at ../ answering
+     * offline navigations here with v1's HTML (which then 404s its own assets
+     * under dev/). Registering at this scope takes those navigations back.
+     *
+     * Freshness is preserved a different way: the cache name embeds the deploy
+     * SHA, so every deploy installs a new cache and drops the old one. */
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').then((reg) => {
+        // Pick up a new deploy when she comes back, rather than on a cold boot
+        // two days later.
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update().catch(() => {});
+        });
+      }).catch(() => { /* unsupported or blocked — the app still works online */ });
+    }
   });
 
   return {
